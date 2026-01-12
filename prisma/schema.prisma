@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum DayBlock {
+  MORNING
+  AFTERNOON
+  EVENING
+  ALL_DAY
+}
+
+enum ItemType {
+  HOTEL
+  FLIGHT
+  ATTRACTION
+  FOOD
+  TRANSFER
+  NOTE
+}
+
+model Trip {
+  id           String   @id @default(cuid())
+  name         String
+  startDate    DateTime
+  endDate      DateTime
+  destinations String?
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  days         Day[]
+}
+
+model Day {
+  id        String   @id @default(cuid())
+  date      DateTime @unique
+  city      String?
+  summary   String?
+  journal   String?
+
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items       Item[]
+  attachments Attachment[]
+}
+
+model Item {
+  id          String   @id @default(cuid())
+  dayId       String
+  day         Day      @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  block       DayBlock
+  type        ItemType
+
+  title       String
+  description String?
+  location    String?
+  mapUrl      String?
+  linkUrl     String?
+  reference   String?
+
+  orderIndex  Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  attachments Attachment[]
+  tags        ItemTag[]
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+
+  dayId     String?
+  day       Day?     @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  itemId    String?
+  item      Item?    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  fileName  String
+  mimeType  String
+  sizeBytes Int
+  path      String
+
+  createdAt DateTime @default(now())
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  items ItemTag[]
+}
+
+model ItemTag {
+  itemId String
+  tagId  String
+
+  item   Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([itemId, tagId])
+}
