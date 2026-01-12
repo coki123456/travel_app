@@ -4,17 +4,18 @@ import prisma from "@/lib/prisma";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const resolvedParams = await params;
   const cookieStore = await cookies();
   const activeTripId = cookieStore.get("activeTripId")?.value;
 
   await prisma.trip.delete({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
   });
 
   const response = NextResponse.json({ ok: true });
-  if (activeTripId === params.id) {
+  if (activeTripId === resolvedParams.id) {
     response.cookies.set("activeTripId", "", { path: "/", maxAge: 0 });
   }
 

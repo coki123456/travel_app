@@ -20,8 +20,9 @@ const DAY_BLOCKS = ["ALL_DAY", "MORNING", "AFTERNOON", "EVENING"];
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const resolvedParams = await params;
   const body = await request.json().catch(() => null);
 
   const block = typeof body?.block === "string" ? body.block : undefined;
@@ -51,7 +52,7 @@ export async function PATCH(
   }
 
   const item = await prisma.item.update({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     data: {
       block,
       type,
@@ -65,10 +66,11 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const resolvedParams = await params;
   const item = await prisma.item.delete({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
   });
 
   return NextResponse.json(item);
