@@ -1,13 +1,23 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type FormState = {
   name: string;
   startDate: string;
   endDate: string;
   destinations: string;
+};
+
+type SetupFormProps = {
+  initialTrip?: {
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    destinations: string | null;
+  } | null;
 };
 
 const emptyState: FormState = {
@@ -17,11 +27,24 @@ const emptyState: FormState = {
   destinations: "",
 };
 
-export default function SetupForm() {
+export default function SetupForm({ initialTrip }: SetupFormProps) {
   const router = useRouter();
   const [form, setForm] = useState<FormState>(emptyState);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (initialTrip) {
+      setForm({
+        name: initialTrip.name,
+        startDate: initialTrip.startDate,
+        endDate: initialTrip.endDate,
+        destinations: initialTrip.destinations ?? "",
+      });
+    } else {
+      setForm(emptyState);
+    }
+  }, [initialTrip]);
 
   const updateField =
     (key: keyof FormState) =>
@@ -34,7 +57,7 @@ export default function SetupForm() {
     setError(null);
 
     if (!form.name || !form.startDate || !form.endDate) {
-      setError("Completá nombre, fecha de inicio y fecha de fin.");
+      setError("Completa nombre, fecha de inicio y fecha de fin.");
       return;
     }
 
@@ -44,6 +67,7 @@ export default function SetupForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          id: initialTrip?.id,
           name: form.name,
           startDate: form.startDate,
           endDate: form.endDate,
@@ -57,6 +81,7 @@ export default function SetupForm() {
         return;
       }
 
+      router.push("/");
       router.refresh();
     } catch (err) {
       setError("No se pudo conectar con el servidor.");
@@ -71,6 +96,21 @@ export default function SetupForm() {
       className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm"
     >
       <div className="flex flex-col gap-5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-zinc-900">
+            {initialTrip ? "Editar viaje" : "Nuevo viaje"}
+          </h2>
+          {initialTrip ? (
+            <button
+              type="button"
+              onClick={() => router.push("/setup")}
+              className="text-xs font-semibold text-zinc-500 transition hover:text-zinc-700"
+            >
+              Cancelar
+            </button>
+          ) : null}
+        </div>
+
         <div>
           <label className="text-sm font-semibold text-zinc-700">
             Nombre del viaje
@@ -132,7 +172,11 @@ export default function SetupForm() {
           disabled={isSubmitting}
           className="rounded-2xl bg-zinc-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {isSubmitting ? "Guardando..." : "Crear viaje"}
+          {isSubmitting
+            ? "Guardando..."
+            : initialTrip
+            ? "Guardar cambios"
+            : "Crear viaje"}
         </button>
       </div>
     </form>

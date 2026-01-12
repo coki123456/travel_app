@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
 
 const parseDate = (value: unknown) => {
@@ -14,13 +15,18 @@ const normalizeText = (value: unknown) => {
 };
 
 export async function GET() {
-  const trip = await prisma.trip.findFirst();
+  const cookieStore = await cookies();
+  const activeTripId = cookieStore.get("activeTripId")?.value;
+  const trip = activeTripId
+    ? await prisma.trip.findUnique({ where: { id: activeTripId } })
+    : await prisma.trip.findFirst();
   return NextResponse.json(trip);
 }
 
 export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
 
+  const id = typeof body?.id === "string" ? body.id : null;
   const name = normalizeText(body?.name);
   const startDate = parseDate(body?.startDate);
   const endDate = parseDate(body?.endDate);
@@ -29,19 +35,17 @@ export async function POST(request: NextRequest) {
 
   if (!name || !startDate || !endDate) {
     return NextResponse.json(
-      { error: "name, startDate y endDate son obligatorios." },
+      { error: "Nombre, fecha de inicio y fecha de fin son obligatorios." },
       { status: 400 }
     );
   }
 
   if (endDate < startDate) {
     return NextResponse.json(
-      { error: "endDate no puede ser anterior a startDate." },
+      { error: "La fecha de fin no puede ser anterior a la fecha de inicio." },
       { status: 400 }
     );
   }
-
-  const existing = await prisma.trip.findFirst();
 
   const data = {
     name,
@@ -51,9 +55,11 @@ export async function POST(request: NextRequest) {
     notes,
   };
 
-  const trip = existing
-    ? await prisma.trip.update({ where: { id: existing.id }, data })
+  const trip = id
+    ? await prisma.trip.update({ where: { id }, data })
     : await prisma.trip.create({ data });
 
-  return NextResponse.json(trip);
+  const response = NextResponse.json(trip);
+  response.cookies.set("activeTripId", trip.id, { path: "/" });
+  return response;
 }

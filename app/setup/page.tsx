@@ -1,9 +1,28 @@
-import Link from "next/link";
 import prisma from "@/lib/prisma";
 import SetupForm from "./SetupForm";
+import TripList from "./TripList";
 
-export default async function SetupPage() {
-  const trip = await prisma.trip.findFirst();
+export default async function SetupPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ edit?: string }>;
+}) {
+  const trips = await prisma.trip.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+
+  const resolvedSearchParams = await searchParams;
+  const editId = resolvedSearchParams?.edit;
+  const editingTrip = editId
+    ? trips.find((trip) => trip.id === editId)
+    : null;
+
+  const tripList = trips.map((trip) => ({
+    id: trip.id,
+    name: trip.name,
+    destinations: trip.destinations,
+    dates: `${trip.startDate.toLocaleDateString("es-AR")} - ${trip.endDate.toLocaleDateString("es-AR")}`,
+  }));
 
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-12 text-zinc-900">
@@ -16,48 +35,40 @@ export default async function SetupPage() {
             Configurar viaje
           </h1>
           <p className="max-w-2xl text-sm text-zinc-600 sm:text-base">
-            Cargá la info principal del viaje para empezar a planificar el
+            Carga la info principal del viaje para empezar a planificar el
             calendario y los bloques diarios.
           </p>
         </header>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <section className="flex flex-col gap-4">
-            {trip ? (
-              <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-                <h2 className="text-lg font-semibold text-zinc-900">
-                  Ya hay un viaje configurado
-                </h2>
-                <p className="mt-2 text-sm text-zinc-600">
-                  {trip.name} ({trip.startDate.toDateString()} -{" "}
-                  {trip.endDate.toDateString()})
-                </p>
-                {trip.destinations ? (
-                  <p className="mt-2 text-sm text-zinc-500">
-                    Destinos: {trip.destinations}
-                  </p>
-                ) : null}
-                <Link
-                  href="/"
-                  className="mt-5 inline-flex items-center justify-center rounded-2xl bg-zinc-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
-                >
-                  Ir al calendario
-                </Link>
-              </div>
-            ) : (
-              <SetupForm />
-            )}
+            <TripList trips={tripList} />
           </section>
 
           <aside className="flex flex-col gap-4">
+            <SetupForm
+              initialTrip={
+                editingTrip
+                  ? {
+                      id: editingTrip.id,
+                      name: editingTrip.name,
+                      startDate: editingTrip.startDate
+                        .toISOString()
+                        .slice(0, 10),
+                      endDate: editingTrip.endDate.toISOString().slice(0, 10),
+                      destinations: editingTrip.destinations,
+                    }
+                  : null
+              }
+            />
             <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
               <h3 className="text-sm font-semibold text-zinc-900">
-                Qué podés hacer
+                Que podes hacer
               </h3>
               <ul className="mt-3 space-y-2 text-sm text-zinc-600">
                 <li>Definir fechas del viaje.</li>
                 <li>Cargar destinos principales.</li>
-                <li>Empezar el calendario día por día.</li>
+                <li>Empezar el calendario dia por dia.</li>
               </ul>
             </div>
             <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
@@ -65,8 +76,8 @@ export default async function SetupPage() {
                 Siguiente paso
               </h3>
               <p className="mt-3 text-sm text-zinc-600">
-                Una vez creado el viaje, vas a poder completar bloques (mañana,
-                tarde, noche, todo el día) y adjuntar archivos.
+                Una vez creado el viaje, vas a poder completar bloques (manana,
+                tarde, noche, todo el dia) y adjuntar archivos.
               </p>
             </div>
           </aside>
