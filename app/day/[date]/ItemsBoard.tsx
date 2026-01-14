@@ -177,10 +177,10 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
   };
 
   return (
-    <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
+    <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-zinc-900">Elementos del dia</h2>
-        <span className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+        <h2 className="text-lg font-semibold text-slate-100">Elementos del dia</h2>
+        <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
           {items.length} elementos
         </span>
       </div>
@@ -188,30 +188,30 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
       <div className="mt-5 space-y-6">
         {grouped.map((group) => (
           <div key={group.block} className="space-y-3">
-            <div className="flex items-center justify-between text-xs text-zinc-400">
+            <div className="flex items-center justify-between text-xs text-slate-500">
               <span className="uppercase tracking-[0.3em]">{group.label}</span>
               <span>{group.items.length}</span>
             </div>
             {group.items.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-500">
-              Sin elementos todavia.
-            </div>
+              <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-4 text-sm text-slate-400">
+                Sin elementos todavia.
+              </div>
             ) : (
               <div className="grid gap-3 sm:grid-cols-2">
                 {group.items.map((item) => (
                   <div
                     key={item.id}
-                    className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
+                    className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 shadow-lg shadow-black/20"
                   >
                     {editingId === item.id ? (
                       <div className="space-y-3">
                         <div className="grid gap-3 sm:grid-cols-2">
                           <div>
-                            <label className="text-xs font-semibold text-zinc-600">
+                            <label className="text-xs font-semibold text-slate-300">
                               Bloque
                             </label>
                             <select
-                              className="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+                              className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
                               value={editBlock}
                               onChange={(event) =>
                                 setEditBlock(event.target.value)
@@ -225,11 +225,11 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
                             </select>
                           </div>
                           <div>
-                            <label className="text-xs font-semibold text-zinc-600">
+                            <label className="text-xs font-semibold text-slate-300">
                               Tipo
                             </label>
                             <select
-                              className="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+                              className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
                               value={editType}
                               onChange={(event) =>
                                 setEditType(event.target.value)
@@ -247,11 +247,11 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
                           </div>
                         </div>
                         <div>
-                          <label className="text-xs font-semibold text-zinc-600">
+                          <label className="text-xs font-semibold text-slate-300">
                             Titulo
                           </label>
                           <input
-                            className="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+                            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
                             value={editTitle}
                             onChange={(event) =>
                               setEditTitle(event.target.value)
@@ -259,12 +259,12 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
                           />
                         </div>
                         <div>
-                          <label className="text-xs font-semibold text-zinc-600">
+                          <label className="text-xs font-semibold text-slate-300">
                             Descripcion
                           </label>
                           <textarea
                             rows={3}
-                            className="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+                            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
                             value={editDescription}
                             onChange={(event) =>
                               setEditDescription(event.target.value)
@@ -276,14 +276,14 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
                             type="button"
                             onClick={submitEdit}
                             disabled={isSubmitting}
-                            className="rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70"
+                            className="rounded-xl bg-cyan-400 px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
                           >
                             Guardar
                           </button>
                           <button
                             type="button"
                             onClick={cancelEdit}
-                            className="rounded-xl border border-zinc-200 px-4 py-2 text-xs font-semibold text-zinc-600 transition hover:border-zinc-300"
+                            className="rounded-xl border border-slate-700 px-4 py-2 text-xs font-semibold text-slate-200 transition hover:border-slate-500"
                           >
                             Cancelar
                           </button>
@@ -291,16 +291,16 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
                       </div>
                     ) : (
                       <>
-                        <div className="flex items-center justify-between text-xs text-zinc-500">
+                        <div className="flex items-center justify-between text-xs text-slate-400">
                           <span className="uppercase tracking-[0.2em]">
                             {getTypeLabel(item.type)}
                           </span>
                         </div>
-                        <h3 className="mt-2 text-sm font-semibold text-zinc-900">
+                        <h3 className="mt-2 text-sm font-semibold text-slate-100">
                           {item.title}
                         </h3>
                         {item.description ? (
-                          <p className="mt-2 text-sm text-zinc-600">
+                          <p className="mt-2 text-sm text-slate-300">
                             {item.description}
                           </p>
                         ) : null}
@@ -308,14 +308,14 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
                           <button
                             type="button"
                             onClick={() => startEdit(item)}
-                            className="rounded-xl border border-zinc-200 px-3 py-2 text-xs font-semibold text-zinc-600 transition hover:border-zinc-300"
+                            className="rounded-xl border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:border-slate-500"
                           >
                             Editar
                           </button>
                           <button
                             type="button"
                             onClick={() => deleteItem(item.id)}
-                            className="rounded-xl border border-rose-200 px-3 py-2 text-xs font-semibold text-rose-600 transition hover:border-rose-300"
+                            className="rounded-xl border border-rose-500/40 px-3 py-2 text-xs font-semibold text-rose-200 transition hover:border-rose-400"
                           >
                             Eliminar
                           </button>
@@ -333,9 +333,9 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
       <form onSubmit={submitNew} className="mt-6 grid gap-3">
         <div className="grid gap-3 sm:grid-cols-3">
           <div>
-            <label className="text-xs font-semibold text-zinc-600">Bloque</label>
+            <label className="text-xs font-semibold text-slate-300">Bloque</label>
             <select
-              className="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+              className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
               value={block}
               onChange={(event) => setBlock(event.target.value)}
             >
@@ -347,9 +347,9 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
             </select>
           </div>
           <div>
-            <label className="text-xs font-semibold text-zinc-600">Tipo</label>
+            <label className="text-xs font-semibold text-slate-300">Tipo</label>
             <select
-              className="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+              className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
               value={type}
               onChange={(event) => setType(event.target.value)}
             >
@@ -361,11 +361,11 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
             </select>
           </div>
           <div>
-            <label className="text-xs font-semibold text-zinc-600">
+            <label className="text-xs font-semibold text-slate-300">
               Titulo
             </label>
             <input
-              className="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+              className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
               placeholder="Ej: Check-in del hotel"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
@@ -373,12 +373,12 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
           </div>
         </div>
         <div>
-          <label className="text-xs font-semibold text-zinc-600">
+          <label className="text-xs font-semibold text-slate-300">
             Descripcion
           </label>
           <textarea
             rows={3}
-            className="mt-2 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
             placeholder="Detalles o notas."
             value={description}
             onChange={(event) => setDescription(event.target.value)}
@@ -386,7 +386,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
         </div>
 
         {error ? (
-          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
             {error}
           </div>
         ) : null}
@@ -394,7 +394,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-2xl bg-zinc-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70"
+          className="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting ? "Guardando..." : "Agregar elemento"}
         </button>

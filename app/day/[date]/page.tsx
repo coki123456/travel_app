@@ -57,17 +57,17 @@ export default async function DayPage({
   const dayStart = parseDateParam(dateParam);
   if (!dayStart) {
     return (
-      <div className="min-h-screen bg-zinc-50 px-6 py-10 text-zinc-900">
-        <div className="mx-auto w-full max-w-4xl rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
-          <h1 className="text-2xl font-semibold text-zinc-900">
+      <div className="min-h-screen bg-transparent px-6 py-10 text-slate-100">
+        <div className="mx-auto w-full max-w-4xl rounded-3xl border border-slate-800 bg-slate-900/70 p-8 shadow-lg shadow-black/30">
+          <h1 className="text-2xl font-semibold text-slate-100">
             Fecha invalida
           </h1>
-          <p className="mt-3 text-sm text-zinc-600">
+          <p className="mt-3 text-sm text-slate-300">
             Usa el formato YYYY-MM-DD.
           </p>
           <Link
             href="/"
-            className="mt-6 inline-flex items-center justify-center rounded-2xl bg-zinc-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
+            className="mt-6 inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
           >
             Volver al calendario
           </Link>
@@ -123,20 +123,20 @@ export default async function DayPage({
   });
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-5 py-8 text-zinc-900 sm:px-6 sm:py-10 md:px-8 md:py-12">
+    <div className="min-h-screen bg-transparent px-5 py-8 text-slate-100 sm:px-6 sm:py-10 md:px-8 md:py-12">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 md:gap-10">
         <header className="flex flex-col gap-4">
           <Link
             href="/"
-            className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400"
+            className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500"
           >
             Volver al calendario
           </Link>
-          <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
               {trip.name}
             </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900">
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-100">
               {label}
             </h1>
           </div>

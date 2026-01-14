@@ -117,15 +117,15 @@ export default async function HomePage() {
   ).map(([, value]) => value);
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-5 py-8 text-zinc-900 sm:px-6 sm:py-10 md:px-8 md:py-12">
+    <div className="min-h-screen bg-transparent px-5 py-8 text-slate-100 sm:px-6 sm:py-10 md:px-8 md:py-12">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 md:gap-10">
         <header className="flex flex-col gap-3">
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
+          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
             App Viaje
           </span>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex flex-col gap-3">
-              <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-100 sm:text-4xl">
                 {trip.name}
               </h1>
               <TripSelector
@@ -136,19 +136,19 @@ export default async function HomePage() {
             <div className="flex flex-wrap gap-2">
               <Link
                 href="/setup"
-                className="inline-flex items-center justify-center rounded-2xl border border-zinc-200 px-5 py-2 text-sm font-semibold text-zinc-700 transition hover:border-zinc-300"
+                className="inline-flex items-center justify-center rounded-2xl border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500"
               >
                 Cambiar viaje
               </Link>
               <Link
                 href="/book"
-                className="inline-flex items-center justify-center rounded-2xl border border-zinc-200 px-5 py-2 text-sm font-semibold text-zinc-700 transition hover:border-zinc-300"
+                className="inline-flex items-center justify-center rounded-2xl border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500"
               >
                 Libro del viaje
               </Link>
             </div>
           </div>
-          <p className="text-sm text-zinc-600 sm:text-base">
+          <p className="text-sm text-slate-300 sm:text-base">
             {trip.startDate.toLocaleDateString("es-AR")} -{" "}
             {trip.endDate.toLocaleDateString("es-AR")}
           </p>
@@ -167,12 +167,12 @@ export default async function HomePage() {
               return (
                 <div
                   key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
-                  className="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm md:p-6"
+                  className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-lg shadow-black/30 md:p-6"
                 >
-                  <h2 className="text-lg font-semibold text-zinc-900 capitalize">
+                  <h2 className="text-lg font-semibold text-slate-100 capitalize">
                     {monthLabel}
                   </h2>
-                  <div className="mt-4 grid grid-cols-7 gap-2 text-xs text-zinc-400">
+                  <div className="mt-4 grid grid-cols-7 gap-2 text-xs text-slate-500">
                     {["dom", "lun", "mar", "mie", "jue", "vie", "sab"].map(
                       (label) => (
                         <div key={label} className="text-center uppercase">
@@ -208,11 +208,11 @@ export default async function HomePage() {
                             "flex h-12 items-center justify-center rounded-xl border text-sm transition md:h-14 md:text-base",
                             inTripRange
                               ? [
-                                  "border-zinc-200 text-zinc-900 hover:border-zinc-300",
-                                  isPast ? "bg-emerald-50" : "bg-zinc-50",
+                                  "border-slate-700 text-slate-100 hover:border-slate-500",
+                                  isPast ? "bg-emerald-500/15" : "bg-slate-900/60",
                                   isToday ? "ring-2 ring-emerald-400" : "",
                                 ].join(" ")
-                              : "border-transparent text-zinc-300",
+                              : "border-transparent text-slate-600",
                           ].join(" ")}
                         >
                           <span className="relative flex items-center justify-center">
@@ -221,7 +221,7 @@ export default async function HomePage() {
                               <span className="absolute -right-2 top-0 h-2 w-2 rounded-full bg-emerald-400" />
                             ) : null}
                             {isPast ? (
-                              <span className="absolute -left-2 -top-1 text-[10px] text-emerald-500">
+                              <span className="absolute -left-2 -top-1 text-[10px] text-emerald-300">
                                 ✓
                               </span>
                             ) : null}
@@ -236,11 +236,11 @@ export default async function HomePage() {
           </div>
 
           <aside className="flex flex-col gap-4">
-            <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-zinc-900">
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
+              <h3 className="text-sm font-semibold text-slate-100">
                 Resumen por dia
               </h3>
-              <p className="mt-2 text-sm text-zinc-600">
+              <p className="mt-2 text-sm text-slate-300">
                 Anota un resumen rapido para cada fecha.
               </p>
             </div>
@@ -257,29 +257,29 @@ export default async function HomePage() {
                     key={key}
                     href={`/day/${key}`}
                     className={[
-                      "rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm transition hover:border-zinc-300",
-                      isPast ? "bg-emerald-50" : "",
+                      "rounded-2xl border border-slate-800 bg-slate-900/70 p-4 shadow-lg shadow-black/20 transition hover:border-slate-600",
+                      isPast ? "bg-emerald-500/10" : "",
                       isToday ? "ring-2 ring-emerald-400" : "",
                     ].join(" ")}
                   >
-                    <div className="flex items-center justify-between text-xs text-zinc-500">
+                    <div className="flex items-center justify-between text-xs text-slate-400">
                       <span className="uppercase tracking-[0.2em]">
                         {formatLongDate(date)}
                       </span>
-                      <span className="text-zinc-400">{day?.city ?? ""}</span>
+                      <span className="text-slate-500">{day?.city ?? ""}</span>
                     </div>
-                    <p className="mt-3 text-sm text-zinc-700">
+                    <p className="mt-3 text-sm text-slate-200">
                       {day?.summary ?? "Sin resumen todavia."}
                     </p>
-                    <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500">
+                    <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
                       <span
                         className={[
                           "h-2 w-2 rounded-full",
                           isToday
-                            ? "bg-emerald-500"
+                            ? "bg-emerald-400"
                             : isPast
                             ? "bg-emerald-300"
-                            : "bg-zinc-300",
+                            : "bg-slate-500",
                         ].join(" ")}
                       />
                       <span>

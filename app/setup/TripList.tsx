@@ -72,36 +72,36 @@ export default function TripList({ trips }: TripListProps) {
   };
 
   return (
-    <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-zinc-900">Tus viajes</h2>
-      <p className="mt-2 text-sm text-zinc-600">
+    <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
+      <h2 className="text-lg font-semibold text-slate-100">Tus viajes</h2>
+      <p className="mt-2 text-sm text-slate-300">
         Selecciona un viaje para abrir su calendario.
       </p>
 
       {error ? (
-        <div className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+        <div className="mt-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
           {error}
         </div>
       ) : null}
 
       <div className="mt-4 flex flex-col gap-3">
         {trips.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-500">
+          <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-4 text-sm text-slate-400">
             Todavia no hay viajes creados.
           </div>
         ) : (
           trips.map((trip) => (
             <div
               key={trip.id}
-              className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
+              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 shadow-lg shadow-black/20"
             >
               <div className="flex flex-col gap-1">
-                <p className="text-sm font-semibold text-zinc-900">
+                <p className="text-sm font-semibold text-slate-100">
                   {trip.name}
                 </p>
-                <p className="text-xs text-zinc-500">{trip.dates}</p>
+                <p className="text-xs text-slate-400">{trip.dates}</p>
                 {trip.destinations ? (
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-slate-400">
                     Destinos: {trip.destinations}
                   </p>
                 ) : null}
@@ -111,14 +111,14 @@ export default function TripList({ trips }: TripListProps) {
                   type="button"
                   onClick={() => selectTrip(trip.id)}
                   disabled={loadingId === trip.id}
-                  className="inline-flex items-center justify-center rounded-2xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {loadingId === trip.id ? "Abriendo..." : "Usar este viaje"}
                 </button>
                 <button
                   type="button"
                   onClick={() => router.push(`/setup?edit=${trip.id}`)}
-                  className="inline-flex items-center justify-center rounded-2xl border border-zinc-200 px-4 py-2 text-xs font-semibold text-zinc-600 transition hover:border-zinc-300"
+                  className="inline-flex items-center justify-center rounded-2xl border border-slate-700 px-4 py-2 text-xs font-semibold text-slate-200 transition hover:border-slate-500"
                 >
                   Editar
                 </button>
@@ -126,7 +126,7 @@ export default function TripList({ trips }: TripListProps) {
                   type="button"
                   onClick={() => deleteTrip(trip.id)}
                   disabled={loadingId === trip.id}
-                  className="inline-flex items-center justify-center rounded-2xl border border-rose-200 px-4 py-2 text-xs font-semibold text-rose-600 transition hover:border-rose-300 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="inline-flex items-center justify-center rounded-2xl border border-rose-500/40 px-4 py-2 text-xs font-semibold text-rose-200 transition hover:border-rose-400 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   Eliminar
                 </button>

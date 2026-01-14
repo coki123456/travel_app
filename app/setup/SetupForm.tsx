@@ -93,18 +93,18 @@ export default function SetupForm({ initialTrip }: SetupFormProps) {
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm"
+      className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30"
     >
       <div className="flex flex-col gap-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-zinc-900">
+          <h2 className="text-lg font-semibold text-slate-100">
             {initialTrip ? "Editar viaje" : "Nuevo viaje"}
           </h2>
           {initialTrip ? (
             <button
               type="button"
               onClick={() => router.push("/setup")}
-              className="text-xs font-semibold text-zinc-500 transition hover:text-zinc-700"
+              className="text-xs font-semibold text-slate-400 transition hover:text-slate-200"
             >
               Cancelar
             </button>
@@ -112,11 +112,11 @@ export default function SetupForm({ initialTrip }: SetupFormProps) {
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-zinc-700">
+          <label className="text-sm font-semibold text-slate-200">
             Nombre del viaje
           </label>
           <input
-            className="mt-2 w-full rounded-2xl border border-zinc-200 px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+            className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
             placeholder="Ej: Viaje a la Patagonia"
             value={form.name}
             onChange={updateField("name")}
@@ -125,23 +125,23 @@ export default function SetupForm({ initialTrip }: SetupFormProps) {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="text-sm font-semibold text-zinc-700">
+            <label className="text-sm font-semibold text-slate-200">
               Fecha de inicio
             </label>
             <input
               type="date"
-              className="mt-2 w-full rounded-2xl border border-zinc-200 px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+              className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
               value={form.startDate}
               onChange={updateField("startDate")}
             />
           </div>
           <div>
-            <label className="text-sm font-semibold text-zinc-700">
+            <label className="text-sm font-semibold text-slate-200">
               Fecha de fin
             </label>
             <input
               type="date"
-              className="mt-2 w-full rounded-2xl border border-zinc-200 px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+              className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
               value={form.endDate}
               onChange={updateField("endDate")}
             />
@@ -149,12 +149,12 @@ export default function SetupForm({ initialTrip }: SetupFormProps) {
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-zinc-700">
+          <label className="text-sm font-semibold text-slate-200">
             Destinos (opcional)
           </label>
           <textarea
             rows={3}
-            className="mt-2 w-full rounded-2xl border border-zinc-200 px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-400"
+            className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
             placeholder="Ej: Bariloche, Villa La Angostura"
             value={form.destinations}
             onChange={updateField("destinations")}
@@ -162,7 +162,7 @@ export default function SetupForm({ initialTrip }: SetupFormProps) {
         </div>
 
         {error ? (
-          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
             {error}
           </div>
         ) : null}
@@ -170,7 +170,7 @@ export default function SetupForm({ initialTrip }: SetupFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-2xl bg-zinc-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70"
+          className="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting
             ? "Guardando..."

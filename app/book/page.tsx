@@ -80,28 +80,28 @@ export default async function BookPage() {
   const allDays = buildDaysInRange(trip.startDate, trip.endDate);
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-6 py-10 text-zinc-900 print:bg-white print:px-0 print:py-0">
+    <div className="min-h-screen bg-transparent px-6 py-10 text-slate-100 print:bg-white print:px-0 print:py-0">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 print:max-w-none print:gap-6 print:px-0">
-        <header className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm print:border-none print:shadow-none">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
+        <header className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30 print:border-none print:shadow-none">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
             App Viaje
           </p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-100">
             Libro del viaje
           </h1>
-          <p className="mt-2 text-sm text-zinc-600">
+          <p className="mt-2 text-sm text-slate-300">
             {trip.name} - {trip.startDate.toLocaleDateString("es-AR")} -{" "}
             {trip.endDate.toLocaleDateString("es-AR")}
           </p>
           {trip.destinations ? (
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-slate-400">
               Destinos: {trip.destinations}
             </p>
           ) : null}
           <div className="mt-5 flex flex-wrap gap-3 print:hidden">
             <Link
               href="/"
-              className="rounded-2xl border border-zinc-200 px-5 py-3 text-sm font-semibold text-zinc-700 transition hover:border-zinc-300"
+              className="rounded-2xl border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-500"
             >
               Volver al calendario
             </Link>
@@ -132,29 +132,29 @@ export default async function BookPage() {
           return (
             <section
               key={key}
-              className={`rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm ${printClasses}`}
+              className={`rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30 ${printClasses}`}
             >
               <div className="hidden print:block print:pb-4">
                 <div className="h-1 w-full rounded-full bg-zinc-200" />
               </div>
               <div className="flex flex-col gap-1">
-                <span className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
+                <span className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
                   {key}
                 </span>
-                <h2 className="text-xl font-semibold text-zinc-900 capitalize">
+                <h2 className="text-xl font-semibold text-slate-100 capitalize">
                   {label}
                 </h2>
                 {day?.city ? (
-                  <p className="text-sm text-zinc-500">Ciudad: {day.city}</p>
+                  <p className="text-sm text-slate-400">Ciudad: {day.city}</p>
                 ) : null}
               </div>
 
               <div className="mt-4 grid gap-4">
-                <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 print:border-none print:bg-white">
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
+                <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4 print:border-none print:bg-white">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
                     Resumen
                   </p>
-                  <p className="mt-2 text-sm text-zinc-700">
+                  <p className="mt-2 text-sm text-slate-200">
                     {day?.summary ?? "Sin resumen todavia."}
                   </p>
                 </div>
@@ -163,16 +163,16 @@ export default async function BookPage() {
                   {itemsByBlock.map((block) => (
                     <div
                       key={block.key}
-                      className="rounded-2xl border border-zinc-200 bg-white p-4 print:border-none"
+                      className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 print:border-none"
                     >
-                      <div className="flex items-center justify-between text-xs text-zinc-500">
+                      <div className="flex items-center justify-between text-xs text-slate-400">
                         <span className="uppercase tracking-[0.3em]">
                           {block.label}
                         </span>
                         <span>{block.items.length}</span>
                       </div>
                       {block.items.length === 0 ? (
-                        <p className="mt-3 text-sm text-zinc-500">
+                        <p className="mt-3 text-sm text-slate-400">
                           Sin elementos.
                         </p>
                       ) : (
@@ -180,16 +180,16 @@ export default async function BookPage() {
                           {block.items.map((item) => (
                             <div
                               key={item.id}
-                              className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 print:border-none print:bg-white"
+                              className="rounded-xl border border-slate-800 bg-slate-900/50 p-3 print:border-none print:bg-white"
                             >
-                              <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+                              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
                                 {getTypeLabel(item.type)}
                               </p>
-                              <p className="mt-2 text-sm font-semibold text-zinc-900">
+                              <p className="mt-2 text-sm font-semibold text-slate-100">
                                 {item.title}
                               </p>
                               {item.description ? (
-                                <p className="mt-2 text-sm text-zinc-600">
+                                <p className="mt-2 text-sm text-slate-300">
                                   {item.description}
                                 </p>
                               ) : null}
@@ -201,11 +201,11 @@ export default async function BookPage() {
                   ))}
                 </div>
 
-                <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 print:border-none print:bg-white">
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
+                <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4 print:border-none print:bg-white">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
                     Diario
                   </p>
-                  <p className="mt-2 whitespace-pre-wrap text-sm text-zinc-700">
+                  <p className="mt-2 whitespace-pre-wrap text-sm text-slate-200">
                     {day?.journal ?? "Sin diario todavia."}
                   </p>
                 </div>

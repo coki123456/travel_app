@@ -27,16 +27,16 @@ export default async function SetupPage({
   }));
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-6 py-12 text-zinc-900">
+    <div className="min-h-screen bg-transparent px-6 py-12 text-slate-100">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
         <header className="flex flex-col gap-3">
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
+          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
             App Viaje
           </span>
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-slate-100 sm:text-4xl">
             Configurar viaje
           </h1>
-          <p className="max-w-2xl text-sm text-zinc-600 sm:text-base">
+          <p className="max-w-2xl text-sm text-slate-300 sm:text-base">
             Carga la info principal del viaje para empezar a planificar el
             calendario y los bloques diarios.
           </p>
@@ -63,21 +63,21 @@ export default async function SetupPage({
                   : null
               }
             />
-            <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-zinc-900">
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
+              <h3 className="text-sm font-semibold text-slate-100">
                 Que podes hacer
               </h3>
-              <ul className="mt-3 space-y-2 text-sm text-zinc-600">
+              <ul className="mt-3 space-y-2 text-sm text-slate-300">
                 <li>Definir fechas del viaje.</li>
                 <li>Cargar destinos principales.</li>
                 <li>Empezar el calendario dia por dia.</li>
               </ul>
             </div>
-            <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-zinc-900">
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
+              <h3 className="text-sm font-semibold text-slate-100">
                 Siguiente paso
               </h3>
-              <p className="mt-3 text-sm text-zinc-600">
+              <p className="mt-3 text-sm text-slate-300">
                 Una vez creado el viaje, vas a poder completar bloques (manana,
                 tarde, noche, todo el dia) y adjuntar archivos.
               </p>

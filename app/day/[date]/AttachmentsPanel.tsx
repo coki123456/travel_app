@@ -69,9 +69,9 @@ export default function AttachmentsPanel({
   };
 
   return (
-    <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-      <h3 className="text-sm font-semibold text-zinc-900">Adjuntos</h3>
-      <p className="mt-2 text-sm text-zinc-600">
+    <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
+      <h3 className="text-sm font-semibold text-slate-100">Adjuntos</h3>
+      <p className="mt-2 text-sm text-slate-300">
         PDF o imagenes (JPG, PNG, WEBP).
       </p>
 
@@ -79,7 +79,7 @@ export default function AttachmentsPanel({
         <input
           type="file"
           accept=".pdf,image/jpeg,image/png,image/webp"
-          className="block w-full text-sm text-zinc-600 file:mr-4 file:rounded-xl file:border-0 file:bg-zinc-900 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-white"
+          className="block w-full text-sm text-slate-300 file:mr-4 file:rounded-xl file:border-0 file:bg-cyan-400 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-slate-950"
           onChange={(event) => {
             const selected = event.target.files?.[0] ?? null;
             setFile(selected);
@@ -87,7 +87,7 @@ export default function AttachmentsPanel({
         />
 
         {error ? (
-          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
             {error}
           </div>
         ) : null}
@@ -95,7 +95,7 @@ export default function AttachmentsPanel({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-2xl bg-zinc-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70"
+          className="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting ? "Subiendo..." : "Subir archivo"}
         </button>
@@ -103,7 +103,7 @@ export default function AttachmentsPanel({
 
       <div className="mt-5 space-y-3">
         {attachments.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-500">
+          <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-4 text-sm text-slate-400">
             Sin adjuntos todavia.
           </div>
         ) : (
@@ -113,17 +113,17 @@ export default function AttachmentsPanel({
               href={attachment.path}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-between rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm transition hover:border-zinc-300"
+              className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3 text-sm text-slate-200 shadow-lg shadow-black/20 transition hover:border-slate-600"
             >
               <div className="flex flex-col">
-                <span className="font-semibold text-zinc-900">
+                <span className="font-semibold text-slate-100">
                   {attachment.fileName}
                 </span>
-                <span className="text-xs text-zinc-500">
+                <span className="text-xs text-slate-400">
                   {attachment.mimeType} - {formatSize(attachment.sizeBytes)}
                 </span>
               </div>
-              <span className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+              <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
                 Ver
               </span>
             </a>
