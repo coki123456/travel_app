@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
 import PrintButton from "./PrintButton";
 
+export const dynamic = "force-dynamic";
+
 const BLOCKS = [
   { key: "ALL_DAY", label: "Todo el dia" },
   { key: "MORNING", label: "Manana" },
@@ -78,8 +80,8 @@ export default async function BookPage() {
   const allDays = buildDaysInRange(trip.startDate, trip.endDate);
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-6 py-10 text-zinc-900 print:bg-white print:px-0">
-      <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 print:max-w-none print:gap-6">
+    <div className="min-h-screen bg-zinc-50 px-6 py-10 text-zinc-900 print:bg-white print:px-0 print:py-0">
+      <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 print:max-w-none print:gap-6 print:px-0">
         <header className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm print:border-none print:shadow-none">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
             App Viaje
@@ -107,7 +109,7 @@ export default async function BookPage() {
           </div>
         </header>
 
-        {allDays.map((date) => {
+        {allDays.map((date, index) => {
           const key = formatDateKey(date);
           const day = dayMap.get(key);
           const label = date.toLocaleDateString("es-AR", {
@@ -122,11 +124,19 @@ export default async function BookPage() {
             items: day?.items.filter((item) => item.block === block.key) ?? [],
           }));
 
+          const printClasses =
+            index === 0
+              ? "print:break-inside-avoid print:border-none print:shadow-none"
+              : "print:break-before-page print:break-inside-avoid print:border-none print:shadow-none";
+
           return (
             <section
               key={key}
-              className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm print:border-none print:shadow-none"
+              className={`rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm ${printClasses}`}
             >
+              <div className="hidden print:block print:pb-4">
+                <div className="h-1 w-full rounded-full bg-zinc-200" />
+              </div>
               <div className="flex flex-col gap-1">
                 <span className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
                   {key}

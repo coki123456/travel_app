@@ -6,6 +6,8 @@ import DayForm from "./DayForm";
 import ItemsBoard from "./ItemsBoard";
 import AttachmentsPanel from "./AttachmentsPanel";
 
+export const dynamic = "force-dynamic";
+
 type ItemView = {
   id: string;
   title: string;
@@ -121,8 +123,8 @@ export default async function DayPage({
   });
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-6 py-10 text-zinc-900">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+    <div className="min-h-screen bg-zinc-50 px-5 py-8 text-zinc-900 sm:px-6 sm:py-10 md:px-8 md:py-12">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 md:gap-10">
         <header className="flex flex-col gap-4">
           <Link
             href="/"
@@ -140,7 +142,7 @@ export default async function DayPage({
           </div>
         </header>
 
-        <section className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <section className="grid gap-6 md:gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
           <div className="flex flex-col gap-6">
             <ItemsBoard date={dateParam} items={items} />
           </div>

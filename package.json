@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "set NEXT_DISABLE_TURBOPACK=1&& next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "clean": "rmdir /s /q .next .turbo 2>nul || exit 0"
   },
   "dependencies": {
     "@prisma/client": "^6.19.1",

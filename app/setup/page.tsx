@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 import SetupForm from "./SetupForm";
 import TripList from "./TripList";
 
+export const dynamic = "force-dynamic";
+
 export default async function SetupPage({
   searchParams,
 }: {

@@ -2,6 +2,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
+import TripSelector from "./TripSelector";
+
+export const dynamic = "force-dynamic";
 
 type DaySummary = {
   id: string;
@@ -73,9 +76,15 @@ const buildMonthMatrix = (days: Date[]) => {
 export default async function HomePage() {
   const cookieStore = await cookies();
   const activeTripId = cookieStore.get("activeTripId")?.value;
-  const trip = activeTripId
-    ? await prisma.trip.findUnique({ where: { id: activeTripId } })
-    : null;
+  const [trip, trips] = await Promise.all([
+    activeTripId
+      ? prisma.trip.findUnique({ where: { id: activeTripId } })
+      : null,
+    prisma.trip.findMany({
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true },
+    }),
+  ]);
 
   if (!trip) {
     redirect("/setup");
@@ -108,16 +117,22 @@ export default async function HomePage() {
   ).map(([, value]) => value);
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-6 py-10 text-zinc-900">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+    <div className="min-h-screen bg-zinc-50 px-5 py-8 text-zinc-900 sm:px-6 sm:py-10 md:px-8 md:py-12">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 md:gap-10">
         <header className="flex flex-col gap-3">
           <span className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
             App Viaje
           </span>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
-              {trip.name}
-            </h1>
+            <div className="flex flex-col gap-3">
+              <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+                {trip.name}
+              </h1>
+              <TripSelector
+                trips={trips}
+                activeTripId={activeTripId ?? null}
+              />
+            </div>
             <div className="flex flex-wrap gap-2">
               <Link
                 href="/setup"
@@ -139,8 +154,8 @@ export default async function HomePage() {
           </p>
         </header>
 
-        <section className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-          <div className="flex flex-col gap-6">
+        <section className="grid gap-6 md:gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+          <div className="flex flex-col gap-5 md:gap-6">
             {months.map((monthDays, index) => {
               const reference = monthDays[0];
               const monthLabel = reference.toLocaleDateString("es-AR", {
@@ -152,7 +167,7 @@ export default async function HomePage() {
               return (
                 <div
                   key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
-                  className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm"
+                  className="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm md:p-6"
                 >
                   <h2 className="text-lg font-semibold text-zinc-900 capitalize">
                     {monthLabel}
@@ -166,7 +181,7 @@ export default async function HomePage() {
                       )
                     )}
                   </div>
-                  <div className="mt-2 grid grid-cols-7 gap-2">
+                  <div className="mt-2 grid grid-cols-7 gap-2 md:gap-2.5">
                     {matrix.flat().map((cell, cellIndex) => {
                       if (!cell) {
                         return (
@@ -190,7 +205,7 @@ export default async function HomePage() {
                           key={key}
                           href={`/day/${key}`}
                           className={[
-                            "flex h-12 items-center justify-center rounded-xl border text-sm transition",
+                            "flex h-12 items-center justify-center rounded-xl border text-sm transition md:h-14 md:text-base",
                             inTripRange
                               ? [
                                   "border-zinc-200 text-zinc-900 hover:border-zinc-300",
@@ -200,10 +215,15 @@ export default async function HomePage() {
                               : "border-transparent text-zinc-300",
                           ].join(" ")}
                         >
-                          <span className="relative">
+                          <span className="relative flex items-center justify-center">
                             {cell.getDate()}
                             {day?.summary ? (
                               <span className="absolute -right-2 top-0 h-2 w-2 rounded-full bg-emerald-400" />
+                            ) : null}
+                            {isPast ? (
+                              <span className="absolute -left-2 -top-1 text-[10px] text-emerald-500">
+                                ✓
+                              </span>
                             ) : null}
                           </span>
                         </Link>
