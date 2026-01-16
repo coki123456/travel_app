@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "set NEXT_DISABLE_TURBOPACK=1&& next dev",
-    "build": "next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "start": "node -e \"require('child_process').spawn('next',['start','-H','0.0.0.0','-p',process.env.PORT||'3000'],{stdio:'inherit'})\"",
+    "start:prod": "next start -H 0.0.0.0 -p ${PORT:-3000}",
     "postinstall": "prisma generate",
     "lint": "eslint",
     "clean": "rmdir /s /q .next .turbo 2>nul || exit 0"
@@ -28,6 +29,6 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": ">=20.9.0"
+    "node": "20.x"
   }
 }
