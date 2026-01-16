@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Habilitar standalone output para Docker (reduce el tamaño de la imagen)
-  output: "standalone",
-
   // Optimizaciones de producción
   poweredByHeader: false,
   compress: true,

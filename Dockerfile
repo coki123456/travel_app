@@ -1,99 +1,37 @@
-# Dockerfile multi-stage optimizado para Next.js 16 + Prisma
-# Basado en las mejores prácticas de Next.js y producción
+# Dockerfile simplificado para Next.js + Prisma + Easypanel
+FROM node:20.11.1-alpine
 
-# ============================================
-# Stage 1: Dependencies
-# ============================================
-FROM node:20.11.1-alpine AS deps
-
-# Instalar dependencias del sistema necesarias para Prisma
+# Instalar dependencias del sistema
 RUN apk add --no-cache libc6-compat openssl
 
 WORKDIR /app
 
 # Copiar archivos de dependencias
-COPY package.json package-lock.json ./
+COPY package*.json ./
 COPY prisma ./prisma/
 
-# Instalar dependencias de producción y desarrollo
-RUN npm ci
+# Instalar TODAS las dependencias (incluyendo devDependencies para Prisma CLI)
+RUN npm ci --include=dev
 
-# Generar el cliente de Prisma
+# Generar cliente de Prisma
 RUN npx prisma generate
-
-# ============================================
-# Stage 2: Builder
-# ============================================
-FROM node:20.11.1-alpine AS builder
-
-RUN apk add --no-cache libc6-compat openssl
-
-WORKDIR /app
-
-# Copiar dependencias desde la etapa anterior
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/prisma ./prisma
 
 # Copiar código fuente
 COPY . .
 
-# Variables de entorno necesarias para el build
+# Variables de entorno para build
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-
-# DATABASE_URL dummy para que el build pase (Prisma requiere que exista)
-# La URL real se configura en runtime, no en build
 ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy?schema=public"
 
 # Build de Next.js
 RUN npm run build
 
-# ============================================
-# Stage 3: Runner (Producción)
-# ============================================
-FROM node:20.11.1-alpine AS runner
+# Crear directorio para uploads
+RUN mkdir -p /app/public/uploads
 
-RUN apk add --no-cache libc6-compat openssl
-
-WORKDIR /app
-
-# Variables de entorno de producción
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-
-# Crear usuario no-root para seguridad
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Copiar archivos públicos
-COPY --from=builder /app/public ./public
-
-# Copiar output de Next.js build
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Copiar Prisma schema y cliente generado
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-
-# Copiar todo el directorio .bin con archivos WASM y binarios de Prisma
-COPY --from=builder /app/node_modules/.bin ./node_modules/.bin
-
-# Copiar script de inicio
-COPY --chown=nextjs:nodejs docker-entrypoint.sh ./
-
-# Dar permisos de ejecución al script
-RUN chmod +x docker-entrypoint.sh
-
-# Crear directorio para uploads (montado como volumen en producción)
-RUN mkdir -p /app/public/uploads && chown -R nextjs:nodejs /app/public/uploads
-
-USER nextjs
-
+# Puerto
 EXPOSE 3000
 
-# Script de inicio que ejecuta migraciones antes de iniciar el servidor
-CMD ["./docker-entrypoint.sh"]
+# Script de inicio: ejecutar migraciones y luego iniciar Next.js
+CMD npx prisma migrate deploy && npm start
