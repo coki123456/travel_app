@@ -85,9 +85,8 @@ COPY --from=builder /app/node_modules/.bin ./node_modules/.bin
 # Copiar script de inicio
 COPY --chown=nextjs:nodejs docker-entrypoint.sh ./
 
-# Dar permisos de ejecución a los scripts
+# Dar permisos de ejecución al script
 RUN chmod +x docker-entrypoint.sh
-RUN chmod +x node_modules/.bin/*
 
 # Crear directorio para uploads (montado como volumen en producción)
 RUN mkdir -p /app/public/uploads && chown -R nextjs:nodejs /app/public/uploads
