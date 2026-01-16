@@ -38,9 +38,12 @@ COPY --from=deps /app/prisma ./prisma
 COPY . .
 
 # Variables de entorno necesarias para el build
-# NOTA: DATABASE_URL solo se necesita en runtime, no en build
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+
+# DATABASE_URL dummy para que el build pase (Prisma requiere que exista)
+# La URL real se configura en runtime, no en build
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy?schema=public"
 
 # Build de Next.js
 RUN npm run build
