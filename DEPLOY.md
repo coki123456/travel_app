@@ -78,47 +78,6 @@ Si quieres persistir los archivos subidos:
 
 ---
 
-## 🐋 Despliegue Local con Docker Compose
-
-### Para desarrollo local:
-
-```bash
-# 1. Crear archivo .env
-cp .env.example .env
-
-# 2. Editar .env con tus valores (puedes usar los valores por defecto para local)
-
-# 3. Iniciar servicios
-npm run docker:up
-
-# 4. Ver logs
-npm run docker:logs
-
-# 5. Acceder a la app
-# http://localhost:3000
-```
-
-### Comandos útiles:
-
-```bash
-# Detener servicios
-npm run docker:down
-
-# Reconstruir imagen
-npm run docker:build
-
-# Ejecutar migraciones manualmente
-docker-compose exec app npx prisma migrate deploy
-
-# Ver logs de base de datos
-docker-compose logs -f db
-
-# Acceder a la shell del contenedor
-docker exec -it travel_app sh
-```
-
----
-
 ## ☁️ Otras Plataformas
 
 ### Vercel

@@ -41,19 +41,6 @@ npm run dev
 
 Abre [http://localhost:3000](http://localhost:3000)
 
-### Docker Compose
-
-```bash
-# Iniciar todos los servicios (app + PostgreSQL)
-npm run docker:up
-
-# Ver logs
-npm run docker:logs
-
-# Detener servicios
-npm run docker:down
-```
-
 ## Despliegue en Producción
 
 Ver [DEPLOY.md](./DEPLOY.md) para instrucciones detalladas de despliegue en:
@@ -70,8 +57,7 @@ Ver [DEPLOY.md](./DEPLOY.md) para instrucciones detalladas de despliegue en:
 - `npm run migrate:dev` - Crear y aplicar migraciones (desarrollo)
 - `npm run migrate:deploy` - Aplicar migraciones (producción)
 - `npm run studio` - Abrir Prisma Studio
-- `npm run docker:up` - Iniciar Docker Compose
-- `npm run docker:down` - Detener Docker Compose
+- `npm run docker:build` - Construir imagen Docker
 
 ## Estructura del Proyecto
 
@@ -87,8 +73,7 @@ travel_app/
 ├── lib/                   # Utilidades y configuración
 ├── public/                # Archivos estáticos
 │   └── uploads/          # Archivos subidos por usuarios
-├── Dockerfile             # Configuración Docker
-├── docker-compose.yml     # Docker Compose para desarrollo
+├── Dockerfile             # Configuración Docker para Easypanel
 └── DEPLOY.md             # Guía de despliegue
 
 ```

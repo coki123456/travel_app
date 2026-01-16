@@ -11,10 +11,7 @@
     "postinstall": "prisma generate",
     "lint": "eslint",
     "studio": "prisma studio",
-    "docker:build": "docker build -t travel-app .",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
-    "docker:logs": "docker-compose logs -f app"
+    "docker:build": "docker build -t travel-app ."
   },
   "dependencies": {
     "@prisma/client": "^6.19.1",
