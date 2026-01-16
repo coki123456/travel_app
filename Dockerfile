@@ -79,15 +79,15 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 
-# Crear directorio .bin y copiar CLI de Prisma
-RUN mkdir -p node_modules/.bin
-COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
+# Copiar todo el directorio .bin con archivos WASM y binarios de Prisma
+COPY --from=builder /app/node_modules/.bin ./node_modules/.bin
 
 # Copiar script de inicio
 COPY --chown=nextjs:nodejs docker-entrypoint.sh ./
 
 # Dar permisos de ejecución a los scripts
-RUN chmod +x docker-entrypoint.sh node_modules/.bin/prisma
+RUN chmod +x docker-entrypoint.sh
+RUN chmod +x node_modules/.bin/*
 
 # Crear directorio para uploads (montado como volumen en producción)
 RUN mkdir -p /app/public/uploads && chown -R nextjs:nodejs /app/public/uploads
