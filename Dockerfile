@@ -78,6 +78,12 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
+# Copiar script de inicio
+COPY --chown=nextjs:nodejs docker-entrypoint.sh ./
+
+# Dar permisos de ejecución al script
+RUN chmod +x docker-entrypoint.sh
+
 # Crear directorio para uploads (montado como volumen en producción)
 RUN mkdir -p /app/public/uploads && chown -R nextjs:nodejs /app/public/uploads
 
@@ -86,4 +92,4 @@ USER nextjs
 EXPOSE 3000
 
 # Script de inicio que ejecuta migraciones antes de iniciar el servidor
-CMD ["node", "server.js"]
+CMD ["./docker-entrypoint.sh"]
