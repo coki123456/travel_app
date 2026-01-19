@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { randomUUID } from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 
 const ALLOWED_MIME_TYPES = new Set([
   "application/pdf",
