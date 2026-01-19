@@ -49,14 +49,6 @@ export default function ShareTripModal({
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
-    // Validar formato de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Por favor ingresa un email válido");
-      return;
-    }
-
     setLoading(true);
 
     try {

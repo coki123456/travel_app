@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import SetupForm from "./SetupForm";
 import TripList from "./TripList";
 import LogoutButton from "../LogoutButton";

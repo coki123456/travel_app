@@ -9,10 +9,9 @@
       "Bash(npm install)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npm ls:*)",
-      "Bash(npx tsc:*)",
-      "Bash(npm run build:*)",
-      "Bash(ls:*)"
+      "Bash(npm run migrate:dev:*)",
+      "Bash(psql:*)",
+      "Bash(docker-compose up:*)"
     ],
     "deny": [],
     "ask": []

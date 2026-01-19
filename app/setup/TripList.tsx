@@ -41,7 +41,6 @@ export default function TripList({ trips }: TripListProps) {
       router.push("/");
       router.refresh();
     } catch (err) {
-      console.error("Error al seleccionar viaje:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
       setLoadingId(null);
@@ -69,7 +68,6 @@ export default function TripList({ trips }: TripListProps) {
 
       router.refresh();
     } catch (err) {
-      console.error("Error al eliminar viaje:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
       setLoadingId(null);
