@@ -68,6 +68,10 @@ body {
     @apply text-slate-300 hover:text-slate-100 hover:bg-slate-800/50 px-4 py-2 rounded-lg transition-all duration-200;
   }
 
+  .btn-icon {
+    @apply inline-flex items-center gap-2;
+  }
+
   /* Modern card styles */
   .card {
     @apply bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl shadow-black/20 transition-all duration-300 hover:border-slate-700/80 hover:shadow-black/30;
