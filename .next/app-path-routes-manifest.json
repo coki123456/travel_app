@@ -1,0 +1,22 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/attachments/route": "/api/attachments",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
+  "/api/days/route": "/api/days",
+  "/api/health/route": "/api/health",
+  "/api/items/[id]/route": "/api/items/[id]",
+  "/api/items/route": "/api/items",
+  "/api/register/route": "/api/register",
+  "/api/trip/[id]/route": "/api/trip/[id]",
+  "/api/trip/[id]/share/route": "/api/trip/[id]/share",
+  "/api/trip/active/route": "/api/trip/active",
+  "/api/trip/route": "/api/trip",
+  "/book/page": "/book",
+  "/day/[date]/page": "/day/[date]",
+  "/favicon.ico/route": "/favicon.ico",
+  "/login/page": "/login",
+  "/page": "/",
+  "/register/page": "/register",
+  "/setup/page": "/setup"
+}

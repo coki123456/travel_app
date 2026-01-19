@@ -1,184 +1,177 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
-type FormState = {
+type InitialTrip = {
+  id: string;
   name: string;
   startDate: string;
   endDate: string;
-  destinations: string;
+  destinations: string | null;
+} | null;
+
+type Props = {
+  initialTrip: InitialTrip;
 };
 
-type SetupFormProps = {
-  initialTrip?: {
-    id: string;
-    name: string;
-    startDate: string;
-    endDate: string;
-    destinations: string | null;
-  } | null;
-};
-
-const emptyState: FormState = {
-  name: "",
-  startDate: "",
-  endDate: "",
-  destinations: "",
-};
-
-export default function SetupForm({ initialTrip }: SetupFormProps) {
+export default function SetupForm({ initialTrip }: Props) {
   const router = useRouter();
-  const [form, setForm] = useState<FormState>(emptyState);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: initialTrip?.name ?? "",
+    startDate: initialTrip?.startDate ?? "",
+    endDate: initialTrip?.endDate ?? "",
+    destinations: initialTrip?.destinations ?? "",
+  });
 
-  useEffect(() => {
-    if (initialTrip) {
-      setForm({
-        name: initialTrip.name,
-        startDate: initialTrip.startDate,
-        endDate: initialTrip.endDate,
-        destinations: initialTrip.destinations ?? "",
-      });
-    } else {
-      setForm(emptyState);
-    }
-  }, [initialTrip]);
-
-  const updateField =
-    (key: keyof FormState) =>
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setForm((prev) => ({ ...prev, [key]: event.target.value }));
-    };
-
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
     setError(null);
 
-    if (!form.name || !form.startDate || !form.endDate) {
-      setError("Completa nombre, fecha de inicio y fecha de fin.");
-      return;
-    }
-
-    setIsSubmitting(true);
     try {
-      const response = await fetch("/api/trip", {
-        method: "POST",
+      const method = initialTrip ? "PUT" : "POST";
+      const url = initialTrip ? `/api/trip/${initialTrip.id}` : "/api/trip";
+
+      const response = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: initialTrip?.id,
-          name: form.name,
-          startDate: form.startDate,
-          endDate: form.endDate,
-          destinations: form.destinations,
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
         const data = await response.json().catch(() => null);
-        setError(data?.error ?? "No se pudo guardar el viaje.");
+        setError(data?.error ?? "Error al guardar el viaje.");
         return;
       }
+
+      const data = await response.json();
+
+      // Establecer el viaje como activo
+      await fetch("/api/trip/active", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: data.id }),
+      });
 
       router.push("/");
       router.refresh();
     } catch (err) {
+      console.error("Error al guardar viaje:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
-  return (
-    <form
-      onSubmit={onSubmit}
-      className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30"
-    >
-      <div className="flex flex-col gap-5">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-100">
-            {initialTrip ? "Editar viaje" : "Nuevo viaje"}
-          </h2>
-          {initialTrip ? (
-            <button
-              type="button"
-              onClick={() => router.push("/setup")}
-              className="text-xs font-semibold text-slate-400 transition hover:text-slate-200"
-            >
-              Cancelar
-            </button>
-          ) : null}
-        </div>
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-        <div>
-          <label className="text-sm font-semibold text-slate-200">
+  return (
+    <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
+      <h2 className="text-lg font-semibold text-slate-100">
+        {initialTrip ? "Editar viaje" : "Nuevo viaje"}
+      </h2>
+      <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-4">
+        {error && (
+          <div className="rounded-xl border border-red-800 bg-red-900/20 p-3 text-sm text-red-300">
+            {error}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="name" className="text-sm font-medium text-slate-200">
             Nombre del viaje
           </label>
           <input
-            className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
-            placeholder="Ej: Viaje a la Patagonia"
-            value={form.name}
-            onChange={updateField("name")}
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            maxLength={100}
+            className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2 text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none"
+            placeholder="Ej: Vacaciones en Europa"
           />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="text-sm font-semibold text-slate-200">
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="startDate"
+              className="text-sm font-medium text-slate-200"
+            >
               Fecha de inicio
             </label>
             <input
               type="date"
-              className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
-              value={form.startDate}
-              onChange={updateField("startDate")}
+              id="startDate"
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleChange}
+              required
+              className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2 text-slate-100 focus:border-slate-500 focus:outline-none"
             />
           </div>
-          <div>
-            <label className="text-sm font-semibold text-slate-200">
+
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="endDate"
+              className="text-sm font-medium text-slate-200"
+            >
               Fecha de fin
             </label>
             <input
               type="date"
-              className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
-              value={form.endDate}
-              onChange={updateField("endDate")}
+              id="endDate"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
+              required
+              className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2 text-slate-100 focus:border-slate-500 focus:outline-none"
             />
           </div>
         </div>
 
-        <div>
-          <label className="text-sm font-semibold text-slate-200">
-            Destinos (opcional)
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="destinations"
+            className="text-sm font-medium text-slate-200"
+          >
+            Destinos
           </label>
           <textarea
+            id="destinations"
+            name="destinations"
+            value={formData.destinations}
+            onChange={handleChange}
+            required
+            maxLength={500}
             rows={3}
-            className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
-            placeholder="Ej: Bariloche, Villa La Angostura"
-            value={form.destinations}
-            onChange={updateField("destinations")}
+            className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2 text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none"
+            placeholder="Ej: Paris, Roma, Barcelona"
           />
         </div>
 
-        {error ? (
-          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
-            {error}
-          </div>
-        ) : null}
-
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={loading}
+          className="mt-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isSubmitting
+          {loading
             ? "Guardando..."
             : initialTrip
-            ? "Guardar cambios"
+            ? "Actualizar viaje"
             : "Crear viaje"}
         </button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }

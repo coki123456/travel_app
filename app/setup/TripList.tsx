@@ -19,6 +19,8 @@ export default function TripList({ trips }: TripListProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
 
   const selectTrip = async (id: string) => {
     setError(null);
@@ -39,6 +41,7 @@ export default function TripList({ trips }: TripListProps) {
       router.push("/");
       router.refresh();
     } catch (err) {
+      console.error("Error al seleccionar viaje:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
       setLoadingId(null);
@@ -66,6 +69,7 @@ export default function TripList({ trips }: TripListProps) {
 
       router.refresh();
     } catch (err) {
+      console.error("Error al eliminar viaje:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
       setLoadingId(null);
@@ -125,6 +129,16 @@ export default function TripList({ trips }: TripListProps) {
                 </button>
                 <button
                   type="button"
+                  onClick={() => {
+                    setSelectedTripId(trip.id);
+                    setIsShareModalOpen(true);
+                  }}
+                  className="inline-flex items-center justify-center rounded-2xl border border-emerald-500/40 px-4 py-2 text-xs font-semibold text-emerald-200 transition hover:border-emerald-400"
+                >
+                  Compartir
+                </button>
+                <button
+                  type="button"
                   onClick={() => deleteTrip(trip.id)}
                   disabled={loadingId === trip.id}
                   className="inline-flex items-center justify-center rounded-2xl border border-rose-500/40 px-4 py-2 text-xs font-semibold text-rose-200 transition hover:border-rose-400 disabled:cursor-not-allowed disabled:opacity-70"
@@ -136,6 +150,17 @@ export default function TripList({ trips }: TripListProps) {
           ))
         )}
       </div>
+
+      {selectedTripId && (
+        <ShareTripModal
+          tripId={selectedTripId}
+          isOpen={isShareModalOpen}
+          onClose={() => {
+            setIsShareModalOpen(false);
+            setSelectedTripId(null);
+          }}
+        />
+      )}
     </div>
   );
 }

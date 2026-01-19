@@ -1,106 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
-
-  const { id: tripId } = await params;
-  const body = await request.json().catch(() => null);
-
-  const { email, role } = body;
-
-  if (!email) {
-    return NextResponse.json(
-      { error: "Email es requerido" },
-      { status: 400 }
-    );
-  }
-
-  // Verificar que el usuario actual es el dueño del viaje
-  const trip = await prisma.trip.findFirst({
-    where: {
-      id: tripId,
-      ownerId: session.user.id,
-    },
-  });
-
-  if (!trip) {
-    return NextResponse.json(
-      { error: "Viaje no encontrado o sin permisos" },
-      { status: 404 }
-    );
-  }
-
-  // Buscar el usuario con el que compartir
-  const userToShare = await prisma.user.findUnique({
-    where: { email },
-  });
-
-  if (!userToShare) {
-    return NextResponse.json(
-      { error: "Usuario no encontrado con ese email" },
-      { status: 404 }
-    );
-  }
-
-  // No permitir compartir consigo mismo
-  if (userToShare.id === session.user.id) {
-    return NextResponse.json(
-      { error: "No puedes compartir un viaje contigo mismo" },
-      { status: 400 }
-    );
-  }
-
-  // Verificar si ya está compartido
-  const existingShare = await prisma.tripShare.findUnique({
-    where: {
-      tripId_userId: {
-        tripId,
-        userId: userToShare.id,
-      },
-    },
-  });
-
-  if (existingShare) {
-    // Actualizar el rol si ya existe
-    const updated = await prisma.tripShare.update({
-      where: { id: existingShare.id },
-      data: { role: role || "VIEWER" },
-      include: {
-        user: {
-          select: { id: true, email: true, name: true },
-        },
-      },
-    });
-
-    return NextResponse.json(updated);
-  }
-
-  // Crear el compartido
-  const share = await prisma.tripShare.create({
-    data: {
-      tripId,
-      userId: userToShare.id,
-      role: role || "VIEWER",
-    },
-    include: {
-      user: {
-        select: { id: true, email: true, name: true },
-      },
-    },
-  });
-
-  return NextResponse.json(share, { status: 201 });
-}
-
-// Obtener lista de personas con las que está compartido
+// GET: Listar usuarios con acceso al viaje
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -112,43 +14,155 @@ export async function GET(
 
   const { id: tripId } = await params;
 
-  // Verificar acceso al viaje
-  const trip = await prisma.trip.findFirst({
-    where: {
-      id: tripId,
-      OR: [
-        { ownerId: session.user.id },
-        { sharedWith: { some: { userId: session.user.id } } },
-      ],
-    },
-    include: {
-      owner: {
-        select: { id: true, email: true, name: true },
-      },
-      sharedWith: {
-        include: {
-          user: {
-            select: { id: true, email: true, name: true },
+  try {
+    // Verificar que el usuario es el propietario del viaje
+    const trip = await prisma.trip.findUnique({
+      where: { id: tripId },
+      include: {
+        owner: { select: { id: true, email: true, name: true } },
+        sharedWith: {
+          include: {
+            user: { select: { id: true, email: true, name: true } },
           },
         },
       },
-    },
-  });
+    });
 
-  if (!trip) {
+    if (!trip) {
+      return NextResponse.json(
+        { error: "Viaje no encontrado" },
+        { status: 404 }
+      );
+    }
+
+    if (trip.ownerId !== session.user.id) {
+      return NextResponse.json(
+        { error: "Solo el propietario puede ver quién tiene acceso" },
+        { status: 403 }
+      );
+    }
+
+    // Construir lista de usuarios con acceso
+    const sharedUsers = [
+      {
+        id: trip.owner.id,
+        email: trip.owner.email,
+        name: trip.owner.name,
+        role: "OWNER" as const,
+      },
+      ...trip.sharedWith.map((share) => ({
+        id: share.user.id,
+        email: share.user.email,
+        name: share.user.name,
+        role: share.role,
+      })),
+    ];
+
+    return NextResponse.json({ sharedUsers });
+  } catch (error) {
+    console.error("Error al obtener usuarios compartidos:", error);
     return NextResponse.json(
-      { error: "Viaje no encontrado" },
-      { status: 404 }
+      { error: "Error al obtener usuarios" },
+      { status: 500 }
+    );
+  }
+}
+
+// POST: Compartir viaje con un usuario
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
+
+  const { id: tripId } = await params;
+  const { email, role } = await request.json();
+
+  if (!email || !role) {
+    return NextResponse.json(
+      { error: "Email y rol son requeridos" },
+      { status: 400 }
     );
   }
 
-  return NextResponse.json({
-    owner: trip.owner,
-    sharedWith: trip.sharedWith,
-  });
+  if (role !== "EDITOR" && role !== "VIEWER") {
+    return NextResponse.json({ error: "Rol inválido" }, { status: 400 });
+  }
+
+  try {
+    // Verificar que el usuario es el propietario del viaje
+    const trip = await prisma.trip.findUnique({
+      where: { id: tripId },
+    });
+
+    if (!trip) {
+      return NextResponse.json(
+        { error: "Viaje no encontrado" },
+        { status: 404 }
+      );
+    }
+
+    if (trip.ownerId !== session.user.id) {
+      return NextResponse.json(
+        { error: "Solo el propietario puede compartir el viaje" },
+        { status: 403 }
+      );
+    }
+
+    // Buscar el usuario a compartir
+    const userToShare = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!userToShare) {
+      return NextResponse.json(
+        { error: "Usuario no encontrado con ese email" },
+        { status: 404 }
+      );
+    }
+
+    if (userToShare.id === session.user.id) {
+      return NextResponse.json(
+        { error: "No puedes compartir un viaje contigo mismo" },
+        { status: 400 }
+      );
+    }
+
+    // Crear o actualizar el compartido
+    const share = await prisma.tripShare.upsert({
+      where: {
+        tripId_userId: {
+          tripId,
+          userId: userToShare.id,
+        },
+      },
+      update: {
+        role,
+      },
+      create: {
+        tripId,
+        userId: userToShare.id,
+        role,
+      },
+    });
+
+    return NextResponse.json({
+      message: "Viaje compartido exitosamente",
+      share,
+    });
+  } catch (error) {
+    console.error("Error al compartir viaje:", error);
+    return NextResponse.json(
+      { error: "Error al compartir viaje" },
+      { status: 500 }
+    );
+  }
 }
 
-// Eliminar compartido
+// DELETE: Remover acceso de un usuario
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -159,8 +173,7 @@ export async function DELETE(
   }
 
   const { id: tripId } = await params;
-  const body = await request.json().catch(() => null);
-  const { userId } = body;
+  const { userId } = await request.json();
 
   if (!userId) {
     return NextResponse.json(
@@ -169,27 +182,42 @@ export async function DELETE(
     );
   }
 
-  // Verificar que el usuario actual es el dueño
-  const trip = await prisma.trip.findFirst({
-    where: {
-      id: tripId,
-      ownerId: session.user.id,
-    },
-  });
+  try {
+    // Verificar que el usuario es el propietario del viaje
+    const trip = await prisma.trip.findUnique({
+      where: { id: tripId },
+    });
 
-  if (!trip) {
+    if (!trip) {
+      return NextResponse.json(
+        { error: "Viaje no encontrado" },
+        { status: 404 }
+      );
+    }
+
+    if (trip.ownerId !== session.user.id) {
+      return NextResponse.json(
+        { error: "Solo el propietario puede remover acceso" },
+        { status: 403 }
+      );
+    }
+
+    // Eliminar el compartido
+    await prisma.tripShare.delete({
+      where: {
+        tripId_userId: {
+          tripId,
+          userId,
+        },
+      },
+    });
+
+    return NextResponse.json({ message: "Acceso removido exitosamente" });
+  } catch (error) {
+    console.error("Error al remover acceso:", error);
     return NextResponse.json(
-      { error: "Solo el dueño puede eliminar compartidos" },
-      { status: 403 }
+      { error: "Error al remover acceso" },
+      { status: 500 }
     );
   }
-
-  await prisma.tripShare.deleteMany({
-    where: {
-      tripId,
-      userId,
-    },
-  });
-
-  return NextResponse.json({ success: true });
 }

@@ -58,20 +58,6 @@ model Trip {
   sharedWith   TripShare[]
 }
 
-model TripShare {
-  id        String   @id @default(cuid())
-  tripId    String
-  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
-
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  role      TripRole @default(VIEWER)
-  createdAt DateTime @default(now())
-
-  @@unique([tripId, userId])
-}
-
 model Day {
   id        String   @id @default(cuid())
   date      DateTime
@@ -146,4 +132,16 @@ model ItemTag {
   tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([itemId, tagId])
+}
+
+model TripShare {
+  id        String   @id @default(cuid())
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      TripRole @default(VIEWER)
+  createdAt DateTime @default(now())
+
+  @@unique([tripId, userId])
 }

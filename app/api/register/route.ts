@@ -1,15 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { email, password, name } = body;
+    const { name, email, password } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email y contraseña son requeridos" },
+        { status: 400 }
+      );
+    }
+
+    // Validar longitud de contraseña
+    if (password.length < 6) {
+      return NextResponse.json(
+        { error: "La contraseña debe tener al menos 6 caracteres" },
+        { status: 400 }
+      );
+    }
+
+    // Validar longitud máxima de contraseña
+    if (password.length > 100) {
+      return NextResponse.json(
+        { error: "La contraseña es demasiado larga" },
+        { status: 400 }
+      );
+    }
+
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: "Formato de email inválido" },
+        { status: 400 }
+      );
+    }
+
+    // Validar longitud de nombre si se proporciona
+    if (name && name.length > 100) {
+      return NextResponse.json(
+        { error: "El nombre es demasiado largo" },
         { status: 400 }
       );
     }
@@ -21,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: "El email ya está registrado" },
+        { error: "Este email ya está registrado" },
         { status: 400 }
       );
     }
@@ -32,23 +64,27 @@ export async function POST(request: NextRequest) {
     // Crear usuario
     const user = await prisma.user.create({
       data: {
+        name: name || null,
         email,
         password: hashedPassword,
-        name: name || null,
-      },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        createdAt: true,
       },
     });
 
-    return NextResponse.json(user, { status: 201 });
-  } catch (error) {
-    console.error("Error al registrar usuario:", error);
     return NextResponse.json(
-      { error: "Error al crear el usuario" },
+      {
+        message: "Usuario creado exitosamente",
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        },
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    return NextResponse.json(
+      { error: "Error al crear usuario" },
       { status: 500 }
     );
   }

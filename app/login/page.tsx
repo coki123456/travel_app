@@ -1,20 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError(null);
     setLoading(true);
 
     try {
@@ -26,10 +26,11 @@ export default function LoginPage() {
 
       if (result?.error) {
         setError("Email o contraseña incorrectos");
-      } else {
-        router.push("/");
-        router.refresh();
+        return;
       }
+
+      router.push("/");
+      router.refresh();
     } catch (err) {
       setError("Error al iniciar sesión");
     } finally {
@@ -38,81 +39,80 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">App Viaje</h1>
-          <p className="text-slate-400">Planifica tus aventuras</p>
+    <div className="flex min-h-screen items-center justify-center bg-transparent px-6 py-12">
+      <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/70 p-8 shadow-lg shadow-black/30">
+        <div className="mb-6">
+          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+            App Viaje
+          </span>
+          <h1 className="mt-3 text-3xl font-semibold text-slate-100">
+            Iniciar sesión
+          </h1>
+          <p className="mt-2 text-sm text-slate-300">
+            Ingresa a tu cuenta para gestionar tus viajes
+          </p>
         </div>
 
-        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-3xl p-8 shadow-2xl">
-          <h2 className="text-2xl font-semibold text-white mb-6">
-            Iniciar sesión
-          </h2>
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-xl text-sm">
-                {error}
-              </div>
-            )}
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-slate-300 mb-2"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                placeholder="tu@email.com"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-slate-300 mb-2"
-              >
-                Contraseña
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                placeholder="••••••••"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors duration-200"
-            >
-              {loading ? "Iniciando sesión..." : "Iniciar sesión"}
-            </button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-slate-400 text-sm">
-              ¿No tenés cuenta?{" "}
-              <Link
-                href="/register"
-                className="text-emerald-400 hover:text-emerald-300 font-semibold"
-              >
-                Registrate
-              </Link>
-            </p>
+        {error && (
+          <div className="mb-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+            {error}
           </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-slate-300"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="mt-1 w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
+              placeholder="tu@email.com"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-slate-300"
+            >
+              Contraseña
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="mt-1 w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-2xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            {loading ? "Iniciando sesión..." : "Iniciar sesión"}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center text-sm text-slate-400">
+          ¿No tienes una cuenta?{" "}
+          <Link
+            href="/register"
+            className="font-medium text-cyan-400 hover:text-cyan-300"
+          >
+            Regístrate
+          </Link>
         </div>
       </div>
     </div>

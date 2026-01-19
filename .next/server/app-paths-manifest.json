@@ -1,0 +1,22 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/attachments/route": "app/api/attachments/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/days/route": "app/api/days/route.js",
+  "/api/health/route": "app/api/health/route.js",
+  "/api/items/[id]/route": "app/api/items/[id]/route.js",
+  "/api/items/route": "app/api/items/route.js",
+  "/api/register/route": "app/api/register/route.js",
+  "/api/trip/[id]/route": "app/api/trip/[id]/route.js",
+  "/api/trip/[id]/share/route": "app/api/trip/[id]/share/route.js",
+  "/api/trip/active/route": "app/api/trip/active/route.js",
+  "/api/trip/route": "app/api/trip/route.js",
+  "/book/page": "app/book/page.js",
+  "/day/[date]/page": "app/day/[date]/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/register/page": "app/register/page.js",
+  "/setup/page": "app/setup/page.js"
+}

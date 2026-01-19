@@ -4,13 +4,11 @@ import { NextResponse } from "next/server";
 export default auth((req) => {
   const { pathname } = req.nextUrl;
 
-  // Rutas públicas que no requieren autenticación
   const publicRoutes = ["/login", "/register", "/api/register", "/api/auth"];
+  const isPublicRoute = publicRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
 
-  // Verificar si la ruta actual es pública
-  const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
-
-  // Si no está autenticado y no es ruta pública, redirigir a login
   if (!req.auth && !isPublicRoute) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";

@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import TripSelector from "./TripSelector";
+import LogoutButton from "./LogoutButton";
 
 export const dynamic = "force-dynamic";
 
@@ -82,8 +83,6 @@ export default async function HomePage() {
 
   const cookieStore = await cookies();
   const activeTripId = cookieStore.get("activeTripId")?.value;
-
-  // Obtener viajes propios y compartidos
   const [trip, trips] = await Promise.all([
     activeTripId
       ? prisma.trip.findFirst({
@@ -168,6 +167,7 @@ export default async function HomePage() {
               >
                 Libro del viaje
               </Link>
+              <LogoutButton />
             </div>
           </div>
           <p className="text-sm text-slate-300 sm:text-base">

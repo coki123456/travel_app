@@ -4,33 +4,28 @@ import { useState, useEffect } from "react";
 
 type SharedUser = {
   id: string;
-  user: {
-    email: string;
-    name: string | null;
-  };
+  email: string;
+  name: string | null;
   role: "OWNER" | "EDITOR" | "VIEWER";
 };
 
-type Owner = {
-  email: string;
-  name: string | null;
+type ShareTripModalProps = {
+  tripId: string;
+  isOpen: boolean;
+  onClose: () => void;
 };
 
 export default function ShareTripModal({
   tripId,
   isOpen,
   onClose,
-}: {
-  tripId: string;
-  isOpen: boolean;
-  onClose: () => void;
-}) {
+}: ShareTripModalProps) {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"EDITOR" | "VIEWER">("EDITOR");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [owner, setOwner] = useState<Owner | null>(null);
   const [sharedUsers, setSharedUsers] = useState<SharedUser[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -40,186 +35,196 @@ export default function ShareTripModal({
 
   const loadSharedUsers = async () => {
     try {
-      const res = await fetch(`/api/trip/${tripId}/share`);
-      if (res.ok) {
-        const data = await res.json();
-        setOwner(data.owner);
-        setSharedUsers(data.sharedWith);
+      const response = await fetch(`/api/trip/${tripId}/share`);
+      if (response.ok) {
+        const data = await response.json();
+        setSharedUsers(data.sharedUsers || []);
       }
     } catch (err) {
-      console.error("Error al cargar compartidos:", err);
+      console.error("Error loading shared users:", err);
     }
   };
 
   const handleShare = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError(null);
+    setSuccess(null);
+
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Por favor ingresa un email válido");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/trip/${tripId}/share`, {
+      const response = await fetch(`/api/trip/${tripId}/share`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, role }),
       });
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (!res.ok) {
-        setError(data.error || "Error al compartir");
-        setLoading(false);
+      if (!response.ok) {
+        setError(data.error || "Error al compartir el viaje");
         return;
       }
 
+      setSuccess(`Viaje compartido con ${email}`);
       setEmail("");
       setRole("EDITOR");
-      await loadSharedUsers();
+      loadSharedUsers();
     } catch (err) {
-      setError("Error al compartir el viaje");
+      setError("No se pudo conectar con el servidor");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleRemove = async (userId: string) => {
-    if (!confirm("¿Eliminar acceso de este usuario?")) return;
+  const handleRemoveAccess = async (userId: string) => {
+    setError(null);
+    setSuccess(null);
 
     try {
-      const res = await fetch(`/api/trip/${tripId}/share`, {
+      const response = await fetch(`/api/trip/${tripId}/share`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
       });
 
-      if (res.ok) {
-        await loadSharedUsers();
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.error || "Error al eliminar acceso");
+        return;
       }
+
+      setSuccess("Acceso eliminado");
+      loadSharedUsers();
     } catch (err) {
-      console.error("Error al eliminar:", err);
+      setError("No se pudo conectar con el servidor");
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-800 rounded-3xl max-w-md w-full p-6 border border-slate-700">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold text-white">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-lg"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-slate-100">
             Compartir viaje
           </h2>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white text-2xl"
+            className="text-slate-400 hover:text-slate-200"
           >
-            ×
+            ✕
           </button>
         </div>
 
-        <form onSubmit={handleShare} className="space-y-4 mb-6">
-          {error && (
-            <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-2 rounded-xl text-sm">
-              {error}
-            </div>
-          )}
+        {error && (
+          <div className="mb-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+            {error}
+          </div>
+        )}
 
+        {success && (
+          <div className="mb-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+            {success}
+          </div>
+        )}
+
+        <form onSubmit={handleShare} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-slate-300"
+            >
               Email del usuario
             </label>
             <input
               type="email"
+              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              placeholder="usuario@email.com"
+              className="mt-1 w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
+              placeholder="usuario@ejemplo.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label
+              htmlFor="role"
+              className="block text-sm font-medium text-slate-300"
+            >
               Permisos
             </label>
             <select
+              id="role"
               value={role}
               onChange={(e) => setRole(e.target.value as "EDITOR" | "VIEWER")}
-              className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="mt-1 w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none"
             >
-              <option value="EDITOR">Puede editar</option>
-              <option value="VIEWER">Solo ver</option>
+              <option value="EDITOR">Editor (puede ver y editar)</option>
+              <option value="VIEWER">Visualizador (solo puede ver)</option>
             </select>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-600 text-white font-semibold rounded-xl transition-colors"
+            className="w-full rounded-2xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
           >
             {loading ? "Compartiendo..." : "Compartir"}
           </button>
         </form>
 
-        <div className="border-t border-slate-700 pt-4">
-          <h3 className="text-sm font-semibold text-slate-300 mb-3">
-            Personas con acceso
-          </h3>
-
-          {owner && (
-            <div className="mb-2 p-3 bg-slate-900/50 rounded-xl">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-white font-medium">
-                    {owner.name || owner.email}
-                  </p>
-                  {owner.name && (
-                    <p className="text-slate-400 text-sm">{owner.email}</p>
-                  )}
-                </div>
-                <span className="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full">
-                  Dueño
-                </span>
-              </div>
-            </div>
-          )}
-
-          {sharedUsers.length === 0 ? (
-            <p className="text-slate-400 text-sm">
-              No está compartido con nadie todavía
-            </p>
-          ) : (
+        {sharedUsers.length > 0 && (
+          <div className="mt-6">
+            <h3 className="mb-3 text-sm font-medium text-slate-300">
+              Usuarios con acceso
+            </h3>
             <div className="space-y-2">
-              {sharedUsers.map((share) => (
+              {sharedUsers.map((user) => (
                 <div
-                  key={share.id}
-                  className="p-3 bg-slate-900/50 rounded-xl flex justify-between items-center"
+                  key={user.id}
+                  className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-2"
                 >
                   <div>
-                    <p className="text-white">
-                      {share.user.name || share.user.email}
+                    <p className="text-sm text-slate-100">
+                      {user.name || user.email}
                     </p>
-                    {share.user.name && (
-                      <p className="text-slate-400 text-sm">
-                        {share.user.email}
-                      </p>
-                    )}
+                    <p className="text-xs text-slate-400">
+                      {user.role === "OWNER"
+                        ? "Propietario"
+                        : user.role === "EDITOR"
+                          ? "Editor"
+                          : "Visualizador"}
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs bg-slate-700 text-slate-300 px-3 py-1 rounded-full">
-                      {share.role === "EDITOR" ? "Editor" : "Viewer"}
-                    </span>
+                  {user.role !== "OWNER" && (
                     <button
-                      onClick={() => handleRemove(share.user.id)}
-                      className="text-red-400 hover:text-red-300 text-sm"
+                      onClick={() => handleRemoveAccess(user.id)}
+                      className="text-xs text-rose-400 hover:text-rose-300"
                     >
                       Eliminar
                     </button>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

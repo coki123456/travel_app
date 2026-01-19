@@ -1,8 +1,9 @@
-import prisma from "@/lib/prisma";
-import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import SetupForm from "./SetupForm";
 import TripList from "./TripList";
+import LogoutButton from "../LogoutButton";
 
 export const dynamic = "force-dynamic";
 
@@ -43,16 +44,21 @@ export default async function SetupPage({
     <div className="min-h-screen bg-transparent px-6 py-12 text-slate-100">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
         <header className="flex flex-col gap-3">
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
-            App Viaje
-          </span>
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-100 sm:text-4xl">
-            Configurar viaje
-          </h1>
-          <p className="max-w-2xl text-sm text-slate-300 sm:text-base">
-            Carga la info principal del viaje para empezar a planificar el
-            calendario y los bloques diarios.
-          </p>
+          <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-3">
+              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+                App Viaje
+              </span>
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-100 sm:text-4xl">
+                Configurar viaje
+              </h1>
+              <p className="max-w-2xl text-sm text-slate-300 sm:text-base">
+                Carga la info principal del viaje para empezar a planificar el
+                calendario y los bloques diarios.
+              </p>
+            </div>
+            <LogoutButton />
+          </div>
         </header>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
