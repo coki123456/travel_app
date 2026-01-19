@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
 const parseDate = (value: unknown) => {
@@ -24,6 +25,11 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
+
   const body = await request.json().catch(() => null);
 
   const id = typeof body?.id === "string" ? body.id : null;
@@ -57,7 +63,12 @@ export async function POST(request: NextRequest) {
 
   const trip = id
     ? await prisma.trip.update({ where: { id }, data })
-    : await prisma.trip.create({ data });
+    : await prisma.trip.create({
+        data: {
+          ...data,
+          ownerId: session.user.id,
+        }
+      });
 
   const response = NextResponse.json(trip);
   response.cookies.set("activeTripId", trip.id, { path: "/" });

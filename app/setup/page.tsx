@@ -1,4 +1,6 @@
 import prisma from "@/lib/prisma";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import SetupForm from "./SetupForm";
 import TripList from "./TripList";
 
@@ -9,7 +11,18 @@ export default async function SetupPage({
 }: {
   searchParams?: Promise<{ edit?: string }>;
 }) {
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/login");
+  }
+
   const trips = await prisma.trip.findMany({
+    where: {
+      OR: [
+        { ownerId: session.user.id },
+        { sharedWith: { some: { userId: session.user.id } } },
+      ],
+    },
     orderBy: { createdAt: "desc" },
   });
 

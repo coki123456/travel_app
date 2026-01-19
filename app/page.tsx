@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 import TripSelector from "./TripSelector";
 
 export const dynamic = "force-dynamic";
@@ -74,13 +75,34 @@ const buildMonthMatrix = (days: Date[]) => {
 };
 
 export default async function HomePage() {
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/login");
+  }
+
   const cookieStore = await cookies();
   const activeTripId = cookieStore.get("activeTripId")?.value;
+
+  // Obtener viajes propios y compartidos
   const [trip, trips] = await Promise.all([
     activeTripId
-      ? prisma.trip.findUnique({ where: { id: activeTripId } })
+      ? prisma.trip.findFirst({
+          where: {
+            id: activeTripId,
+            OR: [
+              { ownerId: session.user.id },
+              { sharedWith: { some: { userId: session.user.id } } },
+            ],
+          },
+        })
       : null,
     prisma.trip.findMany({
+      where: {
+        OR: [
+          { ownerId: session.user.id },
+          { sharedWith: { some: { userId: session.user.id } } },
+        ],
+      },
       orderBy: { createdAt: "desc" },
       select: { id: true, name: true },
     }),

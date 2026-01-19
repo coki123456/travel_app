@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ShareTripModal from "./ShareTripModal";
 
 type TripListItem = {
   id: string;
