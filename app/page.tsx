@@ -3,8 +3,8 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import TripSelector from "./TripSelector";
-import LogoutButton from "./LogoutButton";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 
 export const dynamic = "force-dynamic";
 
@@ -127,15 +127,6 @@ export default async function HomePage() {
 
   const allDays = buildDaysInRange(trip.startDate, trip.endDate);
   const today = normalizeToDay(new Date());
-  const notedDays = Array.from(dayMap.values()).filter((day) => day.summary)
-    .length;
-  const completedDays = allDays.filter(
-    (date) => normalizeToDay(date) < today
-  ).length;
-  const upcomingDay =
-    allDays.find((date) => normalizeToDay(date) >= today) ??
-    allDays[allDays.length - 1];
-
   const months = Array.from(
     allDays.reduce((acc, day) => {
       const key = `${day.getFullYear()}-${day.getMonth()}`;
@@ -147,234 +138,180 @@ export default async function HomePage() {
   ).map(([, value]) => value);
 
   return (
-    <div className="min-h-screen px-4 py-6 text-slate-50 sm:px-6 lg:px-10">
-      <div className="page-shell space-y-6 sm:space-y-8 md:space-y-10 animate-in">
-        <header className="glass-panel p-5 sm:p-7 lg:p-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="space-y-2">
-              <p className="text-sm text-slate-300">
-                {trip.destinations || "Agrega los destinos para este viaje."}
-              </p>
-              <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
-                  <span className="gradient-text">{trip.name}</span>
-                </h1>
-                <TripSelector trips={trips} activeTripId={activeTripId ?? null} />
+    <div className="flex h-screen bg-[var(--background)]">
+      {/* Sidebar */}
+      <Sidebar
+        activeTripName={trip.name}
+        userName={session.user.name}
+        userEmail={session.user.email}
+      />
+
+      {/* Main Content */}
+      <div className="flex-1 ml-64 flex flex-col">
+        {/* Header */}
+        <Header />
+
+        {/* Content Area */}
+        <div className="flex-1 overflow-auto">
+          <div className="flex h-full">
+            {/* Calendar Section */}
+            <div className="flex-1 p-8">
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
+                  {trip.name}
+                </h2>
+                <p className="text-sm text-[var(--text-secondary)]">
+                  {trip.startDate.toLocaleDateString("es-AR", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}{" "}
+                  -{" "}
+                  {trip.endDate.toLocaleDateString("es-AR", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </p>
               </div>
-              <div className="flex flex-wrap items-center gap-2 text-sm text-slate-300">
-                <span className="rounded-md border border-slate-700 bg-slate-900/60 px-3 py-1 text-xs font-semibold text-slate-200">
-                  {trip.startDate.toLocaleDateString("es-AR")} – {trip.endDate.toLocaleDateString("es-AR")}
-                </span>
-                <span className="rounded-md border border-slate-700 bg-slate-900/60 px-3 py-1 text-xs font-semibold text-slate-200">
-                  {allDays.length} días
-                </span>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2 sm:gap-3">
-              <Link href="/setup" className="btn-secondary text-xs sm:text-sm">
-                Configurar
-              </Link>
-              <Link href="/book" className="btn-secondary text-xs sm:text-sm">
-                Libro
-              </Link>
-              <LogoutButton />
-            </div>
-          </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="card p-4">
-              <p className="text-xs font-semibold text-slate-500">Días planificados</p>
-              <p className="mt-1 text-2xl font-semibold">{allDays.length}</p>
-            </div>
-            <div className="card p-4">
-              <p className="text-xs font-semibold text-slate-500">Con resumen</p>
-              <p className="mt-1 text-2xl font-semibold">{notedDays}</p>
-            </div>
-            <div className="card p-4">
-              <p className="text-xs font-semibold text-slate-500">Completados</p>
-              <p className="mt-1 text-2xl font-semibold">
-                {completedDays}/{allDays.length}
-              </p>
-            </div>
-            <div className="card p-4">
-              <p className="text-xs font-semibold text-slate-500">Próximo día</p>
-              <p className="mt-1 text-sm font-semibold text-slate-100">
-                {formatLongDate(upcomingDay)}
-              </p>
-            </div>
-          </div>
-        </header>
+              {/* Calendar Grid */}
+              <div className="space-y-8">
+                {months.map((monthDays, index) => {
+                  const reference = monthDays[0];
+                  const monthLabel = reference.toLocaleDateString("es-AR", {
+                    month: "long",
+                    year: "numeric",
+                  });
+                  const matrix = buildMonthMatrix(monthDays);
 
-        <section className="grid gap-5 lg:grid-cols-[1.65fr_1fr]">
-          <div className="flex flex-col gap-4 sm:gap-5">
-            {months.map((monthDays, index) => {
-              const reference = monthDays[0];
-              const monthLabel = reference.toLocaleDateString("es-AR", {
-                month: "long",
-                year: "numeric",
-              });
-              const matrix = buildMonthMatrix(monthDays);
+                  return (
+                    <div
+                      key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
+                      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+                    >
+                      <h3 className="text-lg font-semibold text-gray-900 capitalize mb-4">
+                        {monthLabel}
+                      </h3>
+                      <div className="grid grid-cols-7 gap-2 mb-2">
+                        {["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"].map(
+                          (label) => (
+                            <div
+                              key={label}
+                              className="text-center text-xs font-medium text-gray-500 py-2"
+                            >
+                              {label}
+                            </div>
+                          )
+                        )}
+                      </div>
+                      <div className="grid grid-cols-7 gap-2">
+                        {matrix.flat().map((cell, cellIndex) => {
+                          if (!cell) {
+                            return (
+                              <div
+                                key={`empty-${cellIndex}`}
+                                className="aspect-square"
+                              />
+                            );
+                          }
 
-              return (
-                <div
-                  key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
-                  className="card-elevated p-4 sm:p-5 md:p-6"
-                >
-                  <div className="mb-4 flex items-center justify-between">
-                    <h2 className="text-lg sm:text-xl font-semibold capitalize">
-                      {monthLabel}
-                    </h2>
-                    <span className="rounded-md border border-slate-700 bg-slate-900/60 px-3 py-1 text-[11px] font-semibold text-slate-400">
-                      Calendario
-                    </span>
-                  </div>
-                  <div className="mb-2 grid grid-cols-7 gap-1 sm:gap-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500 sm:text-xs">
-                    {["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"].map(
-                      (label) => (
-                        <div key={label} className="text-center">
-                          <span className="hidden sm:inline">{label}</span>
-                          <span className="sm:hidden">{label[0]}</span>
-                        </div>
-                      )
-                    )}
-                  </div>
-                  <div className="grid grid-cols-7 gap-1 sm:gap-2">
-                    {matrix.flat().map((cell, cellIndex) => {
-                      if (!cell) {
-                        return (
-                          <div
-                            key={`empty-${cellIndex}`}
-                            className="h-12 sm:h-14 md:h-16"
-                          />
-                        );
-                      }
+                          const key = formatDateKey(cell);
+                          const day = dayMap.get(key);
+                          const inTripRange =
+                            cell >= trip.startDate && cell <= trip.endDate;
+                          const cellDay = normalizeToDay(cell);
+                          const isPast = cellDay < today;
+                          const isToday = cellDay.getTime() === today.getTime();
 
-                      const key = formatDateKey(cell);
-                      const day = dayMap.get(key);
-                      const inTripRange =
-                        cell >= trip.startDate && cell <= trip.endDate;
-                      const cellDay = normalizeToDay(cell);
-                      const isPast = cellDay < today;
-                      const isToday = cellDay.getTime() === today.getTime();
-
-                      const stateClasses = !inTripRange
-                        ? "border border-dashed border-slate-800 text-slate-600"
-                        : isToday
-                          ? "border border-blue-400/60 bg-blue-500/10"
-                          : isPast
-                            ? "border border-emerald-400/30 bg-emerald-500/10 text-emerald-50"
-                            : "border border-slate-800/80 bg-slate-900/50 hover:border-slate-600/70";
-
-                      return (
-                        <Link
-                          key={key}
-                          href={`/day/${key}`}
-                          className={`group relative flex h-12 items-center justify-center rounded-lg text-xs font-semibold transition duration-200 sm:h-14 md:h-16 sm:text-sm ${stateClasses}`}
-                        >
-                          <span className="relative flex items-center justify-center">
-                            {cell.getDate()}
-                            {day?.summary ? (
-                              <span className="absolute -right-1 -top-1 sm:-right-1.5 sm:-top-1.5 flex h-1.5 w-1.5 sm:h-2 sm:w-2">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-80" />
-                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan-300 sm:h-2 sm:w-2" />
-                              </span>
-                            ) : null}
-                            {isPast && !isToday ? (
-                              <span className="absolute -left-0.5 -top-0.5 text-[10px] text-emerald-300 sm:-left-1 sm:-top-1">
-                                ✓
-                              </span>
-                            ) : null}
-                          </span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <aside className="flex flex-col gap-4 sm:gap-5">
-            <div className="card-elevated p-5">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 text-slate-950">
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-base font-semibold text-slate-100">
-                    Resumen por día
-                  </h3>
-                  <p className="text-xs text-slate-400">
-                    Saltá directo a los días que importan.
-                  </p>
-                </div>
+                          return (
+                            <Link
+                              key={key}
+                              href={`/day/${key}`}
+                              className={`aspect-square rounded-lg border flex flex-col items-center justify-center text-sm transition-all ${
+                                inTripRange
+                                  ? isToday
+                                    ? "bg-blue-50 border-blue-500 ring-2 ring-blue-500 text-blue-700 font-semibold"
+                                    : isPast
+                                    ? "bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300"
+                                    : "bg-white border-gray-200 text-gray-900 hover:border-blue-300 hover:bg-blue-50"
+                                  : "border-transparent text-gray-300"
+                              }`}
+                            >
+                              <span>{cell.getDate()}</span>
+                              {day?.summary && (
+                                <div className="mt-1 px-2 py-0.5 bg-blue-500 text-white text-[10px] rounded-full truncate max-w-full">
+                                  {trip.name}
+                                </div>
+                              )}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-              {allDays.map((date) => {
-                const key = formatDateKey(date);
-                const day = dayMap.get(key);
-                const dayOnly = normalizeToDay(date);
-                const isPast = dayOnly < today;
-                const isToday = dayOnly.getTime() === today.getTime();
+            {/* Right Panel - Itinerary */}
+            <div className="w-80 bg-[var(--card-bg)] border-l border-[var(--border)] p-6 overflow-auto">
+              <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
+                Itinerario del Día
+              </h3>
 
-                return (
-                  <Link
-                    key={key}
-                    href={`/day/${key}`}
-                    className={[
-                      "card p-4 transition duration-200 hover:-translate-y-0.5 active:scale-[0.99]",
-                      isPast ? "border-emerald-500/25 bg-emerald-500/10" : "",
-                      isToday
-                        ? "ring-1 ring-blue-400/60 shadow-lg shadow-blue-500/15"
-                        : "",
-                    ].join(" ")}
-                  >
-                    <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-                      <span>{formatLongDate(date)}</span>
-                      {day?.city && (
-                        <span className="badge badge-primary text-[10px] px-2 py-0.5">
-                          {day.city}
+              <div className="space-y-4">
+                {allDays.slice(0, 5).map((date) => {
+                  const key = formatDateKey(date);
+                  const day = dayMap.get(key);
+                  const dayOnly = normalizeToDay(date);
+                  const isPast = dayOnly < today;
+                  const isToday = dayOnly.getTime() === today.getTime();
+
+                  return (
+                    <Link
+                      key={key}
+                      href={`/day/${key}`}
+                      className={`block p-4 rounded-lg border transition-colors ${
+                        isToday
+                          ? "bg-blue-50 border-blue-500"
+                          : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-semibold text-[var(--text-muted)] uppercase">
+                          {formatLongDate(date)}
                         </span>
+                        {isToday && (
+                          <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full">
+                            Hoy
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-[var(--text-primary)] mb-2">
+                        {day?.summary || "Sin actividades"}
+                      </p>
+                      {day?.city && (
+                        <p className="text-xs text-[var(--text-muted)]">
+                          📍 {day.city}
+                        </p>
                       )}
-                    </div>
-                    <p className="mt-2 text-sm text-slate-100 line-clamp-2">
-                      {day?.summary ?? "Sin resumen todavía."}
-                    </p>
-                    <div className="mt-3 flex items-center gap-2 text-xs font-medium text-slate-400">
-                      <span
-                        className={[
-                          "h-2 w-2 rounded-full",
-                          isToday
-                            ? "bg-blue-400 shadow shadow-blue-500/40"
-                            : isPast
-                              ? "bg-emerald-400"
-                              : "bg-slate-500",
-                        ].join(" ")}
-                      />
-                      <span>
-                        {isToday ? "Hoy" : isPast ? "Completado" : "Próximo"}
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {allDays.length > 5 && (
+                <Link
+                  href="/setup"
+                  className="mt-4 block text-center text-sm text-[var(--primary)] hover:text-[var(--primary-hover)] font-medium"
+                >
+                  Ver todos los días →
+                </Link>
+              )}
             </div>
-          </aside>
-        </section>
+          </div>
+        </div>
       </div>
     </div>
   );
