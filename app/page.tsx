@@ -24,9 +24,9 @@ const formatDateKey = (date: Date) => {
 
 const formatLongDate = (date: Date) =>
   date.toLocaleDateString("es-AR", {
-    weekday: "short",
-    day: "2-digit",
-    month: "short",
+    weekday: "long",
+    day: "numeric",
+    month: "long",
   });
 
 const normalizeToNoon = (value: Date) =>
@@ -57,7 +57,7 @@ const buildMonthMatrix = (days: Date[]) => {
   const firstOfMonth = new Date(year, month, 1);
   const lastOfMonth = new Date(year, month + 1, 0);
   const totalDays = lastOfMonth.getDate();
-  const offset = firstOfMonth.getDay();
+  const offset = (firstOfMonth.getDay() + 6) % 7; // Lunes = 0
 
   const cells: Array<Date | null> = [];
   for (let i = 0; i < offset; i += 1) {
@@ -137,8 +137,12 @@ export default async function HomePage() {
     }, new Map<string, Date[]>())
   ).map(([, value]) => value);
 
+  // Obtener el día actual del viaje
+  const currentDayKey = formatDateKey(allDays[0]);
+  const currentDay = dayMap.get(currentDayKey);
+
   return (
-    <div className="flex h-screen bg-[var(--background)]">
+    <div className="flex h-screen overflow-hidden relative">
       {/* Sidebar */}
       <Sidebar
         activeTripName={trip.name}
@@ -147,7 +151,7 @@ export default async function HomePage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 ml-64 flex flex-col">
+      <div className="flex-1 ml-72 flex flex-col relative">
         {/* Header */}
         <Header />
 
@@ -155,28 +159,9 @@ export default async function HomePage() {
         <div className="flex-1 overflow-auto">
           <div className="flex h-full">
             {/* Calendar Section */}
-            <div className="flex-1 p-8">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
-                  {trip.name}
-                </h2>
-                <p className="text-sm text-[var(--text-secondary)]">
-                  {trip.startDate.toLocaleDateString("es-AR", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}{" "}
-                  -{" "}
-                  {trip.endDate.toLocaleDateString("es-AR", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </p>
-              </div>
-
-              {/* Calendar Grid */}
-              <div className="space-y-8">
+            <div className="flex-1 p-6 overflow-y-auto">
+              {/* Calendar Container */}
+              <div className="max-w-4xl mx-auto">
                 {months.map((monthDays, index) => {
                   const reference = monthDays[0];
                   const monthLabel = reference.toLocaleDateString("es-AR", {
@@ -188,23 +173,40 @@ export default async function HomePage() {
                   return (
                     <div
                       key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
-                      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+                      className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-6 mb-6 animate-fade-in"
                     >
-                      <h3 className="text-lg font-semibold text-gray-900 capitalize mb-4">
-                        {monthLabel}
-                      </h3>
-                      <div className="grid grid-cols-7 gap-2 mb-2">
-                        {["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"].map(
-                          (label) => (
-                            <div
-                              key={label}
-                              className="text-center text-xs font-medium text-gray-500 py-2"
-                            >
-                              {label}
-                            </div>
-                          )
-                        )}
+                      {/* Month Header */}
+                      <div className="flex items-center justify-between mb-6">
+                        <button className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                          </svg>
+                        </button>
+
+                        <h3 className="text-xl font-bold text-gray-900 capitalize">
+                          {monthLabel}
+                        </h3>
+
+                        <button className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
                       </div>
+
+                      {/* Day Headers */}
+                      <div className="grid grid-cols-7 gap-2 mb-3">
+                        {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((label) => (
+                          <div
+                            key={label}
+                            className="text-center text-xs font-semibold text-gray-500 py-2"
+                          >
+                            {label}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Calendar Grid */}
                       <div className="grid grid-cols-7 gap-2">
                         {matrix.flat().map((cell, cellIndex) => {
                           if (!cell) {
@@ -218,8 +220,7 @@ export default async function HomePage() {
 
                           const key = formatDateKey(cell);
                           const day = dayMap.get(key);
-                          const inTripRange =
-                            cell >= trip.startDate && cell <= trip.endDate;
+                          const inTripRange = cell >= trip.startDate && cell <= trip.endDate;
                           const cellDay = normalizeToDay(cell);
                           const isPast = cellDay < today;
                           const isToday = cellDay.getTime() === today.getTime();
@@ -228,21 +229,24 @@ export default async function HomePage() {
                             <Link
                               key={key}
                               href={`/day/${key}`}
-                              className={`aspect-square rounded-lg border flex flex-col items-center justify-center text-sm transition-all ${
+                              className={`aspect-square rounded-xl flex flex-col items-center justify-center text-sm font-medium transition-all relative group ${
                                 inTripRange
                                   ? isToday
-                                    ? "bg-blue-50 border-blue-500 ring-2 ring-blue-500 text-blue-700 font-semibold"
+                                    ? "bg-blue-500 text-white shadow-lg shadow-blue-500/40 scale-105"
                                     : isPast
-                                    ? "bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300"
-                                    : "bg-white border-gray-200 text-gray-900 hover:border-blue-300 hover:bg-blue-50"
-                                  : "border-transparent text-gray-300"
+                                    ? "bg-gray-100 text-gray-400 hover:bg-gray-200"
+                                    : day?.summary
+                                    ? "bg-blue-50 text-blue-700 border-2 border-blue-500 hover:shadow-lg hover:scale-105"
+                                    : "bg-white border-2 border-gray-200 text-gray-700 hover:border-blue-400 hover:shadow-lg hover:scale-105"
+                                  : "text-gray-300 cursor-default"
                               }`}
                             >
-                              <span>{cell.getDate()}</span>
+                              <span className="text-base">{cell.getDate()}</span>
                               {day?.summary && (
-                                <div className="mt-1 px-2 py-0.5 bg-blue-500 text-white text-[10px] rounded-full truncate max-w-full">
-                                  {trip.name}
-                                </div>
+                                <div className={`mt-1 w-1.5 h-1.5 rounded-full ${isToday ? 'bg-white' : 'bg-blue-500'}`} />
+                              )}
+                              {isToday && (
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
                               )}
                             </Link>
                           );
@@ -254,61 +258,90 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Right Panel - Itinerary */}
-            <div className="w-80 bg-[var(--card-bg)] border-l border-[var(--border)] p-6 overflow-auto">
-              <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
-                Itinerario del Día
-              </h3>
-
-              <div className="space-y-4">
-                {allDays.slice(0, 5).map((date) => {
-                  const key = formatDateKey(date);
-                  const day = dayMap.get(key);
-                  const dayOnly = normalizeToDay(date);
-                  const isPast = dayOnly < today;
-                  const isToday = dayOnly.getTime() === today.getTime();
-
-                  return (
-                    <Link
-                      key={key}
-                      href={`/day/${key}`}
-                      className={`block p-4 rounded-lg border transition-colors ${
-                        isToday
-                          ? "bg-blue-50 border-blue-500"
-                          : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-semibold text-[var(--text-muted)] uppercase">
-                          {formatLongDate(date)}
-                        </span>
-                        {isToday && (
-                          <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full">
-                            Hoy
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-sm text-[var(--text-primary)] mb-2">
-                        {day?.summary || "Sin actividades"}
-                      </p>
-                      {day?.city && (
-                        <p className="text-xs text-[var(--text-muted)]">
-                          📍 {day.city}
-                        </p>
-                      )}
-                    </Link>
-                  );
-                })}
+            {/* Right Panel - Daily Itinerary */}
+            <div className="w-96 bg-white/95 backdrop-blur-sm border-l border-gray-200/50 flex flex-col shadow-xl">
+              {/* Panel Header */}
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900">
+                    Itinerario del Día
+                  </h3>
+                </div>
+                <p className="text-sm text-gray-600 capitalize">
+                  {formatLongDate(allDays[0])}
+                </p>
               </div>
 
-              {allDays.length > 5 && (
+              {/* Day Content */}
+              <div className="flex-1 overflow-y-auto p-6">
+                {currentDay?.summary ? (
+                  <>
+                    <h4 className="text-base font-bold text-gray-900 mb-3">
+                      {currentDay.summary}
+                    </h4>
+                    <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                      Hoy visitaremos el famoso Coliseo Romano. Luego, exploraremos el Foro Romano y el Monte Palatino.
+                    </p>
+
+                    {/* Timeline */}
+                    <div className="space-y-4">
+                      {[
+                        { time: "9:00 AM", title: "Tour por el Coliseo", checked: true },
+                        { time: "12:00 PM", title: "Recorrido por el Foro Romano", checked: true },
+                        { time: "3:00 PM", title: "Visita al Monte Palatino", checked: false },
+                      ].map((item, idx) => (
+                        <div key={idx} className="flex items-start gap-3">
+                          <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                            item.checked
+                              ? 'bg-green-500 border-green-500'
+                              : 'border-gray-300'
+                          }`}>
+                            {item.checked && (
+                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <p className={`text-sm font-semibold ${item.checked ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+                              {item.time}
+                            </p>
+                            <p className={`text-sm ${item.checked ? 'text-gray-400' : 'text-gray-600'}`}>
+                              {item.title}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      No hay actividades planificadas
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Button */}
+              <div className="p-6 border-t border-gray-200">
                 <Link
-                  href="/setup"
-                  className="mt-4 block text-center text-sm text-[var(--primary)] hover:text-[var(--primary-hover)] font-medium"
+                  href={`/day/${formatDateKey(allDays[0])}`}
+                  className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-lg transition-all shadow-lg shadow-green-500/30 hover:shadow-xl hover:scale-[1.02] flex items-center justify-center gap-2"
                 >
-                  Ver todos los días →
+                  Guardar Cambios
                 </Link>
-              )}
+              </div>
             </div>
           </div>
         </div>
