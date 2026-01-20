@@ -70,61 +70,164 @@ body {
 @layer components {
   /* Modern button styles */
   .btn-primary {
-    @apply bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-200 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/40;
+    background: linear-gradient(to right, rgb(37 99 235), rgb(59 130 246));
+    color: white;
     font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgb(59 130 246 / 0.25);
+    transition: all 200ms;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(to right, rgb(29 78 216), rgb(37 99 235));
+    box-shadow: 0 20px 25px -5px rgb(59 130 246 / 0.4);
+    transform: scale(1.05);
   }
 
   .btn-secondary {
-    @apply bg-slate-800/80 hover:bg-slate-700/80 text-slate-100 px-6 py-3 rounded-xl border border-slate-700 hover:border-slate-600 transition-all duration-200 hover:scale-105 backdrop-blur-sm;
+    background: rgb(30 41 59 / 0.8);
+    color: rgb(241 245 249);
     font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgb(51 65 85);
+    transition: all 200ms;
+    backdrop-filter: blur(4px);
+  }
+
+  .btn-secondary:hover {
+    background: rgb(51 65 85 / 0.8);
+    border-color: rgb(71 85 105);
+    transform: scale(1.05);
   }
 
   .btn-ghost {
-    @apply text-slate-300 hover:text-slate-100 hover:bg-slate-800/50 px-4 py-2 rounded-lg transition-all duration-200;
+    color: rgb(203 213 225);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 200ms;
+  }
+
+  .btn-ghost:hover {
+    color: rgb(241 245 249);
+    background: rgb(30 41 59 / 0.5);
   }
 
   .btn-icon {
-    @apply inline-flex items-center gap-2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   /* Modern card styles */
   .card {
-    @apply bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl shadow-black/20 transition-all duration-300 hover:border-slate-700/80 hover:shadow-black/30;
+    background: rgb(15 23 42 / 0.6);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgb(30 41 59 / 0.8);
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.2);
+    transition: all 300ms;
+  }
+
+  .card:hover {
+    border-color: rgb(51 65 85 / 0.8);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.3);
   }
 
   .card-elevated {
-    @apply bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl border border-slate-700/80 rounded-2xl shadow-2xl shadow-black/30;
+    background: linear-gradient(to bottom right, rgb(15 23 42 / 0.8), rgb(30 41 59 / 0.8));
+    backdrop-filter: blur(24px);
+    border: 1px solid rgb(51 65 85 / 0.8);
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.3);
   }
 
   /* Modern input styles */
   .input {
-    @apply w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200;
+    width: 100%;
+    background: rgb(15 23 42 / 0.5);
+    border: 1px solid rgb(51 65 85);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: rgb(241 245 249);
+    transition: all 200ms;
+  }
+
+  .input::placeholder {
+    color: rgb(100 116 139);
+  }
+
+  .input:focus {
+    outline: none;
+    ring: 2px solid rgb(59 130 246 / 0.5);
+    border-color: rgb(59 130 246);
   }
 
   .textarea {
-    @apply w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 resize-none;
+    width: 100%;
+    background: rgb(15 23 42 / 0.5);
+    border: 1px solid rgb(51 65 85);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: rgb(241 245 249);
+    transition: all 200ms;
+    resize: none;
+  }
+
+  .textarea::placeholder {
+    color: rgb(100 116 139);
+  }
+
+  .textarea:focus {
+    outline: none;
+    ring: 2px solid rgb(59 130 246 / 0.5);
+    border-color: rgb(59 130 246);
   }
 
   .select {
-    @apply w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 cursor-pointer;
+    width: 100%;
+    background: rgb(15 23 42 / 0.5);
+    border: 1px solid rgb(51 65 85);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: rgb(241 245 249);
+    transition: all 200ms;
+    cursor: pointer;
+  }
+
+  .select:focus {
+    outline: none;
+    ring: 2px solid rgb(59 130 246 / 0.5);
+    border-color: rgb(59 130 246);
   }
 
   /* Badge styles */
   .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
     font-weight: 600;
   }
 
   .badge-primary {
-    @apply bg-blue-500/20 text-blue-300 border border-blue-500/30;
+    background: rgb(59 130 246 / 0.2);
+    color: rgb(147 197 253);
+    border: 1px solid rgb(59 130 246 / 0.3);
   }
 
   .badge-success {
-    @apply bg-emerald-500/20 text-emerald-300 border border-emerald-500/30;
+    background: rgb(16 185 129 / 0.2);
+    color: rgb(110 231 183);
+    border: 1px solid rgb(16 185 129 / 0.3);
   }
 
   .badge-warning {
-    @apply bg-amber-500/20 text-amber-300 border border-amber-500/30;
+    background: rgb(245 158 11 / 0.2);
+    color: rgb(252 211 77);
+    border: 1px solid rgb(245 158 11 / 0.3);
   }
 }
 
@@ -134,11 +237,16 @@ body {
   }
 
   .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    background: rgb(255 255 255 / 0.05);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgb(255 255 255 / 0.1);
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent;
+    background: linear-gradient(to right, rgb(96 165 250), rgb(34 211 238));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .animate-in {
