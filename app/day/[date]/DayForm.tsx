@@ -42,12 +42,13 @@ export default function DayForm({
 
       if (!response.ok) {
         const data = await response.json().catch(() => null);
-        setError(data?.error ?? "No se pudo guardar el dia.");
+        setError(data?.error ?? "No se pudo guardar el día.");
         return;
       }
 
       router.refresh();
     } catch (err) {
+      console.error("Error al guardar el día:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
       setIsSubmitting(false);
@@ -74,7 +75,7 @@ export default function DayForm({
 
         <div>
           <label className="text-sm font-semibold text-slate-200">
-            Resumen del dia
+            Resumen del día
           </label>
           <textarea
             rows={3}
@@ -87,12 +88,12 @@ export default function DayForm({
 
         <div>
           <label className="text-sm font-semibold text-slate-200">
-            Diario del dia
+            Diario del día
           </label>
           <textarea
             rows={6}
             className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
-            placeholder="Notas mas largas del dia."
+            placeholder="Notas más largas del día."
             value={journal}
             onChange={(event) => setJournal(event.target.value)}
           />
@@ -109,7 +110,7 @@ export default function DayForm({
           disabled={isSubmitting}
           className="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {isSubmitting ? "Guardando..." : "Guardar dia"}
+          {isSubmitting ? "Guardando..." : "Guardar día"}
         </button>
       </div>
     </form>

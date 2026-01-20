@@ -7,8 +7,8 @@ import PrintButton from "./PrintButton";
 export const dynamic = "force-dynamic";
 
 const BLOCKS = [
-  { key: "ALL_DAY", label: "Todo el dia" },
-  { key: "MORNING", label: "Manana" },
+  { key: "ALL_DAY", label: "Todo el día" },
+  { key: "MORNING", label: "Mañana" },
   { key: "AFTERNOON", label: "Tarde" },
   { key: "EVENING", label: "Noche" },
 ];
@@ -16,7 +16,7 @@ const BLOCKS = [
 const ITEM_TYPES: Record<string, string> = {
   HOTEL: "Hotel",
   FLIGHT: "Vuelo",
-  ATTRACTION: "Atraccion",
+  ATTRACTION: "Atracción",
   FOOD: "Comida",
   TRANSFER: "Traslado",
   NOTE: "Nota",
@@ -206,7 +206,7 @@ export default async function BookPage() {
                     Diario
                   </p>
                   <p className="mt-2 whitespace-pre-wrap text-sm text-slate-200">
-                    {day?.journal ?? "Sin diario todavia."}
+                    {day?.journal ?? "Sin diario todavía."}
                   </p>
                 </div>
               </div>

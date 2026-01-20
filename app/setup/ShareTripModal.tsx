@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 type SharedUser = {
   id: string;
@@ -27,13 +27,7 @@ export default function ShareTripModal({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      loadSharedUsers();
-    }
-  }, [isOpen, tripId]);
-
-  const loadSharedUsers = async () => {
+  const loadSharedUsers = useCallback(async () => {
     try {
       const response = await fetch(`/api/trip/${tripId}/share`);
       if (response.ok) {
@@ -43,7 +37,13 @@ export default function ShareTripModal({
     } catch (err) {
       console.error("Error loading shared users:", err);
     }
-  };
+  }, [tripId]);
+
+  useEffect(() => {
+    if (isOpen) {
+      loadSharedUsers();
+    }
+  }, [isOpen, loadSharedUsers]);
 
   const handleShare = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,8 +68,9 @@ export default function ShareTripModal({
       setSuccess(`Viaje compartido con ${email}`);
       setEmail("");
       setRole("EDITOR");
-      loadSharedUsers();
+      await loadSharedUsers();
     } catch (err) {
+      console.error("Error al compartir viaje:", err);
       setError("No se pudo conectar con el servidor");
     } finally {
       setLoading(false);
@@ -94,8 +95,9 @@ export default function ShareTripModal({
       }
 
       setSuccess("Acceso eliminado");
-      loadSharedUsers();
+      await loadSharedUsers();
     } catch (err) {
+      console.error("Error al eliminar acceso:", err);
       setError("No se pudo conectar con el servidor");
     }
   };
@@ -104,22 +106,21 @@ export default function ShareTripModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-lg"
+        className="card-elevated w-full max-w-md p-6 sm:p-7"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-100">
-            Compartir viaje
-          </h2>
+          <h2 className="text-lg font-semibold text-slate-100">Compartir viaje</h2>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-200"
+            className="text-lg text-slate-400 transition hover:text-slate-200"
+            aria-label="Cerrar modal"
           >
-            ✕
+            ×
           </button>
         </div>
 
@@ -149,7 +150,7 @@ export default function ShareTripModal({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-1 w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
+              className="mt-2 input"
               placeholder="usuario@ejemplo.com"
             />
           </div>
@@ -165,7 +166,7 @@ export default function ShareTripModal({
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value as "EDITOR" | "VIEWER")}
-              className="mt-1 w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none"
+              className="mt-2 select"
             >
               <option value="EDITOR">Editor (puede ver y editar)</option>
               <option value="VIEWER">Visualizador (solo puede ver)</option>
@@ -175,7 +176,7 @@ export default function ShareTripModal({
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-2xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
+            className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Compartiendo..." : "Compartir"}
           </button>
@@ -190,7 +191,7 @@ export default function ShareTripModal({
               {sharedUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-2"
+                  className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3"
                 >
                   <div>
                     <p className="text-sm text-slate-100">
@@ -207,7 +208,7 @@ export default function ShareTripModal({
                   {user.role !== "OWNER" && (
                     <button
                       onClick={() => handleRemoveAccess(user.id)}
-                      className="text-xs text-rose-400 hover:text-rose-300"
+                      className="text-xs text-rose-300 transition hover:text-rose-200"
                     >
                       Eliminar
                     </button>

@@ -57,20 +57,22 @@ export default async function DayPage({
   const dayStart = parseDateParam(dateParam);
   if (!dayStart) {
     return (
-      <div className="min-h-screen bg-transparent px-6 py-10 text-slate-100">
-        <div className="mx-auto w-full max-w-4xl rounded-3xl border border-slate-800 bg-slate-900/70 p-8 shadow-lg shadow-black/30">
-          <h1 className="text-2xl font-semibold text-slate-100">
-            Fecha invalida
-          </h1>
-          <p className="mt-3 text-sm text-slate-300">
-            Usa el formato YYYY-MM-DD.
-          </p>
-          <Link
-            href="/"
-            className="mt-6 inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
-          >
-            Volver al calendario
-          </Link>
+      <div className="min-h-screen px-6 py-10 text-slate-100">
+        <div className="page-shell">
+          <div className="glass-panel p-8 shadow-lg shadow-black/30">
+            <h1 className="text-2xl font-semibold text-slate-100">
+              Fecha inválida
+            </h1>
+            <p className="mt-3 text-sm text-slate-300">
+              Usa el formato YYYY-MM-DD.
+            </p>
+            <Link
+              href="/"
+              className="btn-primary mt-6 inline-flex items-center justify-center"
+            >
+              Volver al calendario
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -123,31 +125,49 @@ export default async function DayPage({
   });
 
   return (
-    <div className="min-h-screen bg-transparent px-5 py-8 text-slate-100 sm:px-6 sm:py-10 md:px-8 md:py-12">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 md:gap-10">
-        <header className="flex flex-col gap-4">
-          <Link
-            href="/"
-            className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500"
-          >
-            Volver al calendario
-          </Link>
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
-              {trip.name}
-            </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-100">
-              {label}
-            </h1>
+    <div className="min-h-screen px-4 py-6 text-slate-100 sm:px-6 lg:px-10">
+      <div className="page-shell flex flex-col gap-6 md:gap-8">
+        <header className="glass-panel p-5 sm:p-6 md:p-7">
+          <div className="flex flex-col gap-4">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 transition hover:text-slate-200"
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m15 19-7-7 7-7"
+                />
+              </svg>
+              Volver al calendario
+            </Link>
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 shadow-lg shadow-black/30">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-500">
+                {trip.name}
+              </p>
+              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-100 capitalize">
+                {label}
+              </h1>
+              <p className="mt-1 text-sm text-slate-400">
+                {trip.destinations || "Define un destino para este viaje"}
+              </p>
+            </div>
           </div>
         </header>
 
-        <section className="grid gap-6 md:gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-          <div className="flex flex-col gap-6">
+        <section className="grid gap-5 md:gap-7 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          <div className="flex flex-col gap-5 md:gap-6">
             <ItemsBoard date={dateParam} items={items} />
           </div>
 
-          <aside className="flex flex-col gap-4">
+          <aside className="flex flex-col gap-4 md:gap-5">
             <DayForm
               date={dateParam}
               initialCity={day?.city ?? null}

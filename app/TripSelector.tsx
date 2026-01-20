@@ -40,17 +40,17 @@ export default function TripSelector({ trips, activeTripId }: Props) {
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex items-center gap-2 text-slate-400">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/50 px-3 py-1.5">
+      <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
         </svg>
-        <span className="text-xs font-medium">Cambiar a:</span>
+        <span>Cambiar a</span>
       </div>
       <select
         value={activeTripId ?? ""}
         onChange={(e) => handleChange(e.target.value)}
-        className="select text-sm"
+        className="select text-sm bg-slate-900/60"
       >
         {trips.map((trip) => (
           <option key={trip.id} value={trip.id}>

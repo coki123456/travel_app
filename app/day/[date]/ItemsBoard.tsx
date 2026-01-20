@@ -17,8 +17,8 @@ type ItemsBoardProps = {
 };
 
 const BLOCKS = [
-  { value: "ALL_DAY", label: "Todo el dia" },
-  { value: "MORNING", label: "Manana" },
+  { value: "ALL_DAY", label: "Todo el día" },
+  { value: "MORNING", label: "Mañana" },
   { value: "AFTERNOON", label: "Tarde" },
   { value: "EVENING", label: "Noche" },
 ];
@@ -85,7 +85,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
     setError(null);
 
     if (!title.trim()) {
-      setError("Completa el titulo.");
+      setError("Completa el título.");
       return;
     }
 
@@ -112,6 +112,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
       resetForm();
       router.refresh();
     } catch (err) {
+      console.error("Error al crear elemento:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
       setIsSubmitting(false);
@@ -145,6 +146,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
       cancelEdit();
       router.refresh();
     } catch (err) {
+      console.error("Error al editar elemento:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
       setIsSubmitting(false);
@@ -170,6 +172,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
 
       router.refresh();
     } catch (err) {
+      console.error("Error al eliminar elemento:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
       setIsSubmitting(false);
@@ -179,7 +182,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
   return (
     <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-slate-100">Elementos del dia</h2>
+        <h2 className="text-lg font-semibold text-slate-100">Elementos del día</h2>
         <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
           {items.length} elementos
         </span>
@@ -194,7 +197,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
             </div>
             {group.items.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-4 text-sm text-slate-400">
-                Sin elementos todavia.
+                Sin elementos todavía.
               </div>
             ) : (
               <div className="grid gap-3 sm:grid-cols-2">
@@ -248,7 +251,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
                         </div>
                         <div>
                           <label className="text-xs font-semibold text-slate-300">
-                            Titulo
+                            Título
                           </label>
                           <input
                             className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
@@ -260,7 +263,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
                         </div>
                         <div>
                           <label className="text-xs font-semibold text-slate-300">
-                            Descripcion
+                            Descripción
                           </label>
                           <textarea
                             rows={3}
@@ -362,7 +365,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
           </div>
           <div>
             <label className="text-xs font-semibold text-slate-300">
-              Titulo
+              Título
             </label>
             <input
               className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
@@ -374,7 +377,7 @@ export default function ItemsBoard({ date, items }: ItemsBoardProps) {
         </div>
         <div>
           <label className="text-xs font-semibold text-slate-300">
-            Descripcion
+            Descripción
           </label>
           <textarea
             rows={3}

@@ -62,6 +62,7 @@ export default function AttachmentsPanel({
       setFile(null);
       router.refresh();
     } catch (err) {
+      console.error("Error al subir archivo:", err);
       setError("No se pudo conectar con el servidor.");
     } finally {
       setIsSubmitting(false);
@@ -72,7 +73,7 @@ export default function AttachmentsPanel({
     <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30">
       <h3 className="text-sm font-semibold text-slate-100">Adjuntos</h3>
       <p className="mt-2 text-sm text-slate-300">
-        PDF o imagenes (JPG, PNG, WEBP).
+        PDF o imágenes (JPG, PNG, WEBP).
       </p>
 
       <form onSubmit={onSubmit} className="mt-4 grid gap-3">
@@ -104,7 +105,7 @@ export default function AttachmentsPanel({
       <div className="mt-5 space-y-3">
         {attachments.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-4 text-sm text-slate-400">
-            Sin adjuntos todavia.
+            Sin adjuntos todavía.
           </div>
         ) : (
           attachments.map((attachment) => (
