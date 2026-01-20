@@ -160,7 +160,7 @@ body {
 
   .input:focus {
     outline: none;
-    ring: 2px solid rgb(59 130 246 / 0.5);
+    box-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);
     border-color: rgb(59 130 246);
   }
 
@@ -181,7 +181,7 @@ body {
 
   .textarea:focus {
     outline: none;
-    ring: 2px solid rgb(59 130 246 / 0.5);
+    box-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);
     border-color: rgb(59 130 246);
   }
 
@@ -198,7 +198,7 @@ body {
 
   .select:focus {
     outline: none;
-    ring: 2px solid rgb(59 130 246 / 0.5);
+    box-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);
     border-color: rgb(59 130 246);
   }
 
