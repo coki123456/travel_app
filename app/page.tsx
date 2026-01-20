@@ -149,87 +149,32 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen px-4 py-6 text-slate-50 sm:px-6 lg:px-10">
       <div className="page-shell space-y-6 sm:space-y-8 md:space-y-10 animate-in">
-        <header className="glass-panel subtle-grid p-5 sm:p-7 lg:p-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/70 via-cyan-400/70 to-emerald-400/70 shadow-lg shadow-cyan-500/20">
-                  <svg
-                    className="h-5 w-5 text-slate-950"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-slate-400">
-                    Travel App
-                  </p>
-                  <p className="text-sm text-slate-300">
-                    {trip.destinations || "Añade tus destinos clave"}
-                  </p>
-                </div>
-              </div>
-
+        <header className="glass-panel p-5 sm:p-7 lg:p-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="space-y-2">
+              <p className="text-sm text-slate-300">
+                {trip.destinations || "Agrega los destinos para este viaje."}
+              </p>
               <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
+                <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
                   <span className="gradient-text">{trip.name}</span>
                 </h1>
-                <TripSelector
-                  trips={trips}
-                  activeTripId={activeTripId ?? null}
-                />
+                <TripSelector trips={trips} activeTripId={activeTripId ?? null} />
               </div>
-
               <div className="flex flex-wrap items-center gap-2 text-sm text-slate-300">
-                <span className="rounded-full border border-slate-700/80 bg-slate-900/50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
-                  {trip.startDate.toLocaleDateString("es-AR")} –{" "}
-                  {trip.endDate.toLocaleDateString("es-AR")}
+                <span className="rounded-md border border-slate-700 bg-slate-900/60 px-3 py-1 text-xs font-semibold text-slate-200">
+                  {trip.startDate.toLocaleDateString("es-AR")} – {trip.endDate.toLocaleDateString("es-AR")}
                 </span>
-                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-200">
-                  {allDays.length} días de viaje
+                <span className="rounded-md border border-slate-700 bg-slate-900/60 px-3 py-1 text-xs font-semibold text-slate-200">
+                  {allDays.length} días
                 </span>
               </div>
             </div>
-
             <div className="flex flex-wrap gap-2 sm:gap-3">
-              <Link href="/setup" className="btn-tertiary text-xs sm:text-sm">
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 7h12m0 0-4-4m4 4-4 4m0 6H4m0 0 4 4m-4-4 4-4"
-                  />
-                </svg>
+              <Link href="/setup" className="btn-secondary text-xs sm:text-sm">
                 Configurar
               </Link>
-              <Link href="/book" className="btn-tertiary text-xs sm:text-sm">
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  />
-                </svg>
+              <Link href="/book" className="btn-secondary text-xs sm:text-sm">
                 Libro
               </Link>
               <LogoutButton />
@@ -238,30 +183,22 @@ export default async function HomePage() {
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <div className="card p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Días planificados
-              </p>
-              <p className="mt-2 text-2xl font-semibold">{allDays.length}</p>
+              <p className="text-xs font-semibold text-slate-500">Días planificados</p>
+              <p className="mt-1 text-2xl font-semibold">{allDays.length}</p>
             </div>
             <div className="card p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Con resumen
-              </p>
-              <p className="mt-2 text-2xl font-semibold">{notedDays}</p>
+              <p className="text-xs font-semibold text-slate-500">Con resumen</p>
+              <p className="mt-1 text-2xl font-semibold">{notedDays}</p>
             </div>
             <div className="card p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Completados
-              </p>
-              <p className="mt-2 text-2xl font-semibold">
+              <p className="text-xs font-semibold text-slate-500">Completados</p>
+              <p className="mt-1 text-2xl font-semibold">
                 {completedDays}/{allDays.length}
               </p>
             </div>
             <div className="card p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Próximo día
-              </p>
-              <p className="mt-2 text-sm font-semibold text-slate-100">
+              <p className="text-xs font-semibold text-slate-500">Próximo día</p>
+              <p className="mt-1 text-sm font-semibold text-slate-100">
                 {formatLongDate(upcomingDay)}
               </p>
             </div>
@@ -284,13 +221,10 @@ export default async function HomePage() {
                   className="card-elevated p-4 sm:p-5 md:p-6"
                 >
                   <div className="mb-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-9 w-1 rounded-full bg-gradient-to-b from-blue-400 to-cyan-400" />
-                      <h2 className="text-lg sm:text-xl font-semibold capitalize">
-                        {monthLabel}
-                      </h2>
-                    </div>
-                    <span className="rounded-full border border-slate-700/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    <h2 className="text-lg sm:text-xl font-semibold capitalize">
+                      {monthLabel}
+                    </h2>
+                    <span className="rounded-md border border-slate-700 bg-slate-900/60 px-3 py-1 text-[11px] font-semibold text-slate-400">
                       Calendario
                     </span>
                   </div>
@@ -326,7 +260,7 @@ export default async function HomePage() {
                       const stateClasses = !inTripRange
                         ? "border border-dashed border-slate-800 text-slate-600"
                         : isToday
-                          ? "border border-blue-400/60 bg-blue-500/10 shadow-lg shadow-blue-500/20"
+                          ? "border border-blue-400/60 bg-blue-500/10"
                           : isPast
                             ? "border border-emerald-400/30 bg-emerald-500/10 text-emerald-50"
                             : "border border-slate-800/80 bg-slate-900/50 hover:border-slate-600/70";
@@ -335,7 +269,7 @@ export default async function HomePage() {
                         <Link
                           key={key}
                           href={`/day/${key}`}
-                          className={`group relative flex h-12 items-center justify-center rounded-xl text-xs font-semibold transition duration-200 sm:h-14 md:h-16 sm:text-sm ${stateClasses}`}
+                          className={`group relative flex h-12 items-center justify-center rounded-lg text-xs font-semibold transition duration-200 sm:h-14 md:h-16 sm:text-sm ${stateClasses}`}
                         >
                           <span className="relative flex items-center justify-center">
                             {cell.getDate()}
