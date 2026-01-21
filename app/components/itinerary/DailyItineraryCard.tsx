@@ -33,21 +33,7 @@ export default function DailyItineraryCard({
       {/* Panel Header */}
       <CardHeader className="p-6 border-b border-gray-200 mb-0">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-              />
-            </svg>
-          </div>
+          <div className="text-2xl">📋</div>
           <h3 className="text-lg font-bold text-gray-900">
             Itinerario del Día
           </h3>
@@ -85,28 +71,8 @@ export default function DailyItineraryCard({
                 },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-start gap-3">
-                  <div
-                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                      item.checked
-                        ? "bg-green-500 border-green-500"
-                        : "border-gray-300"
-                    }`}
-                  >
-                    {item.checked && (
-                      <svg
-                        className="w-3 h-3 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
+                  <div className="flex-shrink-0 mt-0.5 text-lg">
+                    {item.checked ? "✅" : "⬜"}
                   </div>
                   <div className="flex-1">
                     <p
@@ -132,21 +98,7 @@ export default function DailyItineraryCard({
           </>
         ) : (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg
-                className="w-8 h-8 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-            </div>
+            <div className="text-5xl mb-4">📝</div>
             <p className="text-sm text-gray-500">
               No hay actividades planificadas
             </p>

@@ -17,19 +17,7 @@ export default function ActiveTripCard({ activeTripName }: ActiveTripCardProps) 
             {activeTripName}
           </div>
         </div>
-        <svg
-          className="w-4 h-4 text-gray-400 flex-shrink-0 ml-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+        <span className="text-gray-400 flex-shrink-0 ml-2">▼</span>
       </button>
       <div className="mt-3 pt-3 border-t border-white/10">
         <Link
