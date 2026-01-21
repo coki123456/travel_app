@@ -118,15 +118,15 @@ export default async function HomePage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 ml-72 flex flex-col relative">
+      <div className="flex-1 md:ml-72 flex flex-col relative">
         {/* Header */}
         <Header />
 
         {/* Content Area */}
         <div className="flex-1 overflow-auto">
-          <div className="flex h-full">
+          <div className="flex flex-col lg:flex-row h-full">
             {/* Calendar Section */}
-            <div className="flex-1 p-6 overflow-y-auto">
+            <div className="flex-1 p-4 md:p-6 overflow-y-auto">
               {/* Calendar Container */}
               <div className="max-w-4xl mx-auto">
                 {months.map((monthDays, index) => {
@@ -146,7 +146,7 @@ export default async function HomePage() {
             </div>
 
             {/* Right Panel - Daily Itinerary */}
-            <div className="w-96">
+            <div className="w-full lg:w-96 lg:sticky lg:top-0 lg:h-screen">
               <DailyItineraryCard
                 day={currentDay}
                 date={allDays[0]}

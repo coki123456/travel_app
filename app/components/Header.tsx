@@ -6,9 +6,9 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <header className="h-16 bg-white/90 backdrop-blur-lg border-b border-gray-200/50 shadow-sm flex items-center px-6 relative z-10">
+    <header className="h-16 bg-white/90 backdrop-blur-lg border-b border-gray-200/50 shadow-sm flex items-center px-4 md:px-6 relative z-10">
       {/* Search Bar */}
-      <div className="flex-1 max-w-2xl">
+      <div className="flex-1 max-w-2xl ml-12 md:ml-0">
         <div className="relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
             🔍
@@ -24,28 +24,28 @@ export default function Header() {
       </div>
 
       {/* Right Side - User Menu */}
-      <div className="flex items-center gap-3 ml-6">
+      <div className="flex items-center gap-2 md:gap-3 ml-4 md:ml-6">
         <button
-          className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-xl hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm"
+          className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-xl hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm hidden sm:flex"
           title="Notificaciones"
         >
           🔔
         </button>
         <button
-          className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-xl hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm"
+          className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-xl hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm hidden sm:flex"
           title="Mensajes"
         >
           📧
         </button>
         <button
-          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm"
+          className="flex items-center gap-2 px-2 md:px-3 py-2 rounded-lg bg-white border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm"
           title="Perfil"
         >
           <div className="w-7 h-7 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-sm">
             C
           </div>
-          <span className="text-sm font-medium text-gray-700">Coki</span>
-          <span className="text-gray-400">▼</span>
+          <span className="text-sm font-medium text-gray-700 hidden md:inline">Coki</span>
+          <span className="text-gray-400 hidden md:inline">▼</span>
         </button>
       </div>
     </header>

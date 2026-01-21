@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import LogoutButton from "../LogoutButton";
 import ActiveTripCard from "./trips/ActiveTripCard";
 
@@ -13,6 +14,7 @@ interface SidebarProps {
 
 export default function Sidebar({ activeTripName, userName, userEmail }: SidebarProps) {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
     { href: "/", label: "Inicio", icon: "📍" },
@@ -23,7 +25,27 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--sidebar-bg)] backdrop-blur-md border-r border-white/10 flex flex-col z-50">
+    <>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed top-4 left-4 z-[60] md:hidden w-10 h-10 bg-[var(--sidebar-bg)] backdrop-blur-md border border-white/10 rounded-lg flex items-center justify-center text-white shadow-lg"
+      >
+        {isOpen ? "✕" : "☰"}
+      </button>
+
+      {/* Overlay para móvil */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`fixed left-0 top-0 h-screen w-72 bg-[var(--sidebar-bg)] backdrop-blur-md border-r border-white/10 flex flex-col z-50 transition-transform duration-300 md:translate-x-0 ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      }`}>
       {/* Logo */}
       <div className="p-6 border-b border-white/10">
         <div className="flex items-center gap-3">
@@ -46,6 +68,7 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
               <li key={item.href + item.label}>
                 <Link
                   href={item.href}
+                  onClick={() => setIsOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     isActive
                       ? "bg-[var(--primary)] text-white shadow-lg shadow-blue-500/30"
@@ -82,5 +105,6 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
         <LogoutButton />
       </div>
     </aside>
+    </>
   );
 }
