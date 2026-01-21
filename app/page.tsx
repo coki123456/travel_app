@@ -118,7 +118,7 @@ export default async function HomePage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col md:ml-72">
+      <div className="flex-1 flex flex-col sm:ml-72">
         {/* Header */}
         <Header />
 

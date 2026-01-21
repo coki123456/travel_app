@@ -29,7 +29,7 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-[60] md:hidden w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-gray-700 shadow-lg"
+        className="fixed top-4 left-4 z-[60] sm:hidden w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-gray-700 shadow-lg"
       >
         {isOpen ? "✕" : "☰"}
       </button>
@@ -37,13 +37,13 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
       {/* Overlay para móvil */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-40 sm:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-screen w-72 bg-white border-r border-gray-200 flex flex-col z-50 transition-transform duration-300 md:translate-x-0 ${
+      <aside className={`fixed left-0 top-0 h-screen w-72 bg-white border-r border-gray-200 flex flex-col z-50 transition-transform duration-300 sm:translate-x-0 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
       {/* Logo */}

@@ -11,7 +11,9 @@
       "Bash(git commit:*)",
       "Bash(npm run migrate:dev:*)",
       "Bash(psql:*)",
-      "Bash(docker-compose up:*)"
+      "Bash(docker-compose up:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

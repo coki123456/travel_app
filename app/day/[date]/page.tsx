@@ -71,11 +71,11 @@ export default async function DayPage({
           userName={session.user.name}
           userEmail={session.user.email}
         />
-        <div className="flex-1 flex flex-col md:ml-72">
+        <div className="flex-1 flex flex-col sm:ml-72">
           <Header />
           <div className="flex-1 overflow-auto p-6">
             <div className="max-w-2xl mx-auto">
-              <div className="card-elevated p-8">
+              <div className="card-elevated p-8 bg-white">
                 <h1 className="text-2xl font-semibold text-gray-900">
                   Fecha inválida
                 </h1>
@@ -152,7 +152,7 @@ export default async function DayPage({
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col md:ml-72">
+      <div className="flex-1 flex flex-col sm:ml-72">
         {/* Header */}
         <Header />
 

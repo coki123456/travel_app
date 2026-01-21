@@ -110,14 +110,14 @@ export default function ShareTripModal({
       onClick={onClose}
     >
       <div
-        className="card-elevated w-full max-w-md p-6 sm:p-7"
+        className="card-elevated w-full max-w-md p-6 sm:p-7 bg-white"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-100">Compartir viaje</h2>
+          <h2 className="text-lg font-semibold text-gray-900">Compartir viaje</h2>
           <button
             onClick={onClose}
-            className="text-lg text-slate-400 transition hover:text-slate-200"
+            className="text-2xl text-gray-400 transition hover:text-gray-600"
             aria-label="Cerrar modal"
           >
             ×
@@ -125,13 +125,13 @@ export default function ShareTripModal({
         </div>
 
         {error && (
-          <div className="mb-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+          <div className="mb-4 rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="mb-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+          <div className="mb-4 rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
             {success}
           </div>
         )}
@@ -140,7 +140,7 @@ export default function ShareTripModal({
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-slate-300"
+              className="block text-sm font-medium text-gray-700"
             >
               Email del usuario
             </label>
@@ -158,7 +158,7 @@ export default function ShareTripModal({
           <div>
             <label
               htmlFor="role"
-              className="block text-sm font-medium text-slate-300"
+              className="block text-sm font-medium text-gray-700"
             >
               Permisos
             </label>
@@ -166,7 +166,7 @@ export default function ShareTripModal({
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value as "EDITOR" | "VIEWER")}
-              className="mt-2 select"
+              className="mt-2 input"
             >
               <option value="EDITOR">Editor (puede ver y editar)</option>
               <option value="VIEWER">Visualizador (solo puede ver)</option>
@@ -184,20 +184,20 @@ export default function ShareTripModal({
 
         {sharedUsers.length > 0 && (
           <div className="mt-6">
-            <h3 className="mb-3 text-sm font-medium text-slate-300">
+            <h3 className="mb-3 text-sm font-medium text-gray-700">
               Usuarios con acceso
             </h3>
             <div className="space-y-2">
               {sharedUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3"
+                  className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-3"
                 >
                   <div>
-                    <p className="text-sm text-slate-100">
+                    <p className="text-sm text-gray-900">
                       {user.name || user.email}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-gray-600">
                       {user.role === "OWNER"
                         ? "Propietario"
                         : user.role === "EDITOR"
@@ -208,7 +208,7 @@ export default function ShareTripModal({
                   {user.role !== "OWNER" && (
                     <button
                       onClick={() => handleRemoveAccess(user.id)}
-                      className="text-xs text-rose-300 transition hover:text-rose-200"
+                      className="text-xs text-rose-600 transition hover:text-rose-700 font-medium"
                     >
                       Eliminar
                     </button>
