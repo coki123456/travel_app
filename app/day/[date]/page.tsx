@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
 import DayForm from "./DayForm";
-import ItemsBoard from "./ItemsBoard";
+import ItemsBoardRefactored from "./ItemsBoardRefactored";
 import AttachmentsPanel from "./AttachmentsPanel";
 
 export const dynamic = "force-dynamic";
@@ -164,7 +164,7 @@ export default async function DayPage({
 
         <section className="grid gap-5 md:gap-7 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
           <div className="flex flex-col gap-5 md:gap-6">
-            <ItemsBoard date={dateParam} items={items} />
+            <ItemsBoardRefactored date={dateParam} items={items} />
           </div>
 
           <aside className="flex flex-col gap-4 md:gap-5">
