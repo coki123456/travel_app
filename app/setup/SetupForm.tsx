@@ -79,7 +79,7 @@ export default function SetupForm({ initialTrip }: Props) {
         <div className="text-2xl">
           {initialTrip ? "✏️" : "➕"}
         </div>
-        <h2 className="text-base font-bold text-slate-100">
+        <h2 className="text-base font-bold text-gray-900">
           {initialTrip ? "Editar viaje" : "Nuevo viaje"}
         </h2>
       </div>
@@ -92,7 +92,7 @@ export default function SetupForm({ initialTrip }: Props) {
         )}
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="name" className="text-sm font-semibold text-slate-300">
+          <label htmlFor="name" className="text-sm font-semibold text-gray-700">
             Nombre del viaje
           </label>
           <input
@@ -112,7 +112,7 @@ export default function SetupForm({ initialTrip }: Props) {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="startDate"
-              className="text-sm font-semibold text-slate-300"
+              className="text-sm font-semibold text-gray-700"
             >
               Fecha de inicio
             </label>
@@ -130,7 +130,7 @@ export default function SetupForm({ initialTrip }: Props) {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="endDate"
-              className="text-sm font-semibold text-slate-300"
+              className="text-sm font-semibold text-gray-700"
             >
               Fecha de fin
             </label>

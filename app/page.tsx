@@ -109,7 +109,7 @@ export default async function HomePage() {
   const currentDay = dayMap.get(currentDayKey);
 
   return (
-    <div className="flex h-screen overflow-hidden relative">
+    <div className="flex h-screen overflow-hidden bg-gray-50">
       {/* Sidebar */}
       <Sidebar
         activeTripName={trip.name}
@@ -118,17 +118,16 @@ export default async function HomePage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 md:ml-72 flex flex-col relative">
+      <div className="flex-1 flex flex-col md:ml-72">
         {/* Header */}
         <Header />
 
         {/* Content Area */}
         <div className="flex-1 overflow-auto">
-          <div className="flex flex-col lg:flex-row h-full">
+          <div className="flex flex-col lg:flex-row gap-4 p-4 md:p-6 max-w-[1600px] mx-auto">
             {/* Calendar Section */}
-            <div className="flex-1 p-4 md:p-6 overflow-y-auto">
-              {/* Calendar Container */}
-              <div className="max-w-4xl mx-auto">
+            <div className="flex-1 min-w-0">
+              <div className="space-y-4">
                 {months.map((monthDays, index) => {
                   const reference = monthDays[0];
                   return (
@@ -146,7 +145,7 @@ export default async function HomePage() {
             </div>
 
             {/* Right Panel - Daily Itinerary */}
-            <div className="w-full lg:w-96 lg:sticky lg:top-0 lg:h-screen">
+            <div className="w-full lg:w-[400px] lg:sticky lg:top-4 lg:self-start">
               <DailyItineraryCard
                 day={currentDay}
                 date={allDays[0]}

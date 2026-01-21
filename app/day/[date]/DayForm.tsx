@@ -58,15 +58,15 @@ export default function DayForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30"
+      className="card-elevated p-6"
     >
       <div className="flex flex-col gap-5">
         <div>
-          <label className="text-sm font-semibold text-slate-200">
+          <label className="text-sm font-semibold text-gray-700">
             Ciudad (opcional)
           </label>
           <input
-            className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
+            className="input mt-2"
             placeholder="Ej: Bariloche"
             value={city}
             onChange={(event) => setCity(event.target.value)}
@@ -74,12 +74,12 @@ export default function DayForm({
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-slate-200">
+          <label className="text-sm font-semibold text-gray-700">
             Resumen del día
           </label>
           <textarea
             rows={3}
-            className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
+            className="textarea mt-2"
             placeholder="Ej: Trekking y cena en el centro."
             value={summary}
             onChange={(event) => setSummary(event.target.value)}
@@ -87,12 +87,12 @@ export default function DayForm({
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-slate-200">
+          <label className="text-sm font-semibold text-gray-700">
             Diario del día
           </label>
           <textarea
             rows={6}
-            className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
+            className="textarea mt-2"
             placeholder="Notas más largas del día."
             value={journal}
             onChange={(event) => setJournal(event.target.value)}
@@ -100,7 +100,7 @@ export default function DayForm({
         </div>
 
         {error ? (
-          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+          <div className="rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">
             {error}
           </div>
         ) : null}
@@ -108,7 +108,7 @@ export default function DayForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
+          className="btn-primary disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting ? "Guardando..." : "Guardar día"}
         </button>

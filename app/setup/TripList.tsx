@@ -84,14 +84,14 @@ export default function TripList({ trips }: TripListProps) {
             🗂️
           </div>
           <div>
-            <h2 className="text-base font-semibold text-slate-100">Tus viajes</h2>
-            <p className="text-xs text-slate-400">
+            <h2 className="text-base font-semibold text-gray-900">Tus viajes</h2>
+            <p className="text-xs text-gray-600">
               Elige un viaje para abrir el calendario principal.
             </p>
           </div>
         </div>
         {trips.length > 0 ? (
-          <span className="rounded-full border border-slate-700/70 bg-slate-900/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+          <span className="rounded-full border border-gray-300 bg-gray-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-600">
             {trips.length} activo(s)
           </span>
         ) : null}
@@ -106,30 +106,30 @@ export default function TripList({ trips }: TripListProps) {
 
       <div className="mt-5 flex flex-col gap-3">
         {trips.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center">
+          <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-6 text-center">
             <div className="text-5xl mb-3">📁</div>
-            <p className="text-sm text-slate-400">Todavía no hay viajes creados.</p>
+            <p className="text-sm text-gray-600">Todavía no hay viajes creados.</p>
           </div>
         ) : (
           trips.map((trip) => (
             <div
               key={trip.id}
-              className="card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-700/80"
+              className="card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-300"
             >
               <div className="mb-4 flex items-start gap-3">
                 <div className="text-2xl">
                   🌍
                 </div>
                 <div className="flex-1">
-                  <p className="text-base font-bold text-slate-100">
+                  <p className="text-base font-bold text-gray-900">
                     {trip.name}
                   </p>
-                  <div className="mt-1 flex items-center gap-2 text-xs text-slate-400">
+                  <div className="mt-1 flex items-center gap-2 text-xs text-gray-600">
                     <span>📅</span>
                     <span>{trip.dates}</span>
                   </div>
                   {trip.destinations ? (
-                    <div className="mt-1 flex items-center gap-2 text-xs text-slate-400">
+                    <div className="mt-1 flex items-center gap-2 text-xs text-gray-600">
                       <span>📍</span>
                       <span>{trip.destinations}</span>
                     </div>

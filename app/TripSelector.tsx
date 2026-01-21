@@ -40,15 +40,15 @@ export default function TripSelector({ trips, activeTripId }: Props) {
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-md border border-slate-600 bg-slate-800/70 px-3 py-2">
-      <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
+    <div className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2">
+      <div className="flex items-center gap-2 text-xs font-semibold text-gray-700">
         <span>🔄</span>
         <span>Cambiar</span>
       </div>
       <select
         value={activeTripId ?? ""}
         onChange={(e) => handleChange(e.target.value)}
-        className="select text-sm bg-slate-900/70"
+        className="input text-sm py-1"
       >
         {trips.map((trip) => (
           <option key={trip.id} value={trip.id}>
