@@ -29,7 +29,7 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-[60] md:hidden w-10 h-10 bg-[var(--sidebar-bg)] backdrop-blur-md border border-white/10 rounded-lg flex items-center justify-center text-white shadow-lg"
+        className="fixed top-4 left-4 z-[60] md:hidden w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-gray-700 shadow-lg"
       >
         {isOpen ? "✕" : "☰"}
       </button>
@@ -43,18 +43,18 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-screen w-72 bg-[var(--sidebar-bg)] backdrop-blur-md border-r border-white/10 flex flex-col z-50 transition-transform duration-300 md:translate-x-0 ${
+      <aside className={`fixed left-0 top-0 h-screen w-72 bg-white border-r border-gray-200 flex flex-col z-50 transition-transform duration-300 md:translate-x-0 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
       {/* Logo */}
-      <div className="p-6 border-b border-white/10">
+      <div className="p-6 border-b border-gray-200">
         <div className="flex items-center gap-3">
           <div className="text-3xl">✈️</div>
           <div>
-            <h1 className="text-xl font-bold text-white">
+            <h1 className="text-xl font-bold text-gray-900">
               Travel Planner
             </h1>
-            <p className="text-xs text-gray-400">Organización de viajes</p>
+            <p className="text-xs text-gray-600">Organización de viajes</p>
           </div>
         </div>
       </div>
@@ -71,8 +71,8 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     isActive
-                      ? "bg-[var(--primary)] text-white shadow-lg shadow-blue-500/30"
-                      : "text-gray-300 hover:bg-[var(--sidebar-hover)] hover:text-white"
+                      ? "bg-blue-500 text-white"
+                      : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   <span className="text-xl">{item.icon}</span>
@@ -88,16 +88,16 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
       </nav>
 
       {/* User Profile & Logout */}
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-gray-200">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold shadow-lg">
+          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
             {userName?.charAt(0).toUpperCase() || "U"}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-white truncate">
+            <div className="text-sm font-medium text-gray-900 truncate">
               {userName || "Usuario"}
             </div>
-            <div className="text-xs text-gray-400 truncate">
+            <div className="text-xs text-gray-600 truncate">
               {userEmail || ""}
             </div>
           </div>

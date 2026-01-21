@@ -6,7 +6,7 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <header className="h-16 bg-white/90 backdrop-blur-lg border-b border-gray-200/50 shadow-sm flex items-center px-4 md:px-6 relative z-10">
+    <header className="h-16 bg-white border-b border-gray-200 shadow-sm flex items-center px-4 md:px-6 relative z-10">
       {/* Search Bar */}
       <div className="flex-1 max-w-2xl ml-12 md:ml-0">
         <div className="relative">
