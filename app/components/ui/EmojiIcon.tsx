@@ -5,7 +5,9 @@ type EmojiIconProps = {
 };
 
 export function EmojiIcon({ symbol, label, className = "" }: EmojiIconProps) {
-  const accessibilityProps = label ? { "aria-label": label } : { "aria-hidden": "true" };
+  const accessibilityProps = label
+    ? { "aria-label": label }
+    : { "aria-hidden": true as const };
 
   return (
     <span
