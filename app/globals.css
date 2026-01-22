@@ -250,19 +250,19 @@
 
 /* Containers */
 .container-narrow {
-  max-width: 56rem;
+  max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .container-wide {
-  max-width: 80rem;
+  max-width: 72rem;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 /* Spacing utilities */
@@ -381,7 +381,7 @@
 .app-content {
   flex: 1;
   overflow: auto;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 /* Estados de hover mejorados */

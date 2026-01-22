@@ -61,22 +61,22 @@ export default function RegisterPage() {
       <div className="container-wide">
         <div className="grid items-center gap-8 lg:grid-cols-[1fr_1fr]">
           {/* Left Side - Branding */}
-          <div className="hidden lg:flex lg:flex-col lg:gap-6 animate-fade-in">
+          <div className="hidden lg:flex lg:flex-col lg:gap-5 animate-fade-in">
             <div className="inline-flex items-center gap-2 w-fit">
-              <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-9 h-9 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)]">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
-              <span className="text-lg font-semibold text-[rgb(var(--color-text-primary))]">
+              <span className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
                 Travel Planner
               </span>
             </div>
 
-            <h1 className="text-4xl font-semibold leading-tight text-[rgb(var(--color-text-primary))]">
+            <h1 className="text-3xl font-semibold leading-tight text-[rgb(var(--color-text-primary))]">
               Empezá tu bitácora de viaje
             </h1>
-            <p className="text-lg text-[rgb(var(--color-text-secondary))]">
+            <p className="text-base text-[rgb(var(--color-text-secondary))]">
               Creá tu cuenta en segundos y comenzá a planificar viajes inolvidables. Todo organizado, simple y accesible.
             </p>
 
@@ -113,14 +113,14 @@ export default function RegisterPage() {
 
           {/* Right Side - Register Form */}
           <div className="card p-8 max-w-md mx-auto w-full animate-fade-in">
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-1">
-                <div className="w-12 h-12 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)] lg:hidden">
-                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="mb-5">
+              <div className="flex items-center gap-2.5 mb-1">
+                <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)] lg:hidden">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                   </svg>
                 </div>
-                <h2 className="text-2xl font-semibold text-[rgb(var(--color-text-primary))]">
+                <h2 className="text-xl font-semibold text-[rgb(var(--color-text-primary))]">
                   Crear cuenta
                 </h2>
               </div>

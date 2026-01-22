@@ -47,22 +47,22 @@ export default function LoginPage() {
       <div className="container-wide">
         <div className="grid items-center gap-8 lg:grid-cols-[1fr_1fr]">
           {/* Left Side - Branding */}
-          <div className="hidden lg:flex lg:flex-col lg:gap-6 animate-fade-in">
+          <div className="hidden lg:flex lg:flex-col lg:gap-5 animate-fade-in">
             <div className="inline-flex items-center gap-2 w-fit">
-              <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-9 h-9 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <span className="text-lg font-semibold text-[rgb(var(--color-text-primary))]">
+              <span className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
                 Travel Planner
               </span>
             </div>
 
-            <h1 className="text-4xl font-semibold leading-tight text-[rgb(var(--color-text-primary))]">
+            <h1 className="text-3xl font-semibold leading-tight text-[rgb(var(--color-text-primary))]">
               Organizá, compartí y viví tus viajes
             </h1>
-            <p className="text-lg text-[rgb(var(--color-text-secondary))]">
+            <p className="text-base text-[rgb(var(--color-text-secondary))]">
               Tu copiloto de viajes personal. Planificá itinerarios, guardá detalles importantes y compartí con quienes viajan con vos.
             </p>
 
@@ -99,14 +99,14 @@ export default function LoginPage() {
 
           {/* Right Side - Login Form */}
           <div className="card p-8 max-w-md mx-auto w-full animate-fade-in">
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-1">
-                <div className="w-12 h-12 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)] lg:hidden">
-                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="mb-5">
+              <div className="flex items-center gap-2.5 mb-1">
+                <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)] lg:hidden">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h2 className="text-2xl font-semibold text-[rgb(var(--color-text-primary))]">
+                <h2 className="text-xl font-semibold text-[rgb(var(--color-text-primary))]">
                   Bienvenido
                 </h2>
               </div>

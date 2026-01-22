@@ -69,9 +69,9 @@ export default function DailyItineraryCard({
             </div>
 
             {/* Empty state for activities */}
-            <div className="text-center py-8">
-              <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-[rgb(var(--color-bg-tertiary))] flex items-center justify-center">
-                <svg className="w-8 h-8 text-[rgb(var(--color-text-tertiary))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="text-center py-6">
+              <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-[rgb(var(--color-bg-tertiary))] flex items-center justify-center">
+                <svg className="w-5 h-5 text-[rgb(var(--color-text-tertiary))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
               </div>
@@ -84,9 +84,9 @@ export default function DailyItineraryCard({
             </div>
           </div>
         ) : (
-          <div className="text-center py-12">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-[rgb(var(--color-bg-tertiary))] flex items-center justify-center">
-              <svg className="w-10 h-10 text-[rgb(var(--color-text-tertiary))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="text-center py-8">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-[rgb(var(--color-bg-tertiary))] flex items-center justify-center">
+              <svg className="w-5 h-5 text-[rgb(var(--color-text-tertiary))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
             </div>

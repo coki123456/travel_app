@@ -101,11 +101,11 @@ export default async function HomePage() {
         <div className="app-content">
           <div className="container-wide">
             {/* Page Title */}
-            <div className="mb-8 animate-fade-in">
-              <h1 className="text-3xl font-semibold text-[rgb(var(--color-text-primary))] mb-2">
+            <div className="mb-6 animate-fade-in">
+              <h1 className="text-2xl font-semibold text-[rgb(var(--color-text-primary))] mb-1.5">
                 {trip.name}
               </h1>
-              <p className="text-[rgb(var(--color-text-secondary))]">
+              <p className="text-sm text-[rgb(var(--color-text-secondary))]">
                 {trip.destinations || "Organizá tu itinerario y disfrutá tu viaje"}
               </p>
             </div>
