@@ -45,33 +45,45 @@ export default async function DayPage({
   const dayStart = parseDate(dateParam);
   if (!dayStart) {
     return (
-      <div className="flex h-screen overflow-hidden bg-gray-50">
+      <div className="app-layout">
         <Sidebar
           activeTripName={trip.name}
           userName={session.user.name}
           userEmail={session.user.email}
         />
-        <div className="flex-1 flex flex-col sm:ml-72">
+        <main className="app-main sm:ml-64">
           <Header />
-          <div className="flex-1 overflow-auto p-6">
-            <div className="max-w-2xl mx-auto">
-              <div className="card-elevated p-8 bg-white">
-                <h1 className="text-2xl font-semibold text-gray-900">
-                  Fecha inválida
-                </h1>
-                <p className="mt-3 text-sm text-gray-600">
-                  Usa el formato YYYY-MM-DD.
-                </p>
+          <div className="app-content">
+            <div className="container-narrow">
+              <div className="card p-8 animate-fade-in">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-[var(--radius-md)] bg-[rgb(var(--color-error))]/10 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-[rgb(var(--color-error))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-semibold text-[rgb(var(--color-text-primary))]">
+                      Fecha inválida
+                    </h1>
+                    <p className="text-sm text-[rgb(var(--color-text-secondary))]">
+                      Usa el formato YYYY-MM-DD
+                    </p>
+                  </div>
+                </div>
                 <Link
                   href="/"
-                  className="btn-primary mt-6 inline-flex items-center justify-center"
+                  className="btn-primary mt-4 w-full"
                 >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
                   Volver al calendario
                 </Link>
               </div>
             </div>
           </div>
-        </div>
+        </main>
       </div>
     );
   }
@@ -118,7 +130,7 @@ export default async function DayPage({
   const label = formatLongDate(dayStart);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="app-layout">
       {/* Sidebar */}
       <Sidebar
         activeTripName={trip.name}
@@ -127,43 +139,54 @@ export default async function DayPage({
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col sm:ml-72">
+      <main className="app-main sm:ml-64">
         {/* Header */}
         <Header />
 
         {/* Content Area */}
-        <div className="flex-1 overflow-auto">
-          <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
+        <div className="app-content">
+          <div className="container-wide">
             <div className="space-y-6">
               {/* Page Header */}
-              <div className="card-elevated p-5 sm:p-6">
+              <div className="animate-fade-in">
                 <Link
                   href="/"
-                  className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500 transition hover:text-blue-600 mb-4"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-[rgb(var(--color-text-secondary))] transition hover:text-[rgb(var(--color-accent))] mb-4"
                 >
-                  <span>←</span>
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
                   Volver al calendario
                 </Link>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-blue-600">
-                    {trip.name}
-                  </p>
-                  <h1 className="mt-3 text-3xl font-semibold tracking-tight text-gray-900 capitalize">
-                    {label}
-                  </h1>
-                  <p className="mt-1 text-sm text-gray-700">
-                    {trip.destinations || "Define un destino para este viaje"}
-                  </p>
+                <div className="card p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
+                      <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <span className="badge badge-accent text-xs uppercase">
+                        {trip.name}
+                      </span>
+                      <h1 className="mt-2 text-2xl font-semibold text-[rgb(var(--color-text-primary))] capitalize">
+                        {label}
+                      </h1>
+                      <p className="mt-1 text-sm text-[rgb(var(--color-text-secondary))]">
+                        {trip.destinations || "Organizá tu día"}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Two Column Layout */}
-              <div className="grid gap-5 md:gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-                <div className="flex flex-col gap-5">
+              <div className="grid gap-6 lg:grid-cols-[1fr_400px]">
+                <div className="space-y-6 animate-fade-in">
                   <ItemsBoardRefactored date={dateParam} items={items} />
                 </div>
 
-                <aside className="flex flex-col gap-4">
+                <aside className="space-y-6 animate-slide-in-right">
                   <DayForm
                     date={dateParam}
                     initialCity={day?.city ?? null}
@@ -176,7 +199,7 @@ export default async function DayPage({
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

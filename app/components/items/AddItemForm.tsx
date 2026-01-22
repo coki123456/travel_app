@@ -68,9 +68,27 @@ export default function AddItemForm({ date }: AddItemFormProps) {
   };
 
   return (
-    <Card variant="default" padding="md" className="mt-6">
-      <form onSubmit={submitNew} className="grid gap-3">
-        <div className="grid gap-3 sm:grid-cols-[1fr_1fr_1.5fr]">
+    <Card variant="default" padding="md" className="mt-6 animate-fade-in">
+      <div className="mb-4 flex items-center gap-3">
+        <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
+            Nuevo elemento
+          </h3>
+          <p className="text-xs text-[rgb(var(--color-text-secondary))]">
+            Agregá actividades, notas o recordatorios
+          </p>
+        </div>
+      </div>
+
+      <div className="divider mb-4"></div>
+
+      <form onSubmit={submitNew} className="space-y-4">
+        <div className="grid gap-4 sm:grid-cols-2">
           <BlockTypeSelect
             block={block}
             type={type}
@@ -83,15 +101,18 @@ export default function AddItemForm({ date }: AddItemFormProps) {
             placeholder="Ej: Check-in del hotel"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
+            required
+            helper="¿Qué vas a hacer?"
           />
         </div>
 
         <FormTextarea
           label="Descripción"
           rows={3}
-          placeholder="Detalles o notas."
+          placeholder="Añadí detalles, horarios, direcciones..."
           value={description}
           onChange={(event) => setDescription(event.target.value)}
+          helper="Opcional: información adicional útil"
         />
 
         <ErrorAlert error={error} />
@@ -101,7 +122,11 @@ export default function AddItemForm({ date }: AddItemFormProps) {
           isLoading={isSubmitting}
           loadingText="Guardando..."
           variant="primary"
+          className="w-full"
         >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
           Agregar elemento
         </LoadingButton>
       </form>

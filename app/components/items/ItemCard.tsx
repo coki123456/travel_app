@@ -82,9 +82,9 @@ export default function ItemCard({
   };
 
   return (
-    <Card variant="default" padding="md" className="shadow-lg shadow-black/20">
+    <Card variant="hover" padding="md" className="animate-fade-in">
       {isEditing ? (
-        <div className="space-y-3">
+        <div className="space-y-4">
           <BlockTypeSelect
             block={editBlock}
             type={editType}
@@ -96,6 +96,7 @@ export default function ItemCard({
             label="Título"
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
+            required
           />
 
           <FormTextarea
@@ -103,53 +104,66 @@ export default function ItemCard({
             rows={3}
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
+            helper="Opcional: añade detalles adicionales"
           />
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pt-2">
             <LoadingButton
               onClick={handleSave}
               isLoading={isSubmitting}
               loadingText="Guardando..."
               variant="primary"
-              className="rounded-xl px-4 py-2 text-xs"
+              className="text-xs flex-1"
             >
-              Guardar
+              Guardar cambios
             </LoadingButton>
-            <LoadingButton
+            <button
+              type="button"
               onClick={handleCancel}
-              variant="secondary"
-              className="rounded-xl px-4 py-2 text-xs"
+              className="btn-secondary text-xs flex-1"
+              disabled={isSubmitting}
             >
               Cancelar
-            </LoadingButton>
+            </button>
           </div>
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <span className="uppercase tracking-[0.2em]">
+          <div className="flex items-center justify-between mb-3">
+            <span className="badge badge-accent text-xs uppercase tracking-wider">
               {getTypeLabel(item.type)}
             </span>
           </div>
-          <h3 className="mt-2 text-sm font-semibold text-slate-100">
+
+          <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))] mb-2">
             {item.title}
           </h3>
+
           {item.description && (
-            <p className="mt-2 text-sm text-slate-300">{item.description}</p>
+            <p className="text-sm text-[rgb(var(--color-text-secondary))] leading-relaxed mb-4">
+              {item.description}
+            </p>
           )}
-          <div className="mt-4 flex items-center gap-2">
+
+          <div className="flex items-center gap-2 pt-2 border-t border-[rgb(var(--color-border-light))]">
             <button
               type="button"
               onClick={() => setIsEditing(true)}
-              className="rounded-xl border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:border-slate-500"
+              className="btn-secondary text-xs flex-1"
             >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
               Editar
             </button>
             <button
               type="button"
               onClick={handleDelete}
-              className="rounded-xl border border-rose-500/40 px-3 py-2 text-xs font-semibold text-rose-200 transition hover:border-rose-400"
+              className="btn-secondary text-xs text-[rgb(var(--color-error))] hover:bg-[rgb(var(--color-error))]/5"
             >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
               Eliminar
             </button>
           </div>

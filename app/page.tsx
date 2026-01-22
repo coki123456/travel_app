@@ -84,7 +84,7 @@ export default async function HomePage() {
   const currentDay = dayMap.get(currentDayKey);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="app-layout">
       {/* Sidebar */}
       <Sidebar
         activeTripName={trip.name}
@@ -93,16 +93,27 @@ export default async function HomePage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col sm:ml-72">
+      <main className="app-main sm:ml-64">
         {/* Header */}
         <Header />
 
         {/* Content Area */}
-        <div className="flex-1 overflow-auto">
-          <div className="flex flex-col lg:flex-row gap-4 p-4 md:p-6 max-w-[1600px] mx-auto">
-            {/* Calendar Section */}
-            <div className="flex-1 min-w-0">
-              <div className="space-y-4">
+        <div className="app-content">
+          <div className="container-wide">
+            {/* Page Title */}
+            <div className="mb-8 animate-fade-in">
+              <h1 className="text-3xl font-semibold text-[rgb(var(--color-text-primary))] mb-2">
+                {trip.name}
+              </h1>
+              <p className="text-[rgb(var(--color-text-secondary))]">
+                {trip.destinations || "Organizá tu itinerario y disfrutá tu viaje"}
+              </p>
+            </div>
+
+            {/* Two Column Layout */}
+            <div className="grid lg:grid-cols-[1fr_400px] gap-6">
+              {/* Calendar Section */}
+              <div className="space-y-6 animate-fade-in">
                 {months.map((monthDays, index) => {
                   const reference = monthDays[0];
                   return (
@@ -117,19 +128,21 @@ export default async function HomePage() {
                   );
                 })}
               </div>
-            </div>
 
-            {/* Right Panel - Daily Itinerary */}
-            <div className="w-full lg:w-[400px] lg:sticky lg:top-4 lg:self-start">
-              <DailyItineraryCard
-                day={currentDay}
-                date={allDays[0]}
-                dateKey={formatDateKey(allDays[0])}
-              />
+              {/* Right Panel - Daily Itinerary */}
+              <aside className="animate-slide-in-right">
+                <div className="lg:sticky lg:top-6">
+                  <DailyItineraryCard
+                    day={currentDay}
+                    date={allDays[0]}
+                    dateKey={formatDateKey(allDays[0])}
+                  />
+                </div>
+              </aside>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

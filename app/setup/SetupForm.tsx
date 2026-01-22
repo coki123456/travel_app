@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FormInput, FormTextarea } from "../components/ui/FormInput";
+import ErrorAlert from "../components/ui/ErrorAlert";
+import LoadingButton from "../components/ui/LoadingButton";
 
 type InitialTrip = {
   id: string;
@@ -74,114 +77,94 @@ export default function SetupForm({ initialTrip }: Props) {
   };
 
   return (
-    <div className="card-elevated p-6">
-      <div className="flex items-center gap-3 mb-5">
-        <div className="text-2xl">
-          {initialTrip ? "✏️" : "➕"}
+    <div className="card p-6">
+      <div className="mb-4 flex items-center gap-3">
+        <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
+          {initialTrip ? (
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+          )}
         </div>
-        <h2 className="text-base font-bold text-gray-900">
-          {initialTrip ? "Editar viaje" : "Nuevo viaje"}
-        </h2>
+        <div>
+          <h2 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
+            {initialTrip ? "Editar viaje" : "Nuevo viaje"}
+          </h2>
+          <p className="text-xs text-[rgb(var(--color-text-secondary))]">
+            {initialTrip ? "Actualizá la información del viaje" : "Creá un nuevo viaje para comenzar"}
+          </p>
+        </div>
       </div>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        {error && (
-          <div className="flex items-center gap-3 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 animate-in">
-            <span className="text-lg">⚠️</span>
-            <p className="text-sm text-rose-200">{error}</p>
-          </div>
-        )}
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="name" className="text-sm font-semibold text-gray-700">
-            Nombre del viaje
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            maxLength={100}
-            className="input"
-            placeholder="Ej: Vacaciones en Europa"
-          />
-        </div>
+      <div className="divider mb-4"></div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <ErrorAlert error={error} />
+
+        <FormInput
+          label="Nombre del viaje"
+          type="text"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          maxLength={100}
+          placeholder="Ej: Vacaciones en Europa"
+          helper="Un nombre descriptivo para tu viaje"
+        />
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="startDate"
-              className="text-sm font-semibold text-gray-700"
-            >
-              Fecha de inicio
-            </label>
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              value={formData.startDate}
-              onChange={handleChange}
-              required
-              className="input"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="endDate"
-              className="text-sm font-semibold text-gray-700"
-            >
-              Fecha de fin
-            </label>
-            <input
-              type="date"
-              id="endDate"
-              name="endDate"
-              value={formData.endDate}
-              onChange={handleChange}
-              required
-              className="input"
-            />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="destinations"
-            className="text-sm font-semibold text-slate-300"
-          >
-            Destinos
-          </label>
-          <textarea
-            id="destinations"
-            name="destinations"
-            value={formData.destinations}
+          <FormInput
+            label="Fecha de inicio"
+            type="date"
+            id="startDate"
+            name="startDate"
+            value={formData.startDate}
             onChange={handleChange}
             required
-            maxLength={500}
-            rows={3}
-            className="textarea"
-            placeholder="Ej: Paris, Roma, Barcelona"
+          />
+
+          <FormInput
+            label="Fecha de fin"
+            type="date"
+            id="endDate"
+            name="endDate"
+            value={formData.endDate}
+            onChange={handleChange}
+            required
           />
         </div>
 
-        <button
+        <FormTextarea
+          label="Destinos"
+          id="destinations"
+          name="destinations"
+          value={formData.destinations}
+          onChange={handleChange}
+          required
+          maxLength={500}
+          rows={3}
+          placeholder="Ej: París, Roma, Barcelona"
+          helper="Listá los destinos principales"
+        />
+
+        <LoadingButton
           type="submit"
-          disabled={loading}
-          className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+          isLoading={loading}
+          loadingText="Guardando..."
+          variant="primary"
+          className="w-full"
         >
-          {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <span className="animate-spin">⏳</span>
-              Guardando...
-            </span>
-          ) : (
-            <>
-              {initialTrip ? "Actualizar viaje" : "Crear viaje"}
-            </>
-          )}
-        </button>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          {initialTrip ? "Actualizar viaje" : "Crear viaje"}
+        </LoadingButton>
       </form>
     </div>
   );

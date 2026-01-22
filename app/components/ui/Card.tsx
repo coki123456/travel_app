@@ -2,24 +2,25 @@ import React from "react";
 
 interface CardProps {
   children: React.ReactNode;
-  variant?: "default" | "glass" | "elevated" | "white";
+  variant?: "default" | "flat" | "hover";
   className?: string;
   padding?: "none" | "sm" | "md" | "lg";
 }
 
+/**
+ * Componente Card - Minimalista Moderno
+ * Usa las clases del sistema de diseño global
+ */
 export function Card({
   children,
   variant = "default",
   className = "",
   padding = "md"
 }: CardProps) {
-  const baseStyles = "rounded-2xl transition-all";
-
   const variantStyles = {
-    default: "bg-slate-900/70 border border-slate-800 shadow-lg shadow-black/30",
-    glass: "bg-white/95 backdrop-blur-sm border border-gray-200/50 shadow-lg",
-    elevated: "bg-slate-900/80 border border-white/10 shadow-xl",
-    white: "bg-white/95 backdrop-blur-sm border-l border-gray-200/50 shadow-xl",
+    default: "card",
+    flat: "card-flat",
+    hover: "card-hover",
   };
 
   const paddingStyles = {
@@ -31,7 +32,7 @@ export function Card({
 
   return (
     <div
-      className={`${baseStyles} ${variantStyles[variant]} ${paddingStyles[padding]} ${className}`}
+      className={`${variantStyles[variant]} ${paddingStyles[padding]} ${className}`}
     >
       {children}
     </div>
@@ -45,7 +46,7 @@ interface CardHeaderProps {
 
 export function CardHeader({ children, className = "" }: CardHeaderProps) {
   return (
-    <div className={`mb-4 ${className}`}>
+    <div className={`mb-5 ${className}`}>
       {children}
     </div>
   );
@@ -54,13 +55,28 @@ export function CardHeader({ children, className = "" }: CardHeaderProps) {
 interface CardTitleProps {
   children: React.ReactNode;
   className?: string;
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }
 
-export function CardTitle({ children, className = "" }: CardTitleProps) {
+export function CardTitle({ children, className = "", as = "h3" }: CardTitleProps) {
+  const Component = as;
   return (
-    <h3 className={`text-lg font-semibold ${className}`}>
+    <Component className={`font-semibold text-[rgb(var(--color-text-primary))] ${className}`}>
       {children}
-    </h3>
+    </Component>
+  );
+}
+
+interface CardDescriptionProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function CardDescription({ children, className = "" }: CardDescriptionProps) {
+  return (
+    <p className={`text-sm text-[rgb(var(--color-text-secondary))] mt-1 ${className}`}>
+      {children}
+    </p>
   );
 }
 
@@ -71,7 +87,7 @@ interface CardContentProps {
 
 export function CardContent({ children, className = "" }: CardContentProps) {
   return (
-    <div className={className}>
+    <div className={`content-spacing ${className}`}>
       {children}
     </div>
   );
@@ -84,7 +100,7 @@ interface CardFooterProps {
 
 export function CardFooter({ children, className = "" }: CardFooterProps) {
   return (
-    <div className={`mt-4 pt-4 border-t border-gray-200 ${className}`}>
+    <div className={`mt-5 pt-5 divider flex items-center gap-3 ${className}`}>
       {children}
     </div>
   );

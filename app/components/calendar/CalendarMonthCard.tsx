@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Card } from "../ui/Card";
+import { Card, CardHeader, CardTitle } from "../ui/Card";
 
 type DaySummary = {
   id: string;
@@ -70,28 +70,40 @@ export default function CalendarMonthCard({
   const matrix = buildMonthMatrix(monthDays);
 
   return (
-    <Card variant="glass" className="mb-6 animate-fade-in">
+    <Card variant="default" padding="lg">
       {/* Month Header */}
-      <div className="flex items-center justify-between mb-6">
-        <button className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl transition-colors">
-          ◀
-        </button>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <button
+            className="btn-ghost w-9 h-9 p-0"
+            aria-label="Mes anterior"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-        <h3 className="text-xl font-bold text-gray-900 capitalize">
-          {monthLabel}
-        </h3>
+          <CardTitle as="h2" className="text-xl capitalize">
+            {monthLabel}
+          </CardTitle>
 
-        <button className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl transition-colors">
-          ▶
-        </button>
-      </div>
+          <button
+            className="btn-ghost w-9 h-9 p-0"
+            aria-label="Mes siguiente"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </CardHeader>
 
       {/* Day Headers */}
       <div className="grid grid-cols-7 gap-2 mb-3">
         {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((label) => (
           <div
             key={label}
-            className="text-center text-xs font-semibold text-gray-500 py-2"
+            className="text-center text-xs font-semibold text-[rgb(var(--color-text-tertiary))] uppercase tracking-wider py-2"
           >
             {label}
           </div>
@@ -117,28 +129,50 @@ export default function CalendarMonthCard({
           const isPast = cellDay < today;
           const isToday = cellDay.getTime() === today.getTime();
 
+          if (!inTripRange) {
+            return (
+              <div
+                key={key}
+                className="aspect-square rounded-[var(--radius-md)] flex items-center justify-center text-sm text-[rgb(var(--color-text-tertiary))]/40"
+              >
+                <span>{cell.getDate()}</span>
+              </div>
+            );
+          }
+
           return (
             <Link
               key={key}
               href={`/day/${key}`}
-              className={`aspect-square rounded-xl flex flex-col items-center justify-center text-sm font-medium transition-all relative group ${
-                inTripRange
-                  ? isToday
-                    ? "bg-blue-500 text-white shadow-lg shadow-blue-500/40 scale-105"
-                    : isPast
-                    ? "bg-gray-100 text-gray-400 hover:bg-gray-200"
-                    : day?.summary
-                    ? "bg-blue-50 text-blue-700 border-2 border-blue-500 hover:shadow-lg hover:scale-105"
-                    : "bg-white border-2 border-gray-200 text-gray-700 hover:border-blue-400 hover:shadow-lg hover:scale-105"
-                  : "text-gray-300 cursor-default"
+              className={`aspect-square rounded-[var(--radius-md)] flex flex-col items-center justify-center text-sm font-medium transition-all duration-[var(--transition-base)] relative hover-lift group ${
+                isToday
+                  ? "bg-[rgb(var(--color-accent))] text-white shadow-[var(--shadow-lg)] scale-[1.02]"
+                  : isPast
+                  ? "bg-[rgb(var(--color-bg-tertiary))] text-[rgb(var(--color-text-tertiary))] hover:bg-[rgb(var(--color-border-medium))]"
+                  : day?.summary
+                  ? "bg-[rgb(var(--color-accent-light))] text-[rgb(var(--color-accent))] border-2 border-[rgb(var(--color-accent))]/30"
+                  : "bg-[rgb(var(--color-bg-secondary))] border border-[rgb(var(--color-border-light))] text-[rgb(var(--color-text-primary))] hover:border-[rgb(var(--color-accent))]/50"
               }`}
             >
-              <span className="text-base">{cell.getDate()}</span>
-              {day?.summary && (
-                <div className={`mt-1 w-1.5 h-1.5 rounded-full ${isToday ? 'bg-white' : 'bg-blue-500'}`} />
+              <span className={isToday ? "font-semibold" : ""}>{cell.getDate()}</span>
+
+              {/* Indicator dot for days with summary */}
+              {day?.summary && !isToday && (
+                <div className="mt-1 w-1 h-1 rounded-full bg-[rgb(var(--color-accent))]" />
               )}
+
+              {/* Today indicator */}
               {isToday && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[rgb(var(--color-error))] rounded-full border-2 border-[rgb(var(--color-bg-secondary))]" />
+              )}
+
+              {/* City tooltip on hover */}
+              {day?.city && (
+                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  <div className="badge badge-accent text-xs whitespace-nowrap">
+                    {day.city}
+                  </div>
+                </div>
               )}
             </Link>
           );

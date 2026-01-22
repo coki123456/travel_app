@@ -21,34 +21,59 @@ export default function BlockTypeSelect({
   className = "",
 }: BlockTypeSelectProps) {
   return (
-    <div className={`grid gap-3 sm:grid-cols-2 ${className}`}>
+    <div className={`grid gap-4 sm:grid-cols-2 ${className}`}>
       <div>
-        <label className="text-xs font-semibold text-slate-300">Bloque</label>
-        <select
-          className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
-          value={block}
-          onChange={(e) => onBlockChange(e.target.value)}
-        >
-          {BLOCKS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <label className="block text-sm font-medium text-[rgb(var(--color-text-primary))] mb-2">
+          Bloque horario
+        </label>
+        <div className="relative">
+          <select
+            className="input appearance-none pr-10"
+            value={block}
+            onChange={(e) => onBlockChange(e.target.value)}
+          >
+            {BLOCKS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <svg
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[rgb(var(--color-text-tertiary))] pointer-events-none"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
       </div>
+
       <div>
-        <label className="text-xs font-semibold text-slate-300">Tipo</label>
-        <select
-          className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/40 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-cyan-400/70"
-          value={type}
-          onChange={(e) => onTypeChange(e.target.value)}
-        >
-          {ITEM_TYPES.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <label className="block text-sm font-medium text-[rgb(var(--color-text-primary))] mb-2">
+          Categoría
+        </label>
+        <div className="relative">
+          <select
+            className="input appearance-none pr-10"
+            value={type}
+            onChange={(e) => onTypeChange(e.target.value)}
+          >
+            {ITEM_TYPES.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <svg
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[rgb(var(--color-text-tertiary))] pointer-events-none"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
       </div>
     </div>
   );

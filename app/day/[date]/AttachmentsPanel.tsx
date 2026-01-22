@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ErrorAlert from "../../components/ui/ErrorAlert";
+import LoadingButton from "../../components/ui/LoadingButton";
 
 type AttachmentView = {
   id: string;
@@ -70,67 +72,121 @@ export default function AttachmentsPanel({
   };
 
   return (
-    <div className="card-elevated p-6">
-      <h3 className="text-sm font-semibold text-gray-900">Adjuntos</h3>
-      <p className="mt-2 text-sm text-gray-600">
-        PDF o imágenes (JPG, PNG, WEBP).
-      </p>
+    <div className="card p-6">
+      <div className="mb-4 flex items-center gap-3">
+        <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
+            Adjuntos
+          </h3>
+          <p className="text-xs text-[rgb(var(--color-text-secondary))]">
+            PDF o imágenes (JPG, PNG, WEBP)
+          </p>
+        </div>
+      </div>
 
-      <form onSubmit={onSubmit} className="mt-4 grid gap-3">
-        <input
-          type="file"
-          accept=".pdf,image/jpeg,image/png,image/webp"
-          className="block w-full text-sm text-gray-700 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-500 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-white file:hover:bg-blue-600"
-          onChange={(event) => {
-            const selected = event.target.files?.[0] ?? null;
-            setFile(selected);
-          }}
-        />
+      <div className="divider mb-4"></div>
 
-        {error ? (
-          <div className="rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-            {error}
-          </div>
-        ) : null}
+      <form onSubmit={onSubmit} className="space-y-4">
+        <div className="relative">
+          <input
+            type="file"
+            accept=".pdf,image/jpeg,image/png,image/webp"
+            className="block w-full text-sm text-[rgb(var(--color-text-primary))]
+              file:mr-4 file:rounded-[var(--radius-md)] file:border-0
+              file:bg-[rgb(var(--color-accent))] file:px-4 file:py-2 file:text-xs
+              file:font-medium file:text-white
+              file:transition file:hover:bg-[rgb(var(--color-accent-hover))]
+              file:cursor-pointer cursor-pointer
+              border border-[rgb(var(--color-border-light))]
+              rounded-[var(--radius-md)] p-3
+              bg-[rgb(var(--color-bg-secondary))]
+              hover:border-[rgb(var(--color-accent))]/30"
+            onChange={(event) => {
+              const selected = event.target.files?.[0] ?? null;
+              setFile(selected);
+            }}
+          />
+        </div>
 
-        <button
+        <ErrorAlert error={error} />
+
+        <LoadingButton
           type="submit"
-          disabled={isSubmitting}
-          className="btn-primary disabled:cursor-not-allowed disabled:opacity-70"
+          isLoading={isSubmitting}
+          loadingText="Subiendo..."
+          variant="primary"
+          className="w-full"
         >
-          {isSubmitting ? "Subiendo..." : "Subir archivo"}
-        </button>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          Subir archivo
+        </LoadingButton>
       </form>
 
-      <div className="mt-5 space-y-3">
-        {attachments.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4 text-sm text-gray-600">
-            Sin adjuntos todavía.
+      {attachments.length > 0 && (
+        <>
+          <div className="divider my-5"></div>
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium text-[rgb(var(--color-text-primary))] mb-3">
+              Archivos adjuntos ({attachments.length})
+            </h4>
+            {attachments.map((attachment) => (
+              <a
+                key={attachment.id}
+                href={attachment.path}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-between p-3 rounded-[var(--radius-md)] border border-[rgb(var(--color-border-light))] bg-[rgb(var(--color-bg-tertiary))] transition hover:border-[rgb(var(--color-accent))]/30 hover:bg-[rgb(var(--color-accent-light))] group"
+              >
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-accent))]/10 flex items-center justify-center flex-shrink-0">
+                    {attachment.mimeType.startsWith('image/') ? (
+                      <svg className="w-4 h-4 text-[rgb(var(--color-accent))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-4 h-4 text-[rgb(var(--color-accent))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-sm font-medium text-[rgb(var(--color-text-primary))] truncate">
+                      {attachment.fileName}
+                    </span>
+                    <span className="text-xs text-[rgb(var(--color-text-tertiary))]">
+                      {formatSize(attachment.sizeBytes)}
+                    </span>
+                  </div>
+                </div>
+                <svg className="w-4 h-4 text-[rgb(var(--color-text-tertiary))] group-hover:text-[rgb(var(--color-accent))] flex-shrink-0 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            ))}
           </div>
-        ) : (
-          attachments.map((attachment) => (
-            <a
-              key={attachment.id}
-              href={attachment.path}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 transition hover:border-blue-300 hover:bg-blue-50"
-            >
-              <div className="flex flex-col">
-                <span className="font-semibold text-gray-900">
-                  {attachment.fileName}
-                </span>
-                <span className="text-xs text-gray-500">
-                  {attachment.mimeType} - {formatSize(attachment.sizeBytes)}
-                </span>
-              </div>
-              <span className="text-xs uppercase tracking-wider text-gray-400">
-                Ver
-              </span>
-            </a>
-          ))
-        )}
-      </div>
+        </>
+      )}
+
+      {attachments.length === 0 && (
+        <>
+          <div className="divider my-5"></div>
+          <div className="rounded-[var(--radius-lg)] border-2 border-dashed border-[rgb(var(--color-border-light))] bg-[rgb(var(--color-bg-tertiary))] p-6 text-center">
+            <svg className="w-8 h-8 mx-auto text-[rgb(var(--color-text-tertiary))] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-sm text-[rgb(var(--color-text-secondary))]">
+              Sin archivos adjuntos
+            </p>
+          </div>
+        </>
+      )}
     </div>
   );
 }

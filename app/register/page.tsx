@@ -4,6 +4,9 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FormInput } from "../components/ui/FormInput";
+import ErrorAlert from "../components/ui/ErrorAlert";
+import LoadingButton from "../components/ui/LoadingButton";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -54,258 +57,140 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen px-4 py-10">
-      <div className="page-shell grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="hidden rounded-3xl border border-slate-800/80 bg-gradient-to-br from-emerald-900/10 via-slate-900/30 to-blue-900/10 p-8 text-slate-100 shadow-lg shadow-black/30 backdrop-blur-xl lg:flex lg:flex-col lg:gap-5">
-          <div className="inline-flex items-center gap-3 rounded-full border border-slate-700/70 bg-slate-900/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-slate-300">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 shadow shadow-emerald-500/40" />
-            Nueva cuenta
-          </div>
-          <h1 className="text-4xl font-semibold leading-tight">
-            Empieza tu bitácora de viaje con un tablero limpio y adaptable.
-          </h1>
-          <p className="text-base text-slate-300">
-            Diseñamos las vistas para que organizar itinerarios, adjuntos y notas
-            sea cómodo en cualquier dispositivo.
-          </p>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="card p-4">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                Sin curvas
-              </p>
-              <p className="mt-2 text-sm text-slate-100">
-                Formularios claros, inputs amplios y feedback inmediato.
-              </p>
-            </div>
-            <div className="card p-4">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                Compartí
-              </p>
-              <p className="mt-2 text-sm text-slate-100">
-                Invita a otros a ver o editar tus planes sin perder control.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="card-elevated p-6 sm:p-8">
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-400 text-slate-950 shadow shadow-emerald-500/30">
-                <svg
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                  />
+    <div className="min-h-screen bg-[rgb(var(--color-bg-primary))] px-4 py-10 flex items-center justify-center">
+      <div className="container-wide">
+        <div className="grid items-center gap-8 lg:grid-cols-[1fr_1fr]">
+          {/* Left Side - Branding */}
+          <div className="hidden lg:flex lg:flex-col lg:gap-6 animate-fade-in">
+            <div className="inline-flex items-center gap-2 w-fit">
+              <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)]">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
-              <div>
-                <h2 className="text-2xl font-semibold text-slate-100">
-                  Crea tu cuenta
-                </h2>
-                <p className="text-sm text-slate-400">
-                  Accede a todas las vistas y sincroniza tus viajes.
+              <span className="text-lg font-semibold text-[rgb(var(--color-text-primary))]">
+                Travel Planner
+              </span>
+            </div>
+
+            <h1 className="text-4xl font-semibold leading-tight text-[rgb(var(--color-text-primary))]">
+              Empezá tu bitácora de viaje
+            </h1>
+            <p className="text-lg text-[rgb(var(--color-text-secondary))]">
+              Creá tu cuenta en segundos y comenzá a planificar viajes inolvidables. Todo organizado, simple y accesible.
+            </p>
+
+            <div className="grid gap-4 sm:grid-cols-2 mt-4">
+              <div className="card-flat p-4">
+                <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-success))]/10 flex items-center justify-center mb-3">
+                  <svg className="w-4 h-4 text-[rgb(var(--color-success))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-[rgb(var(--color-text-primary))] mb-1">
+                  Fácil de usar
+                </h3>
+                <p className="text-xs text-[rgb(var(--color-text-secondary))]">
+                  Interfaz intuitiva y clara
+                </p>
+              </div>
+
+              <div className="card-flat p-4">
+                <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-accent))]/10 flex items-center justify-center mb-3">
+                  <svg className="w-4 h-4 text-[rgb(var(--color-accent))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-[rgb(var(--color-text-primary))] mb-1">
+                  Compartí con otros
+                </h3>
+                <p className="text-xs text-[rgb(var(--color-text-secondary))]">
+                  Invitá amigos a tus viajes
                 </p>
               </div>
             </div>
-            <Link
-              href="/login"
-              className="text-xs font-semibold text-cyan-300 hover:text-cyan-100"
-            >
-              Iniciar sesión
-            </Link>
           </div>
 
-          {error ? (
-            <div className="mb-5 flex items-center gap-3 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3">
-              <svg
-                className="h-5 w-5 text-rose-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <p className="text-sm text-rose-50">{error}</p>
-            </div>
-          ) : null}
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label
-                htmlFor="name"
-                className="mb-2 block text-sm font-medium text-slate-200"
-              >
-                Nombre
-              </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-500">
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
+          {/* Right Side - Register Form */}
+          <div className="card p-8 max-w-md mx-auto w-full animate-fade-in">
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-1">
+                <div className="w-12 h-12 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)] lg:hidden">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                   </svg>
                 </div>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  className="input pl-11"
-                  placeholder="Tu nombre"
-                />
+                <h2 className="text-2xl font-semibold text-[rgb(var(--color-text-primary))]">
+                  Crear cuenta
+                </h2>
               </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-medium text-slate-200"
-              >
-                Email
-              </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-500">
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                    />
-                  </svg>
-                </div>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  required
-                  className="input pl-11"
-                  placeholder="tu@email.com"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="mb-2 block text-sm font-medium text-slate-200"
-              >
-                Contraseña
-              </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-500">
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    />
-                  </svg>
-                </div>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
-                  minLength={6}
-                  className="input pl-11"
-                  placeholder="••••••••"
-                />
-              </div>
-              <p className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-                <svg
-                  className="h-3 w-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Mínimo 6 caracteres.
+              <p className="text-sm text-[rgb(var(--color-text-secondary))]">
+                Unite y empezá a organizar tus viajes
               </p>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg
-                    className="h-5 w-5 animate-spin"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  Creando cuenta...
-                </span>
-              ) : (
-                "Crear cuenta"
-              )}
-            </button>
-          </form>
+            <ErrorAlert error={error} />
 
-          <div className="mt-6 flex items-center justify-between text-sm text-slate-400">
-            <span>¿Ya tienes cuenta?</span>
-            <Link
-              href="/login"
-              className="font-semibold text-cyan-300 hover:text-cyan-100"
-            >
-              Inicia sesión
-            </Link>
+            <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+              <FormInput
+                label="Nombre"
+                type="text"
+                id="name"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                required
+                placeholder="Tu nombre"
+              />
+
+              <FormInput
+                label="Email"
+                type="email"
+                id="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+                placeholder="tu@email.com"
+              />
+
+              <FormInput
+                label="Contraseña"
+                type="password"
+                id="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+                minLength={6}
+                placeholder="••••••••"
+                helper="Mínimo 6 caracteres"
+              />
+
+              <LoadingButton
+                type="submit"
+                isLoading={loading}
+                loadingText="Creando cuenta..."
+                variant="primary"
+                className="w-full mt-6"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+                Crear cuenta
+              </LoadingButton>
+            </form>
+
+            <div className="divider my-6"></div>
+
+            <div className="text-center">
+              <span className="text-sm text-[rgb(var(--color-text-secondary))]">
+                ¿Ya tenés cuenta?{" "}
+              </span>
+              <Link
+                href="/login"
+                className="text-sm font-medium text-[rgb(var(--color-accent))] hover:text-[rgb(var(--color-accent-hover))]"
+              >
+                Iniciá sesión
+              </Link>
+            </div>
           </div>
         </div>
       </div>
