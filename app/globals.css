@@ -106,121 +106,173 @@
    COMPONENTES REUTILIZABLES
    ============================================ */
 
-@layer components {
-  /* Botones */
-  .btn {
-    @apply inline-flex items-center justify-center gap-2;
-    @apply px-4 py-2.5 rounded-[var(--radius-md)];
-    @apply font-medium text-sm;
-    @apply transition-all duration-[var(--transition-base)];
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    @apply disabled:opacity-50 disabled:cursor-not-allowed;
-  }
+/* Botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all var(--transition-base);
+}
 
-  .btn-primary {
-    @apply btn;
-    @apply bg-[rgb(var(--color-accent))] text-white;
-    @apply hover:bg-[rgb(var(--color-accent-hover))];
-    @apply focus:ring-[rgb(var(--color-accent))]/30;
-    @apply shadow-[var(--shadow-sm)];
-  }
+.btn:focus {
+  outline: none;
+  ring: 2px;
+  ring-offset: 2px;
+}
 
-  .btn-secondary {
-    @apply btn;
-    @apply bg-[rgb(var(--color-bg-secondary))] text-[rgb(var(--color-text-primary))];
-    @apply border border-[rgb(var(--color-border-medium))];
-    @apply hover:bg-[rgb(var(--color-bg-tertiary))];
-    @apply hover:border-[rgb(var(--color-text-tertiary))];
-  }
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
-  .btn-ghost {
-    @apply btn;
-    @apply bg-transparent text-[rgb(var(--color-text-secondary))];
-    @apply hover:bg-[rgb(var(--color-bg-tertiary))];
-    @apply hover:text-[rgb(var(--color-text-primary))];
-  }
+.btn-primary {
+  background: rgb(var(--color-accent));
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
 
-  /* Cards */
-  .card {
-    @apply bg-[rgb(var(--color-bg-secondary))];
-    @apply rounded-[var(--radius-lg)];
-    @apply border border-[rgb(var(--color-border-light))];
-    @apply transition-all duration-[var(--transition-base)];
-  }
+.btn-primary:hover:not(:disabled) {
+  background: rgb(var(--color-accent-hover));
+}
 
-  .card-hover {
-    @apply card;
-    @apply hover:shadow-[var(--shadow-hover)];
-    @apply hover:border-[rgb(var(--color-border-medium))];
-    @apply hover:-translate-y-0.5;
-  }
+.btn-primary:focus {
+  ring-color: rgb(var(--color-accent) / 0.3);
+}
 
-  .card-flat {
-    @apply bg-[rgb(var(--color-bg-tertiary))];
-    @apply rounded-[var(--radius-lg)];
-    @apply border-0;
-  }
+.btn-secondary {
+  background: rgb(var(--color-bg-secondary));
+  color: rgb(var(--color-text-primary));
+  border: 1px solid rgb(var(--color-border-medium));
+}
 
-  /* Inputs */
-  .input {
-    @apply w-full px-3.5 py-2.5;
-    @apply bg-[rgb(var(--color-bg-secondary))];
-    @apply border border-[rgb(var(--color-border-medium))];
-    @apply rounded-[var(--radius-md)];
-    @apply text-[rgb(var(--color-text-primary))] text-sm;
-    @apply placeholder:text-[rgb(var(--color-text-tertiary))];
-    @apply transition-all duration-[var(--transition-fast)];
-    @apply focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-accent))]/20;
-    @apply focus:border-[rgb(var(--color-accent))];
-  }
+.btn-secondary:hover:not(:disabled) {
+  background: rgb(var(--color-bg-tertiary));
+  border-color: rgb(var(--color-text-tertiary));
+}
 
-  .input:disabled {
-    @apply bg-[rgb(var(--color-bg-tertiary))] cursor-not-allowed;
-  }
+.btn-ghost {
+  background: transparent;
+  color: rgb(var(--color-text-secondary));
+}
 
-  /* Badge/Pill */
-  .badge {
-    @apply inline-flex items-center gap-1.5;
-    @apply px-2.5 py-1 rounded-full;
-    @apply text-xs font-medium;
-    @apply bg-[rgb(var(--color-bg-tertiary))];
-    @apply text-[rgb(var(--color-text-secondary))];
-    @apply border border-[rgb(var(--color-border-light))];
-  }
+.btn-ghost:hover:not(:disabled) {
+  background: rgb(var(--color-bg-tertiary));
+  color: rgb(var(--color-text-primary));
+}
 
-  .badge-accent {
-    @apply badge;
-    @apply bg-[rgb(var(--color-accent-light))];
-    @apply text-[rgb(var(--color-accent))];
-    @apply border-[rgb(var(--color-accent))]/20;
-  }
+/* Cards */
+.card {
+  background: rgb(var(--color-bg-secondary));
+  border-radius: var(--radius-lg);
+  border: 1px solid rgb(var(--color-border-light));
+  transition: all var(--transition-base);
+}
 
-  /* Dividers */
-  .divider {
-    @apply border-t border-[rgb(var(--color-border-light))];
-  }
+.card-hover {
+  background: rgb(var(--color-bg-secondary));
+  border-radius: var(--radius-lg);
+  border: 1px solid rgb(var(--color-border-light));
+  transition: all var(--transition-base);
+}
 
-  .divider-strong {
-    @apply border-t border-[rgb(var(--color-border-medium))];
-  }
+.card-hover:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: rgb(var(--color-border-medium));
+  transform: translateY(-2px);
+}
 
-  /* Containers */
-  .container-narrow {
-    @apply max-w-4xl mx-auto px-6;
-  }
+.card-flat {
+  background: rgb(var(--color-bg-tertiary));
+  border-radius: var(--radius-lg);
+  border: 0;
+}
 
-  .container-wide {
-    @apply max-w-7xl mx-auto px-6;
-  }
+/* Inputs */
+.input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  background: rgb(var(--color-bg-secondary));
+  border: 1px solid rgb(var(--color-border-medium));
+  border-radius: var(--radius-md);
+  color: rgb(var(--color-text-primary));
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+}
 
-  /* Spacing utilities */
-  .section-spacing {
-    @apply py-12;
-  }
+.input::placeholder {
+  color: rgb(var(--color-text-tertiary));
+}
 
-  .content-spacing {
-    @apply space-y-6;
-  }
+.input:focus {
+  outline: none;
+  ring: 2px rgb(var(--color-accent) / 0.2);
+  border-color: rgb(var(--color-accent));
+}
+
+.input:disabled {
+  background: rgb(var(--color-bg-tertiary));
+  cursor: not-allowed;
+}
+
+/* Badge/Pill */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgb(var(--color-bg-tertiary));
+  color: rgb(var(--color-text-secondary));
+  border: 1px solid rgb(var(--color-border-light));
+}
+
+.badge-accent {
+  background: rgb(var(--color-accent-light));
+  color: rgb(var(--color-accent));
+  border-color: rgb(var(--color-accent) / 0.2);
+}
+
+/* Dividers */
+.divider {
+  border-top: 1px solid rgb(var(--color-border-light));
+}
+
+.divider-strong {
+  border-top: 1px solid rgb(var(--color-border-medium));
+}
+
+/* Containers */
+.container-narrow {
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.container-wide {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Spacing utilities */
+.section-spacing {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.content-spacing > * + * {
+  margin-top: 1.5rem;
 }
 
 /* ============================================
@@ -287,7 +339,7 @@
   }
 
   .skeleton {
-    @apply bg-gradient-to-r from-[rgb(var(--color-bg-tertiary))] via-[rgb(var(--color-border-light))] to-[rgb(var(--color-bg-tertiary))];
+    background: linear-gradient(90deg, rgb(var(--color-bg-tertiary)), rgb(var(--color-border-light)), rgb(var(--color-bg-tertiary)));
     background-size: 200% 100%;
     animation: shimmer 1.5s ease-in-out infinite;
   }
@@ -299,40 +351,54 @@
 
 /* Layout principal */
 .app-layout {
-  @apply flex h-screen overflow-hidden bg-[rgb(var(--color-bg-primary))];
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: rgb(var(--color-bg-primary));
 }
 
 .app-sidebar {
-  @apply w-64 bg-[rgb(var(--color-bg-secondary))];
-  @apply border-r border-[rgb(var(--color-border-light))];
-  @apply flex flex-col;
+  width: 16rem;
+  background: rgb(var(--color-bg-secondary));
+  border-right: 1px solid rgb(var(--color-border-light));
+  display: flex;
+  flex-direction: column;
 }
 
 .app-main {
-  @apply flex-1 flex flex-col overflow-hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .app-header {
-  @apply bg-[rgb(var(--color-bg-secondary))];
-  @apply border-b border-[rgb(var(--color-border-light))];
-  @apply px-6 py-4;
+  background: rgb(var(--color-bg-secondary));
+  border-bottom: 1px solid rgb(var(--color-border-light));
+  padding: 1rem 1.5rem;
 }
 
 .app-content {
-  @apply flex-1 overflow-auto;
-  @apply p-6;
+  flex: 1;
+  overflow: auto;
+  padding: 1.5rem;
 }
 
 /* Estados de hover mejorados */
 .hover-lift {
-  @apply transition-all duration-[var(--transition-base)];
-  @apply hover:-translate-y-0.5 hover:shadow-[var(--shadow-hover)];
+  transition: all var(--transition-base);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
 }
 
 /* Focus states mejorados */
-.focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-accent))]/20;
-  @apply focus:border-[rgb(var(--color-accent))];
+.focus-ring:focus {
+  outline: none;
+  ring: 2px rgb(var(--color-accent) / 0.2);
+  border-color: rgb(var(--color-accent));
 }
 
 /* Text utilities */
