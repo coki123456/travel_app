@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ErrorAlert from "../../components/ui/ErrorAlert";
 import LoadingButton from "../../components/ui/LoadingButton";
+import { EmojiIcon } from "../../components/ui/EmojiIcon";
 
 type AttachmentView = {
   id: string;
@@ -75,9 +76,7 @@ export default function AttachmentsPanel({
     <div className="card p-6">
       <div className="mb-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-          </svg>
+          <EmojiIcon symbol="📎" label="Adjuntos" className="text-xl" />
         </div>
         <div>
           <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
@@ -122,9 +121,7 @@ export default function AttachmentsPanel({
           variant="primary"
           className="w-full"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-          </svg>
+          <EmojiIcon symbol="☁️" label="Subir archivo" className="text-base" />
           Subir archivo
         </LoadingButton>
       </form>
@@ -147,13 +144,9 @@ export default function AttachmentsPanel({
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-accent))]/10 flex items-center justify-center flex-shrink-0">
                     {attachment.mimeType.startsWith('image/') ? (
-                      <svg className="w-4 h-4 text-[rgb(var(--color-accent))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
+                      <EmojiIcon symbol="🖼️" label="Imagen" className="text-base" />
                     ) : (
-                      <svg className="w-4 h-4 text-[rgb(var(--color-accent))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                      </svg>
+                      <EmojiIcon symbol="📄" label="Documento" className="text-base" />
                     )}
                   </div>
                   <div className="flex flex-col min-w-0">
@@ -165,9 +158,7 @@ export default function AttachmentsPanel({
                     </span>
                   </div>
                 </div>
-                <svg className="w-4 h-4 text-[rgb(var(--color-text-tertiary))] group-hover:text-[rgb(var(--color-accent))] flex-shrink-0 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
+                <EmojiIcon symbol="⬇️" label="Descargar" className="text-base" />
               </a>
             ))}
           </div>
@@ -178,9 +169,7 @@ export default function AttachmentsPanel({
         <>
           <div className="divider my-5"></div>
           <div className="rounded-[var(--radius-lg)] border-2 border-dashed border-[rgb(var(--color-border-light))] bg-[rgb(var(--color-bg-tertiary))] p-6 text-center">
-            <svg className="w-8 h-8 mx-auto text-[rgb(var(--color-text-tertiary))] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <EmojiIcon symbol="📂" label="Sin adjuntos" className="text-2xl" />
             <p className="text-sm text-[rgb(var(--color-text-secondary))]">
               Sin archivos adjuntos
             </p>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Card, CardHeader, CardTitle } from "../ui/Card";
+import { EmojiIcon } from "../ui/EmojiIcon";
 
 type DaySummary = {
   id: string;
@@ -78,9 +79,7 @@ export default function CalendarMonthCard({
             className="btn-ghost w-9 h-9 p-0"
             aria-label="Mes anterior"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <EmojiIcon symbol="◀️" label="Mes anterior" className="text-base" />
           </button>
 
           <CardTitle as="h2" className="text-xl capitalize">
@@ -91,9 +90,7 @@ export default function CalendarMonthCard({
             className="btn-ghost w-9 h-9 p-0"
             aria-label="Mes siguiente"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <EmojiIcon symbol="▶️" label="Mes siguiente" className="text-base" />
           </button>
         </div>
       </CardHeader>

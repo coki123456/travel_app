@@ -1,6 +1,7 @@
 "use client";
 
 import { BLOCKS, ITEM_TYPES } from "@/lib/constants";
+import { EmojiIcon } from "../ui/EmojiIcon";
 
 interface BlockTypeSelectProps {
   block: string;
@@ -38,14 +39,11 @@ export default function BlockTypeSelect({
               </option>
             ))}
           </select>
-          <svg
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[rgb(var(--color-text-tertiary))] pointer-events-none"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+          <EmojiIcon
+            symbol="⬇️"
+            label="Abrir opciones de bloque"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[rgb(var(--color-text-tertiary))] pointer-events-none"
+          />
         </div>
       </div>
 
@@ -65,14 +63,11 @@ export default function BlockTypeSelect({
               </option>
             ))}
           </select>
-          <svg
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[rgb(var(--color-text-tertiary))] pointer-events-none"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+          <EmojiIcon
+            symbol="⬇️"
+            label="Abrir categorías"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[rgb(var(--color-text-tertiary))] pointer-events-none"
+          />
         </div>
       </div>
     </div>

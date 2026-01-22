@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../../components/ui/Card";
 import ItemCard from "../../components/items/ItemCard";
 import AddItemForm from "../../components/items/AddItemForm";
+import { EmojiIcon } from "../../components/ui/EmojiIcon";
 
 type ItemView = {
   id: string;
@@ -52,9 +53,7 @@ export default function ItemsBoardRefactored({ date, items }: ItemsBoardProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                </svg>
+                <EmojiIcon symbol="📅" label="Itinerario del día" className="text-xl" />
               </div>
               <CardTitle>Itinerario del día</CardTitle>
             </div>
@@ -80,9 +79,7 @@ export default function ItemsBoardRefactored({ date, items }: ItemsBoardProps) {
 
               {group.items.length === 0 ? (
                 <div className="rounded-[var(--radius-lg)] border-2 border-dashed border-[rgb(var(--color-border-light))] bg-[rgb(var(--color-bg-tertiary))] p-6 text-center">
-                  <svg className="w-8 h-8 mx-auto text-[rgb(var(--color-text-tertiary))] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                  </svg>
+                  <EmojiIcon symbol="🗂️" label="Sin actividades" className="text-2xl" />
                   <p className="text-sm text-[rgb(var(--color-text-secondary))]">
                     Sin actividades en este bloque
                   </p>

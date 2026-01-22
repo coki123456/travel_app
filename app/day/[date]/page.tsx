@@ -9,6 +9,7 @@ import ItemsBoardRefactored from "./ItemsBoardRefactored";
 import AttachmentsPanel from "./AttachmentsPanel";
 import Sidebar from "../../components/Sidebar";
 import Header from "../../components/Header";
+import { EmojiIcon } from "../../components/ui/EmojiIcon";
 
 export const dynamic = "force-dynamic";
 
@@ -58,9 +59,7 @@ export default async function DayPage({
               <div className="card p-8 animate-fade-in">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 rounded-[var(--radius-md)] bg-[rgb(var(--color-error))]/10 flex items-center justify-center">
-                    <svg className="w-6 h-6 text-[rgb(var(--color-error))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    <EmojiIcon symbol="⚠️" label="Fecha inválida" className="text-2xl text-[rgb(var(--color-error))]" />
                   </div>
                   <div>
                     <h1 className="text-xl font-semibold text-[rgb(var(--color-text-primary))]">
@@ -75,9 +74,7 @@ export default async function DayPage({
                   href="/"
                   className="btn-primary mt-4 w-full"
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </svg>
+                  <EmojiIcon symbol="⬅️" label="Volver" className="text-base" />
                   Volver al calendario
                 </Link>
               </div>
@@ -153,17 +150,13 @@ export default async function DayPage({
                   href="/"
                   className="inline-flex items-center gap-2 text-sm font-medium text-[rgb(var(--color-text-secondary))] transition hover:text-[rgb(var(--color-accent))] mb-4"
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </svg>
+                  <EmojiIcon symbol="⬅️" label="Volver" className="text-base" />
                   Volver al calendario
                 </Link>
                 <div className="card p-6">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                      <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
+                      <EmojiIcon symbol="📆" label="Detalle del día" className="text-2xl" />
                     </div>
                     <div className="flex-1">
                       <span className="badge badge-accent text-xs uppercase">

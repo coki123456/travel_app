@@ -7,6 +7,7 @@ import { useState } from "react";
 import { FormInput } from "../components/ui/FormInput";
 import ErrorAlert from "../components/ui/ErrorAlert";
 import LoadingButton from "../components/ui/LoadingButton";
+import { EmojiIcon } from "../components/ui/EmojiIcon";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -64,9 +65,7 @@ export default function RegisterPage() {
           <div className="hidden lg:flex lg:flex-col lg:gap-5 animate-fade-in">
             <div className="inline-flex items-center gap-2 w-fit">
               <div className="w-9 h-9 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
+                <EmojiIcon symbol="🧳" label="Travel Planner" className="text-xl" />
               </div>
               <span className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
                 Travel Planner
@@ -83,9 +82,7 @@ export default function RegisterPage() {
             <div className="grid gap-4 sm:grid-cols-2 mt-4">
               <div className="card-flat p-4">
                 <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-success))]/10 flex items-center justify-center mb-3">
-                  <svg className="w-4 h-4 text-[rgb(var(--color-success))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <EmojiIcon symbol="✅" label="Fácil de usar" className="text-base text-[rgb(var(--color-success))]" />
                 </div>
                 <h3 className="text-sm font-semibold text-[rgb(var(--color-text-primary))] mb-1">
                   Fácil de usar
@@ -97,9 +94,7 @@ export default function RegisterPage() {
 
               <div className="card-flat p-4">
                 <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-accent))]/10 flex items-center justify-center mb-3">
-                  <svg className="w-4 h-4 text-[rgb(var(--color-accent))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                  </svg>
+                  <EmojiIcon symbol="🤝" label="Compartí con otros" className="text-base text-[rgb(var(--color-accent))]" />
                 </div>
                 <h3 className="text-sm font-semibold text-[rgb(var(--color-text-primary))] mb-1">
                   Compartí con otros
@@ -116,9 +111,7 @@ export default function RegisterPage() {
             <div className="mb-5">
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)] lg:hidden">
-                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                  </svg>
+                  <EmojiIcon symbol="🌟" label="Crear cuenta" className="text-xl" />
                 </div>
                 <h2 className="text-xl font-semibold text-[rgb(var(--color-text-primary))]">
                   Crear cuenta
@@ -171,9 +164,7 @@ export default function RegisterPage() {
                 variant="primary"
                 className="w-full mt-6"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                </svg>
+                <EmojiIcon symbol="🚀" label="Crear cuenta" className="text-base" />
                 Crear cuenta
               </LoadingButton>
             </form>

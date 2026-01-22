@@ -1,6 +1,7 @@
 "use client";
 
 import { signOut } from "next-auth/react";
+import { EmojiIcon } from "./components/ui/EmojiIcon";
 
 export default function LogoutButton() {
   return (
@@ -8,15 +9,8 @@ export default function LogoutButton() {
       onClick={() => signOut({ callbackUrl: "/login" })}
       className="w-full btn-ghost justify-start text-[rgb(var(--color-error))] hover:bg-[rgb(var(--color-error))]/5 hover:text-[rgb(var(--color-error))]"
     >
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-        />
-      </svg>
-      Cerrar Sesión
+      <EmojiIcon symbol="🚪" label="Cerrar sesión" className="text-base" />
+      Cerrar sesión
     </button>
   );
 }

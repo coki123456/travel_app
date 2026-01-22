@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormInput, FormTextarea } from "../components/ui/FormInput";
 import ErrorAlert from "../components/ui/ErrorAlert";
 import LoadingButton from "../components/ui/LoadingButton";
+import { EmojiIcon } from "../components/ui/EmojiIcon";
 
 type InitialTrip = {
   id: string;
@@ -80,15 +81,11 @@ export default function SetupForm({ initialTrip }: Props) {
     <div className="card p-6">
       <div className="mb-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-          {initialTrip ? (
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-            </svg>
-          ) : (
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-          )}
+          <EmojiIcon
+            symbol={initialTrip ? "✏️" : "➕"}
+            label={initialTrip ? "Editar viaje" : "Crear viaje"}
+            className="text-xl text-white"
+          />
         </div>
         <div>
           <h2 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
@@ -160,9 +157,7 @@ export default function SetupForm({ initialTrip }: Props) {
           variant="primary"
           className="w-full"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
+          <EmojiIcon symbol="✅" label="Guardar" className="text-base" />
           {initialTrip ? "Actualizar viaje" : "Crear viaje"}
         </LoadingButton>
       </form>
