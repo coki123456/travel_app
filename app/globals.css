@@ -52,10 +52,6 @@
   }
 
   /* Reset y base styles */
-  * {
-    @apply border-border-light;
-  }
-
   html {
     @apply antialiased;
     -webkit-font-smoothing: antialiased;
