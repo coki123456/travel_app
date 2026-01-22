@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { formatDateKey, normalizeToDay, buildDaysInRange } from "@/lib/date-utils";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import CalendarMonthCard from "./components/calendar/CalendarMonthCard";
@@ -14,32 +15,6 @@ type DaySummary = {
   date: Date;
   city: string | null;
   summary: string | null;
-};
-
-const formatDateKey = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
-
-const normalizeToNoon = (value: Date) =>
-  new Date(value.getFullYear(), value.getMonth(), value.getDate(), 12, 0, 0);
-
-const normalizeToDay = (value: Date) =>
-  new Date(value.getFullYear(), value.getMonth(), value.getDate(), 0, 0, 0);
-
-const buildDaysInRange = (start: Date, end: Date) => {
-  const result: Date[] = [];
-  const cursor = normalizeToNoon(start);
-  const limit = normalizeToNoon(end);
-
-  while (cursor <= limit) {
-    result.push(new Date(cursor));
-    cursor.setDate(cursor.getDate() + 1);
-  }
-
-  return result;
 };
 
 export default async function HomePage() {

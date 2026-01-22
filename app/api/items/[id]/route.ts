@@ -1,22 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { normalizeText } from "@/lib/validation";
+import { BLOCKS, ITEM_TYPES } from "@/lib/constants";
 
-const normalizeText = (value: unknown) => {
-  if (typeof value !== "string") return null;
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-};
-
-const ITEM_TYPES = [
-  "HOTEL",
-  "FLIGHT",
-  "ATTRACTION",
-  "FOOD",
-  "TRANSFER",
-  "NOTE",
-];
-
-const DAY_BLOCKS = ["ALL_DAY", "MORNING", "AFTERNOON", "EVENING"];
+// Extraer solo los valores de las constantes para validación
+const VALID_BLOCKS = BLOCKS.map(b => b.value);
+const VALID_ITEM_TYPES = ITEM_TYPES.map(t => t.value);
 
 export async function PATCH(
   request: NextRequest,
@@ -30,14 +19,14 @@ export async function PATCH(
   const title = normalizeText(body?.title) ?? undefined;
   const description = normalizeText(body?.description) ?? undefined;
 
-  if (block && !DAY_BLOCKS.includes(block)) {
+  if (block && !VALID_BLOCKS.includes(block)) {
     return NextResponse.json(
       { error: "Bloque invalido." },
       { status: 400 }
     );
   }
 
-  if (type && !ITEM_TYPES.includes(type)) {
+  if (type && !VALID_ITEM_TYPES.includes(type)) {
     return NextResponse.json(
       { error: "Tipo invalido." },
       { status: 400 }

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { parseDate, formatLongDate } from "@/lib/date-utils";
 import DayForm from "./DayForm";
 import ItemsBoardRefactored from "./ItemsBoardRefactored";
 import AttachmentsPanel from "./AttachmentsPanel";
@@ -17,27 +18,6 @@ type ItemView = {
   description: string | null;
   type: string;
   block: string;
-};
-
-const parseDateParam = (value: string) => {
-  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (!match) return null;
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = Number(match[3]);
-  if (!year || !month || !day) return null;
-
-  const date = new Date(year, month - 1, day, 0, 0, 0);
-  if (
-    Number.isNaN(date.valueOf()) ||
-    date.getFullYear() !== year ||
-    date.getMonth() !== month - 1 ||
-    date.getDate() !== day
-  ) {
-    return null;
-  }
-
-  return date;
 };
 
 export default async function DayPage({
@@ -62,7 +42,7 @@ export default async function DayPage({
 
   const resolvedParams = await params;
   const dateParam = resolvedParams?.date ?? "";
-  const dayStart = parseDateParam(dateParam);
+  const dayStart = parseDate(dateParam);
   if (!dayStart) {
     return (
       <div className="flex h-screen overflow-hidden bg-gray-50">
@@ -135,12 +115,7 @@ export default async function DayPage({
       path: attachment.path,
     })) ?? [];
 
-  const label = dayStart.toLocaleDateString("es-AR", {
-    weekday: "long",
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+  const label = formatLongDate(dayStart);
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">

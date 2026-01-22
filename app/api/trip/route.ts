@@ -2,18 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-
-const parseDate = (value: unknown) => {
-  if (typeof value !== "string") return null;
-  const date = new Date(`${value}T00:00:00`);
-  return Number.isNaN(date.valueOf()) ? null : date;
-};
-
-const normalizeText = (value: unknown) => {
-  if (typeof value !== "string") return null;
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-};
+import { parseDate } from "@/lib/date-utils";
+import { normalizeText } from "@/lib/validation";
 
 export async function GET() {
   const session = await auth();

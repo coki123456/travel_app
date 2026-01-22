@@ -1,35 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
+import { parseDate, normalizeToDay } from "@/lib/date-utils";
+import { normalizeText } from "@/lib/validation";
 
-const parseDate = (value: unknown, endOfDay = false) => {
-  if (typeof value !== "string") return null;
-  const base = value.split("T")[0];
-  const match = base.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (!match) return null;
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = Number(match[3]);
-  if (!year || !month || !day) return null;
-  const hours = endOfDay ? 23 : 0;
-  const minutes = endOfDay ? 59 : 0;
-  const seconds = endOfDay ? 59 : 0;
-  const date = new Date(year, month - 1, day, hours, minutes, seconds);
-  if (
-    Number.isNaN(date.valueOf()) ||
-    date.getFullYear() !== year ||
-    date.getMonth() !== month - 1 ||
-    date.getDate() !== day
-  ) {
-    return null;
-  }
-  return date;
-};
-
-const normalizeText = (value: unknown) => {
-  if (typeof value !== "string") return null;
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
+// Helper para parseDate con fin de día (23:59:59)
+const parseDateEndOfDay = (value: unknown) => {
+  const date = parseDate(value);
+  if (!date) return null;
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
 };
 
 export async function GET(request: NextRequest) {
@@ -47,7 +26,7 @@ export async function GET(request: NextRequest) {
   const toParam = searchParams.get("to");
 
   const fromDate = parseDate(fromParam);
-  const toDate = parseDate(toParam, true);
+  const toDate = parseDateEndOfDay(toParam);
 
   if (!fromDate || !toDate) {
     return NextResponse.json(

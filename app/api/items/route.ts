@@ -1,44 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
+import { parseDate } from "@/lib/date-utils";
+import { normalizeText } from "@/lib/validation";
+import { BLOCKS, ITEM_TYPES } from "@/lib/constants";
 
-const parseDate = (value: unknown) => {
-  if (typeof value !== "string") return null;
-  const base = value.split("T")[0];
-  const match = base.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (!match) return null;
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = Number(match[3]);
-  if (!year || !month || !day) return null;
-  const date = new Date(year, month - 1, day, 0, 0, 0);
-  if (
-    Number.isNaN(date.valueOf()) ||
-    date.getFullYear() !== year ||
-    date.getMonth() !== month - 1 ||
-    date.getDate() !== day
-  ) {
-    return null;
-  }
-  return date;
-};
-
-const normalizeText = (value: unknown) => {
-  if (typeof value !== "string") return null;
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-};
-
-const ITEM_TYPES = [
-  "HOTEL",
-  "FLIGHT",
-  "ATTRACTION",
-  "FOOD",
-  "TRANSFER",
-  "NOTE",
-];
-
-const DAY_BLOCKS = ["ALL_DAY", "MORNING", "AFTERNOON", "EVENING"];
+// Extraer solo los valores de las constantes para validación
+const VALID_BLOCKS = BLOCKS.map(b => b.value);
+const VALID_ITEM_TYPES = ITEM_TYPES.map(t => t.value);
 
 export async function POST(request: NextRequest) {
   const cookieStore = await cookies();
@@ -65,7 +34,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (!ITEM_TYPES.includes(type) || !DAY_BLOCKS.includes(block)) {
+  if (!VALID_ITEM_TYPES.includes(type) || !VALID_BLOCKS.includes(block)) {
     return NextResponse.json(
       { error: "Bloque o tipo invalido." },
       { status: 400 }
