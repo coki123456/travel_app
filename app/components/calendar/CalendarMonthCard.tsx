@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Card, CardHeader, CardTitle } from "../ui/Card";
-import { EmojiIcon } from "../ui/EmojiIcon";
+import { Icon } from "../ui/Icon";
 
 type DaySummary = {
   id: string;
@@ -79,7 +79,7 @@ export default function CalendarMonthCard({
             className="btn-ghost w-9 h-9 p-0"
             aria-label="Mes anterior"
           >
-            <EmojiIcon symbol="◀️" label="Mes anterior" className="text-base" />
+            <Icon name="arrow-left" label="Mes anterior" className="w-4 h-4" strokeWidth={2} />
           </button>
 
           <CardTitle as="h2" className="text-xl capitalize">
@@ -90,7 +90,7 @@ export default function CalendarMonthCard({
             className="btn-ghost w-9 h-9 p-0"
             aria-label="Mes siguiente"
           >
-            <EmojiIcon symbol="▶️" label="Mes siguiente" className="text-base" />
+            <Icon name="arrow-right" label="Mes siguiente" className="w-4 h-4" strokeWidth={2} />
           </button>
         </div>
       </CardHeader>

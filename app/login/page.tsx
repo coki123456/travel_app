@@ -7,7 +7,7 @@ import { useState } from "react";
 import { FormInput } from "../components/ui/FormInput";
 import ErrorAlert from "../components/ui/ErrorAlert";
 import LoadingButton from "../components/ui/LoadingButton";
-import { EmojiIcon } from "../components/ui/EmojiIcon";
+import { Icon } from "../components/ui/Icon";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -51,7 +51,7 @@ export default function LoginPage() {
           <div className="hidden lg:flex lg:flex-col lg:gap-5 animate-fade-in">
             <div className="inline-flex items-center gap-2 w-fit">
               <div className="w-9 h-9 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                <EmojiIcon symbol="✈️" label="Travel Planner" className="text-xl" />
+                <Icon name="plane" label="Travel Planner" className="w-5 h-5" strokeWidth={2} />
               </div>
               <span className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
                 Travel Planner
@@ -68,7 +68,7 @@ export default function LoginPage() {
             <div className="grid gap-4 sm:grid-cols-2 mt-4">
               <div className="card-flat p-4">
                 <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-accent))]/10 flex items-center justify-center mb-3">
-                  <EmojiIcon symbol="🔒" label="Seguro y confiable" className="text-base text-[rgb(var(--color-accent))]" />
+                  <Icon name="lock" label="Seguro y confiable" className="w-4 h-4 text-[rgb(var(--color-accent))]" strokeWidth={2} />
                 </div>
                 <h3 className="text-sm font-semibold text-[rgb(var(--color-text-primary))] mb-1">
                   Seguro y confiable
@@ -80,7 +80,7 @@ export default function LoginPage() {
 
               <div className="card-flat p-4">
                 <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-accent))]/10 flex items-center justify-center mb-3">
-                  <EmojiIcon symbol="📱" label="En todos lados" className="text-base text-[rgb(var(--color-accent))]" />
+                  <Icon name="phone" label="En todos lados" className="w-4 h-4 text-[rgb(var(--color-accent))]" strokeWidth={2} />
                 </div>
                 <h3 className="text-sm font-semibold text-[rgb(var(--color-text-primary))] mb-1">
                   En todos lados
@@ -97,7 +97,7 @@ export default function LoginPage() {
             <div className="mb-5">
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)] lg:hidden">
-                  <EmojiIcon symbol="✈️" label="Travel Planner" className="text-xl" />
+                  <Icon name="plane" label="Travel Planner" className="w-5 h-5" strokeWidth={2} />
                 </div>
                 <h2 className="text-xl font-semibold text-[rgb(var(--color-text-primary))]">
                   Bienvenido
@@ -138,7 +138,7 @@ export default function LoginPage() {
                 variant="primary"
                 className="w-full mt-6"
               >
-                <EmojiIcon symbol="➡️" label="Iniciar sesión" className="text-base" />
+                <Icon name="arrow-right" label="Iniciar sesión" className="w-4 h-4" strokeWidth={2} />
                 Iniciar sesión
               </LoadingButton>
             </form>

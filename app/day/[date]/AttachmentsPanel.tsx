@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ErrorAlert from "../../components/ui/ErrorAlert";
 import LoadingButton from "../../components/ui/LoadingButton";
-import { EmojiIcon } from "../../components/ui/EmojiIcon";
+import { Icon } from "../../components/ui/Icon";
 
 type AttachmentView = {
   id: string;
@@ -76,7 +76,7 @@ export default function AttachmentsPanel({
     <div className="card p-6">
       <div className="mb-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-          <EmojiIcon symbol="📎" label="Adjuntos" className="text-xl" />
+          <Icon name="paperclip" label="Adjuntos" className="w-5 h-5 text-white" strokeWidth={2} />
         </div>
         <div>
           <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
@@ -121,7 +121,7 @@ export default function AttachmentsPanel({
           variant="primary"
           className="w-full"
         >
-          <EmojiIcon symbol="☁️" label="Subir archivo" className="text-base" />
+          <Icon name="cloud-upload" label="Subir archivo" className="w-4 h-4" strokeWidth={2} />
           Subir archivo
         </LoadingButton>
       </form>
@@ -144,9 +144,9 @@ export default function AttachmentsPanel({
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-accent))]/10 flex items-center justify-center flex-shrink-0">
                     {attachment.mimeType.startsWith('image/') ? (
-                      <EmojiIcon symbol="🖼️" label="Imagen" className="text-base" />
+                      <Icon name="image" label="Imagen" className="w-4 h-4 text-[rgb(var(--color-accent))]" strokeWidth={2} />
                     ) : (
-                      <EmojiIcon symbol="📄" label="Documento" className="text-base" />
+                      <Icon name="file" label="Documento" className="w-4 h-4 text-[rgb(var(--color-accent))]" strokeWidth={2} />
                     )}
                   </div>
                   <div className="flex flex-col min-w-0">
@@ -158,7 +158,7 @@ export default function AttachmentsPanel({
                     </span>
                   </div>
                 </div>
-                <EmojiIcon symbol="⬇️" label="Descargar" className="text-base" />
+                <Icon name="download" label="Descargar" className="w-4 h-4 text-[rgb(var(--color-text-tertiary))] group-hover:text-[rgb(var(--color-accent))]" strokeWidth={2} />
               </a>
             ))}
           </div>
@@ -169,7 +169,7 @@ export default function AttachmentsPanel({
         <>
           <div className="divider my-5"></div>
           <div className="rounded-[var(--radius-lg)] border-2 border-dashed border-[rgb(var(--color-border-light))] bg-[rgb(var(--color-bg-tertiary))] p-6 text-center">
-            <EmojiIcon symbol="📂" label="Sin adjuntos" className="text-2xl" />
+            <Icon name="folder-open" label="Sin adjuntos" className="w-6 h-6 text-[rgb(var(--color-text-tertiary))]" strokeWidth={2} />
             <p className="text-sm text-[rgb(var(--color-text-secondary))]">
               Sin archivos adjuntos
             </p>

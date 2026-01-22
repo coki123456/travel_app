@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { EmojiIcon } from "./ui/EmojiIcon";
+import { Icon } from "./ui/Icon";
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,10 +11,11 @@ export default function Header() {
       {/* Search Bar */}
       <div className="flex-1 max-w-2xl ml-12 md:ml-0">
         <div className="relative">
-          <EmojiIcon
-            symbol="🔍"
+          <Icon
+            name="search"
             label="Buscar"
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-base text-[rgb(var(--color-text-tertiary))]"
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[rgb(var(--color-text-tertiary))]"
+            strokeWidth={2}
           />
           <input
             type="text"
@@ -33,7 +34,7 @@ export default function Header() {
           title="Notificaciones"
           aria-label="Notificaciones"
         >
-          <EmojiIcon symbol="🔔" label="Notificaciones" className="text-xl" />
+          <Icon name="bell" label="Notificaciones" className="w-5 h-5" strokeWidth={2} />
         </button>
 
         <button
@@ -41,7 +42,7 @@ export default function Header() {
           title="Configuración"
           aria-label="Configuración"
         >
-          <EmojiIcon symbol="⚙️" label="Configuración" className="text-xl" />
+          <Icon name="settings" label="Configuración" className="w-5 h-5" strokeWidth={2} />
         </button>
       </div>
     </header>

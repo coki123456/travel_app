@@ -6,7 +6,7 @@ import TripList from "./TripList";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { cookies } from "next/headers";
-import { EmojiIcon } from "../components/ui/EmojiIcon";
+import { Icon } from "../components/ui/Icon";
 
 export const dynamic = "force-dynamic";
 
@@ -48,9 +48,7 @@ export default async function SetupPage({
 
   const resolvedSearchParams = await searchParams;
   const editId = resolvedSearchParams?.edit;
-  const editingTrip = editId
-    ? trips.find((trip) => trip.id === editId)
-    : null;
+  const editingTrip = editId ? trips.find((trip) => trip.id === editId) : null;
 
   const tripList = trips.map((trip) => ({
     id: trip.id,
@@ -82,7 +80,7 @@ export default async function SetupPage({
                 <div className="card p-5">
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                      <EmojiIcon symbol="🧭" label="Configurar viajes" className="text-xl text-white" />
+                      <Icon name="clipboard" label="Configurar viajes" className="w-5 h-5 text-white" strokeWidth={2} />
                     </div>
                     <div className="flex-1">
                       <h1 className="text-xl font-semibold text-[rgb(var(--color-text-primary))] mb-1.5">
@@ -93,10 +91,10 @@ export default async function SetupPage({
                       </p>
                       <div className="flex flex-wrap gap-2">
                         <span className="badge badge-accent">
-                          {tripList.length} {tripList.length === 1 ? 'viaje' : 'viajes'}
+                          {tripList.length} {tripList.length === 1 ? "viaje" : "viajes"}
                         </span>
                         {editingTrip && (
-                          <span className="badge" style={{backgroundColor: 'rgb(var(--color-warning))/10', color: 'rgb(var(--color-warning))'}}>
+                          <span className="badge" style={{ backgroundColor: "rgb(var(--color-warning))/10", color: "rgb(var(--color-warning))" }}>
                             Editando: {editingTrip.name}
                           </span>
                         )}
@@ -131,22 +129,22 @@ export default async function SetupPage({
 
                   <div className="card-flat p-5">
                     <div className="flex items-center gap-2 mb-3">
-                      <EmojiIcon symbol="✅" label="Acciones disponibles" className="text-lg text-[rgb(var(--color-accent))]" />
+                      <Icon name="check" label="Acciones disponibles" className="w-5 h-5 text-[rgb(var(--color-accent))]" strokeWidth={2} />
                       <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
                         Qué podés hacer
                       </h3>
                     </div>
                     <ul className="space-y-2 text-sm text-[rgb(var(--color-text-secondary))]">
                       <li className="flex items-start gap-2">
-                        <EmojiIcon symbol="👉" className="text-[rgb(var(--color-accent))] mt-0.5" />
+                        <Icon name="arrow-right" className="text-[rgb(var(--color-accent))] w-4 h-4 mt-0.5" strokeWidth={2} />
                         <span>Definir fechas del viaje y destinos clave</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <EmojiIcon symbol="👉" className="text-[rgb(var(--color-accent))] mt-0.5" />
+                        <Icon name="arrow-right" className="text-[rgb(var(--color-accent))] w-4 h-4 mt-0.5" strokeWidth={2} />
                         <span>Elegir el viaje activo para las demás vistas</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <EmojiIcon symbol="👉" className="text-[rgb(var(--color-accent))] mt-0.5" />
+                        <Icon name="arrow-right" className="text-[rgb(var(--color-accent))] w-4 h-4 mt-0.5" strokeWidth={2} />
                         <span>Empezar el calendario día por día</span>
                       </li>
                     </ul>
@@ -154,7 +152,7 @@ export default async function SetupPage({
 
                   <div className="card-flat p-5">
                     <div className="flex items-center gap-2 mb-3">
-                      <EmojiIcon symbol="➡️" label="Siguiente paso" className="text-lg text-[rgb(var(--color-accent))]" />
+                      <Icon name="arrow-right" label="Siguiente paso" className="w-5 h-5 text-[rgb(var(--color-accent))]" strokeWidth={2} />
                       <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
                         Siguiente paso
                       </h3>

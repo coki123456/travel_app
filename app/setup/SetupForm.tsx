@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormInput, FormTextarea } from "../components/ui/FormInput";
 import ErrorAlert from "../components/ui/ErrorAlert";
 import LoadingButton from "../components/ui/LoadingButton";
-import { EmojiIcon } from "../components/ui/EmojiIcon";
+import { Icon } from "../components/ui/Icon";
 
 type InitialTrip = {
   id: string;
@@ -81,10 +81,11 @@ export default function SetupForm({ initialTrip }: Props) {
     <div className="card p-6">
       <div className="mb-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-          <EmojiIcon
-            symbol={initialTrip ? "✏️" : "➕"}
+          <Icon
+            name={initialTrip ? "edit" : "plus"}
             label={initialTrip ? "Editar viaje" : "Crear viaje"}
-            className="text-xl text-white"
+            className="w-5 h-5 text-white"
+            strokeWidth={2}
           />
         </div>
         <div>
@@ -157,7 +158,7 @@ export default function SetupForm({ initialTrip }: Props) {
           variant="primary"
           className="w-full"
         >
-          <EmojiIcon symbol="✅" label="Guardar" className="text-base" />
+          <Icon name="check" label="Guardar" className="w-4 h-4" strokeWidth={2} />
           {initialTrip ? "Actualizar viaje" : "Crear viaje"}
         </LoadingButton>
       </form>

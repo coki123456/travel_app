@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import LogoutButton from "../LogoutButton";
 import ActiveTripCard from "./trips/ActiveTripCard";
-import { EmojiIcon } from "./ui/EmojiIcon";
+import { Icon } from "./ui/Icon";
 
 interface SidebarProps {
   activeTripName: string | null;
@@ -13,16 +13,16 @@ interface SidebarProps {
   userEmail: string | null;
 }
 
+const navItems = [
+  { href: "/", label: "Inicio", icon: "calendar-days" as const },
+  { href: "/setup", label: "Mis Viajes", icon: "list" as const },
+  { href: "/setup", label: "Crear Viaje", icon: "plus" as const },
+  { href: "/", label: "Calendario", icon: "calendar" as const },
+];
+
 export default function Sidebar({ activeTripName, userName, userEmail }: SidebarProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-
-  const navItems = [
-    { href: "/", label: "Inicio", icon: "📍" },
-    { href: "/setup", label: "Mis Viajes", icon: "🧳" },
-    { href: "/setup", label: "Crear Viaje", icon: "➕" },
-    { href: "/", label: "Calendario", icon: "📅" },
-  ];
 
   return (
     <>
@@ -30,12 +30,12 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed top-4 left-4 z-[60] sm:hidden w-11 h-11 card flex items-center justify-center text-[rgb(var(--color-text-primary))] shadow-[var(--shadow-md)] hover-lift"
-        aria-label="Abrir menú"
+        aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
       >
         {isOpen ? (
-          <EmojiIcon symbol="✖️" label="Cerrar menú" className="text-lg" />
+          <Icon name="close" className="w-5 h-5" strokeWidth={2} />
         ) : (
-          <EmojiIcon symbol="☰" label="Abrir menú" className="text-lg" />
+          <Icon name="menu" className="w-5 h-5" strokeWidth={2} />
         )}
       </button>
 
@@ -48,23 +48,22 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
       )}
 
       {/* Sidebar */}
-      <aside className={`app-sidebar transition-transform duration-[var(--transition-slow)] sm:translate-x-0 ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      } fixed left-0 top-0 h-screen z-50`}>
-
+      <aside
+        className={`app-sidebar transition-transform duration-[var(--transition-slow)] sm:translate-x-0 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } fixed left-0 top-0 h-screen z-50`}
+      >
         {/* Logo */}
         <div className="p-6 border-b border-[rgb(var(--color-border-light))]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center text-2xl">
-              ✈️
+            <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
+              <Icon name="plane" className="w-5 h-5 text-white" strokeWidth={2} />
             </div>
             <div>
               <h1 className="text-lg font-semibold text-[rgb(var(--color-text-primary))] tracking-tight">
                 Travel Planner
               </h1>
-              <p className="text-xs text-[rgb(var(--color-text-tertiary))] mt-0.5">
-                Organizá tus viajes
-              </p>
+              <p className="text-xs text-[rgb(var(--color-text-tertiary))] mt-0.5">Organizá tus viajes</p>
             </div>
           </div>
         </div>
@@ -85,7 +84,7 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
                         : "text-[rgb(var(--color-text-secondary))] hover:bg-[rgb(var(--color-bg-tertiary))] hover:text-[rgb(var(--color-text-primary))]"
                     }`}
                   >
-                    <span className="text-lg">{item.icon}</span>
+                    <Icon name={item.icon} className="w-4 h-4" strokeWidth={2} />
                     <span className="font-medium text-sm">{item.label}</span>
                   </Link>
                 </li>

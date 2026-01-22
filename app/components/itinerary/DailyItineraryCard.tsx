@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../ui/Card";
-import { EmojiIcon } from "../ui/EmojiIcon";
+import { Icon } from "../ui/Icon";
 
 type DaySummary = {
   id: string;
@@ -35,11 +35,11 @@ export default function DailyItineraryCard({
       <CardHeader className="p-6 border-b border-[rgb(var(--color-border-light))]">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-            <EmojiIcon symbol="🗒️" label="Itinerario del día" className="text-xl" />
+            <Icon name="list" label="Itinerario del día" className="w-5 h-5 text-white" strokeWidth={2} />
           </div>
           <div className="flex-1 min-w-0">
             <CardTitle as="h3" className="text-base">
-              Itinerario del Día
+              Itinerario del día
             </CardTitle>
             <CardDescription className="capitalize text-xs mt-0.5">
               {formatLongDate(date)}
@@ -48,7 +48,7 @@ export default function DailyItineraryCard({
         </div>
         {day?.city && (
           <div className="badge badge-accent mt-3">
-            <EmojiIcon symbol="📍" label="Ciudad" className="text-xs" />
+            <Icon name="map-pin" label="Ciudad" className="w-3.5 h-3.5" strokeWidth={2} />
             {day.city}
           </div>
         )}
@@ -59,35 +59,25 @@ export default function DailyItineraryCard({
         {day?.summary ? (
           <div className="space-y-4">
             <div className="p-4 rounded-[var(--radius-md)] bg-[rgb(var(--color-accent-light))] border border-[rgb(var(--color-accent))]/20">
-              <p className="text-sm font-medium text-[rgb(var(--color-accent))]">
-                {day.summary}
-              </p>
+              <p className="text-sm font-medium text-[rgb(var(--color-accent))]">{day.summary}</p>
             </div>
 
             {/* Empty state for activities */}
             <div className="text-center py-6">
               <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-[rgb(var(--color-bg-tertiary))] flex items-center justify-center">
-                <EmojiIcon symbol="➕" label="Agregar actividad" className="text-lg text-[rgb(var(--color-text-tertiary))]" />
+                <Icon name="plus" label="Agregar actividad" className="w-5 h-5 text-[rgb(var(--color-text-tertiary))]" strokeWidth={2} />
               </div>
-              <p className="text-sm text-[rgb(var(--color-text-secondary))] mb-1">
-                No hay actividades planificadas
-              </p>
-              <p className="text-xs text-[rgb(var(--color-text-tertiary))]">
-                Hacé clic en el botón abajo para agregar
-              </p>
+              <p className="text-sm text-[rgb(var(--color-text-secondary))] mb-1">No hay actividades planificadas</p>
+              <p className="text-xs text-[rgb(var(--color-text-tertiary))]">Hacé clic en el botón abajo para agregar</p>
             </div>
           </div>
         ) : (
           <div className="text-center py-8">
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-[rgb(var(--color-bg-tertiary))] flex items-center justify-center">
-              <EmojiIcon symbol="📝" label="Sin información" className="text-lg text-[rgb(var(--color-text-tertiary))]" />
+              <Icon name="file" label="Sin información" className="w-5 h-5 text-[rgb(var(--color-text-tertiary))]" strokeWidth={2} />
             </div>
-            <p className="text-sm text-[rgb(var(--color-text-secondary))] mb-1">
-              Este día aún no tiene información
-            </p>
-            <p className="text-xs text-[rgb(var(--color-text-tertiary))]">
-              Empezá a planificar tu itinerario
-            </p>
+            <p className="text-sm text-[rgb(var(--color-text-secondary))] mb-1">Este día aún no tiene información</p>
+            <p className="text-xs text-[rgb(var(--color-text-tertiary))]">Empezá a planificar tu itinerario</p>
           </div>
         )}
       </CardContent>
@@ -95,7 +85,7 @@ export default function DailyItineraryCard({
       {/* Action Button */}
       <CardFooter className="p-6 border-t border-[rgb(var(--color-border-light))]">
         <Link href={`/day/${dateKey}`} className="w-full btn-primary justify-center">
-          <EmojiIcon symbol="📝" label="Editar día" className="text-base" />
+          <Icon name="edit" label="Editar día" className="w-4 h-4" strokeWidth={2} />
           {day?.summary ? "Editar día" : "Planificar día"}
         </Link>
       </CardFooter>

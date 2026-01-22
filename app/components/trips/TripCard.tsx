@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Card } from "../ui/Card";
 import LoadingButton from "../ui/LoadingButton";
-import { EmojiIcon } from "../ui/EmojiIcon";
+import { Icon } from "../ui/Icon";
 
 export interface TripCardProps {
   trip: {
@@ -57,7 +57,7 @@ export default function TripCard({
     <Card variant="hover" padding="md" className="animate-fade-in">
       <div className="mb-4 flex items-start gap-3">
         <div className="w-12 h-12 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-          <EmojiIcon symbol="✈️" label="Viaje" className="text-2xl" />
+          <Icon name="plane" label="Viaje" className="w-6 h-6 text-white" strokeWidth={2} />
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))] mb-2">
@@ -65,12 +65,12 @@ export default function TripCard({
           </h3>
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-xs text-[rgb(var(--color-text-secondary))]">
-              <EmojiIcon symbol="🗓️" label="Fechas" className="text-sm" />
+              <Icon name="calendar" label="Fechas" className="w-4 h-4" strokeWidth={2} />
               <span>{trip.dates}</span>
             </div>
             {trip.destinations && (
               <div className="flex items-center gap-2 text-xs text-[rgb(var(--color-text-secondary))]">
-                <EmojiIcon symbol="📍" label="Destinos" className="text-sm" />
+                <Icon name="map-pin" label="Destinos" className="w-4 h-4" strokeWidth={2} />
                 <span>{trip.destinations}</span>
               </div>
             )}
@@ -94,7 +94,7 @@ export default function TripCard({
           onClick={() => onEdit(trip.id)}
           className="btn-secondary text-xs"
         >
-          <EmojiIcon symbol="✏️" label="Editar" className="text-sm" />
+          <Icon name="edit" label="Editar" className="w-4 h-4" strokeWidth={2} />
         </button>
 
         <button
@@ -102,7 +102,7 @@ export default function TripCard({
           onClick={() => onShare(trip.id)}
           className="btn-secondary text-xs text-[rgb(var(--color-success))] hover:bg-[rgb(var(--color-success))]/5"
         >
-          <EmojiIcon symbol="🤝" label="Compartir" className="text-sm" />
+          <Icon name="share" label="Compartir" className="w-4 h-4" strokeWidth={2} />
         </button>
 
         <button
@@ -111,7 +111,7 @@ export default function TripCard({
           disabled={isLoading}
           className="btn-secondary text-xs text-[rgb(var(--color-error))] hover:bg-[rgb(var(--color-error))]/5 disabled:opacity-50"
         >
-          <EmojiIcon symbol="🗑️" label="Eliminar" className="text-sm" />
+          <Icon name="trash" label="Eliminar" className="w-4 h-4" strokeWidth={2} />
         </button>
       </div>
     </Card>

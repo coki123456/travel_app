@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../../components/ui/Card";
 import ItemCard from "../../components/items/ItemCard";
 import AddItemForm from "../../components/items/AddItemForm";
-import { EmojiIcon } from "../../components/ui/EmojiIcon";
+import { Icon } from "../../components/ui/Icon";
 
 type ItemView = {
   id: string;
@@ -53,12 +53,12 @@ export default function ItemsBoardRefactored({ date, items }: ItemsBoardProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                <EmojiIcon symbol="📅" label="Itinerario del día" className="text-xl" />
+                <Icon name="calendar-days" label="Itinerario del día" className="w-5 h-5 text-white" strokeWidth={2} />
               </div>
               <CardTitle>Itinerario del día</CardTitle>
             </div>
             <span className="badge badge-accent">
-              {items.length} {items.length === 1 ? 'elemento' : 'elementos'}
+              {items.length} {items.length === 1 ? "elemento" : "elementos"}
             </span>
           </div>
         </CardHeader>
@@ -71,18 +71,14 @@ export default function ItemsBoardRefactored({ date, items }: ItemsBoardProps) {
                 <span className="text-xs font-medium uppercase tracking-wider text-[rgb(var(--color-text-secondary))]">
                   {group.label}
                 </span>
-                <span className="text-xs text-[rgb(var(--color-text-tertiary))]">
-                  {group.items.length}
-                </span>
+                <span className="text-xs text-[rgb(var(--color-text-tertiary))]">{group.items.length}</span>
                 <div className="h-px flex-1 bg-[rgb(var(--color-border-light))]"></div>
               </div>
 
               {group.items.length === 0 ? (
                 <div className="rounded-[var(--radius-lg)] border-2 border-dashed border-[rgb(var(--color-border-light))] bg-[rgb(var(--color-bg-tertiary))] p-6 text-center">
-                  <EmojiIcon symbol="🗂️" label="Sin actividades" className="text-2xl" />
-                  <p className="text-sm text-[rgb(var(--color-text-secondary))]">
-                    Sin actividades en este bloque
-                  </p>
+                  <Icon name="folder-open" label="Sin actividades" className="w-6 h-6 text-[rgb(var(--color-text-tertiary))]" strokeWidth={2} />
+                  <p className="text-sm text-[rgb(var(--color-text-secondary))]">Sin actividades en este bloque</p>
                 </div>
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2">

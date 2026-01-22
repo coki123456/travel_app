@@ -9,7 +9,7 @@ import ItemsBoardRefactored from "./ItemsBoardRefactored";
 import AttachmentsPanel from "./AttachmentsPanel";
 import Sidebar from "../../components/Sidebar";
 import Header from "../../components/Header";
-import { EmojiIcon } from "../../components/ui/EmojiIcon";
+import { Icon } from "../../components/ui/Icon";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +59,7 @@ export default async function DayPage({
               <div className="card p-8 animate-fade-in">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 rounded-[var(--radius-md)] bg-[rgb(var(--color-error))]/10 flex items-center justify-center">
-                    <EmojiIcon symbol="⚠️" label="Fecha inválida" className="text-2xl text-[rgb(var(--color-error))]" />
+                    <Icon name="warning" label="Fecha inválida" className="w-6 h-6 text-[rgb(var(--color-error))]" strokeWidth={2} />
                   </div>
                   <div>
                     <h1 className="text-xl font-semibold text-[rgb(var(--color-text-primary))]">
@@ -74,7 +74,7 @@ export default async function DayPage({
                   href="/"
                   className="btn-primary mt-4 w-full"
                 >
-                  <EmojiIcon symbol="⬅️" label="Volver" className="text-base" />
+                  <Icon name="arrow-left" label="Volver" className="w-4 h-4" strokeWidth={2} />
                   Volver al calendario
                 </Link>
               </div>
@@ -150,13 +150,13 @@ export default async function DayPage({
                   href="/"
                   className="inline-flex items-center gap-2 text-sm font-medium text-[rgb(var(--color-text-secondary))] transition hover:text-[rgb(var(--color-accent))] mb-4"
                 >
-                  <EmojiIcon symbol="⬅️" label="Volver" className="text-base" />
+                  <Icon name="arrow-left" label="Volver" className="w-4 h-4" strokeWidth={2} />
                   Volver al calendario
                 </Link>
                 <div className="card p-6">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                      <EmojiIcon symbol="📆" label="Detalle del día" className="text-2xl" />
+                      <Icon name="calendar" label="Detalle del día" className="w-6 h-6 text-white" strokeWidth={2} />
                     </div>
                     <div className="flex-1">
                       <span className="badge badge-accent text-xs uppercase">
