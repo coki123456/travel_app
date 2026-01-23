@@ -3,7 +3,23 @@
 import { signOut } from "next-auth/react";
 import { EmojiIcon } from "./components/ui/EmojiIcon";
 
-export default function LogoutButton() {
+interface LogoutButtonProps {
+  variant?: "default" | "icon";
+}
+
+export default function LogoutButton({ variant = "default" }: LogoutButtonProps) {
+  if (variant === "icon") {
+    return (
+      <button
+        onClick={() => signOut({ callbackUrl: "/login" })}
+        className="w-9 h-9 flex items-center justify-center rounded-lg text-white/90 hover:bg-white/10 transition-all active:scale-95"
+        aria-label="Cerrar sesión"
+      >
+        <EmojiIcon emoji="🚪" label="Cerrar sesión" className="text-lg" />
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={() => signOut({ callbackUrl: "/login" })}

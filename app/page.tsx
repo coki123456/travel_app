@@ -3,10 +3,12 @@ import { cookies } from "next/headers";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { formatDateKey, normalizeToDay, buildDaysInRange } from "@/lib/date-utils";
-import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
 import CalendarMonthCard from "./components/calendar/CalendarMonthCard";
 import DailyItineraryCard from "./components/itinerary/DailyItineraryCard";
+import BottomNav from "./components/BottomNav";
+import { EmojiIcon } from "./components/ui/EmojiIcon";
+import Link from "next/link";
+import TripSelector from "./TripSelector";
 
 export const dynamic = "force-dynamic";
 
@@ -84,65 +86,67 @@ export default async function HomePage() {
   const currentDay = dayMap.get(currentDayKey);
 
   return (
-    <div className="app-layout">
-      {/* Sidebar */}
-      <Sidebar
-        activeTripName={trip.name}
-        userName={session.user.name}
-        userEmail={session.user.email}
-      />
-
-      {/* Main Content */}
-      <main className="app-main sm:ml-64">
-        {/* Header */}
-        <Header />
-
-        {/* Content Area */}
-        <div className="app-content">
-          <div className="container-wide">
-            {/* Page Title */}
-            <div className="mb-6 animate-fade-in">
-              <h1 className="text-2xl font-semibold text-[rgb(var(--color-text-primary))] mb-1.5">
+    <div className="min-h-screen bg-[rgb(var(--color-bg-primary))] pb-20">
+      {/* Header compacto */}
+      <div className="sticky top-0 z-40 bg-[rgb(var(--color-bg-secondary))] border-b border-[rgb(var(--color-border-light))] shadow-sm">
+        <div className="max-w-2xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-lg font-bold text-[rgb(var(--color-text-primary))] truncate">
                 {trip.name}
               </h1>
-              <p className="text-sm text-[rgb(var(--color-text-secondary))]">
-                {trip.destinations || "Organizá tu itinerario y disfrutá tu viaje"}
-              </p>
+              {trip.destinations && (
+                <p className="text-xs text-[rgb(var(--color-text-secondary))] truncate">
+                  {trip.destinations}
+                </p>
+              )}
             </div>
-
-            {/* Two Column Layout */}
-            <div className="grid lg:grid-cols-[1fr_400px] gap-6">
-              {/* Calendar Section */}
-              <div className="space-y-6 animate-fade-in">
-                {months.map((monthDays, index) => {
-                  const reference = monthDays[0];
-                  return (
-                    <CalendarMonthCard
-                      key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
-                      monthDays={monthDays}
-                      dayMap={dayMap}
-                      tripStartDate={trip.startDate}
-                      tripEndDate={trip.endDate}
-                      today={today}
-                    />
-                  );
-                })}
-              </div>
-
-              {/* Right Panel - Daily Itinerary */}
-              <aside className="animate-slide-in-right">
-                <div className="lg:sticky lg:top-6">
-                  <DailyItineraryCard
-                    day={currentDay}
-                    date={allDays[0]}
-                    dateKey={formatDateKey(allDays[0])}
-                  />
-                </div>
-              </aside>
-            </div>
+            <TripSelector trips={trips} currentTripId={trip.id} />
           </div>
         </div>
-      </main>
+      </div>
+
+      {/* Content Area */}
+      <div className="max-w-2xl mx-auto px-4 py-6">
+        <div className="space-y-6">
+          {/* Calendar Section */}
+          {months.map((monthDays, index) => {
+            const reference = monthDays[0];
+            return (
+              <CalendarMonthCard
+                key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
+                monthDays={monthDays}
+                dayMap={dayMap}
+                tripStartDate={trip.startDate}
+                tripEndDate={trip.endDate}
+                today={today}
+              />
+            );
+          })}
+
+          {/* Daily Itinerary - Mobile optimized */}
+          <div className="mt-6">
+            <DailyItineraryCard
+              day={currentDay}
+              date={allDays[0]}
+              dateKey={formatDateKey(allDays[0])}
+            />
+          </div>
+
+          {/* Link al libro */}
+          <Link href="/book" className="block">
+            <div className="flex items-center justify-center gap-2 p-4 rounded-xl bg-[rgb(var(--color-bg-secondary))] border border-[rgb(var(--color-border-light))] hover:border-[rgb(var(--color-accent))]/50 transition-all">
+              <EmojiIcon emoji="📖" label="Ver libro del viaje" className="text-xl" />
+              <span className="text-sm font-medium text-[rgb(var(--color-text-primary))]">
+                Ver libro del viaje
+              </span>
+            </div>
+          </Link>
+        </div>
+      </div>
+
+      {/* Bottom Navigation */}
+      <BottomNav />
     </div>
   );
 }

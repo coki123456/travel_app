@@ -9,10 +9,11 @@ type Trip = {
 
 type Props = {
   trips: Trip[];
-  activeTripId: string | null;
+  currentTripId?: string;
 };
 
-export default function TripSelector({ trips, activeTripId }: Props) {
+export default function TripSelector({ trips, currentTripId }: Props) {
+  const activeTripId = currentTripId;
   const router = useRouter();
 
   const handleChange = async (tripId: string) => {
