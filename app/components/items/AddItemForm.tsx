@@ -7,7 +7,7 @@ import BlockTypeSelect from "./BlockTypeSelect";
 import { FormInput, FormTextarea } from "../ui/FormInput";
 import ErrorAlert from "../ui/ErrorAlert";
 import LoadingButton from "../ui/LoadingButton";
-import { Icon } from "../ui/Icon";
+import { EmojiIcon } from "../ui/EmojiIcon";
 
 interface AddItemFormProps {
   date: string;
@@ -72,7 +72,7 @@ export default function AddItemForm({ date }: AddItemFormProps) {
     <Card variant="default" padding="md" className="mt-6 animate-fade-in">
       <div className="mb-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-          <Icon name="plus" label="Nuevo elemento" className="w-5 h-5 text-white" strokeWidth={2} />
+          <EmojiIcon emoji="➕" label="Nuevo elemento" className="text-lg" />
         </div>
         <div>
           <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
@@ -123,7 +123,7 @@ export default function AddItemForm({ date }: AddItemFormProps) {
           variant="primary"
           className="w-full"
         >
-          <Icon name="plus" label="Agregar elemento" className="w-4 h-4" strokeWidth={2} />
+          <EmojiIcon emoji="➕" label="" className="text-base" />
           Agregar elemento
         </LoadingButton>
       </form>

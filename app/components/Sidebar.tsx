@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import LogoutButton from "../LogoutButton";
 import ActiveTripCard from "./trips/ActiveTripCard";
-import { Icon } from "./ui/Icon";
+import { EmojiIcon } from "./ui/EmojiIcon";
 
 interface SidebarProps {
   activeTripName: string | null;
@@ -14,10 +14,10 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { href: "/", label: "Inicio", icon: "calendar-days" as const },
-  { href: "/setup", label: "Mis Viajes", icon: "list" as const },
-  { href: "/setup", label: "Crear Viaje", icon: "plus" as const },
-  { href: "/", label: "Calendario", icon: "calendar" as const },
+  { href: "/", label: "Inicio", icon: "📆" },
+  { href: "/setup", label: "Mis Viajes", icon: "📋" },
+  { href: "/setup", label: "Crear Viaje", icon: "➕" },
+  { href: "/", label: "Calendario", icon: "📅" },
 ];
 
 export default function Sidebar({ activeTripName, userName, userEmail }: SidebarProps) {
@@ -33,9 +33,9 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
         aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
       >
         {isOpen ? (
-          <Icon name="close" className="w-5 h-5" strokeWidth={2} />
+          <EmojiIcon emoji="✕" label="" className="text-lg" />
         ) : (
-          <Icon name="menu" className="w-5 h-5" strokeWidth={2} />
+          <EmojiIcon emoji="☰" label="" className="text-lg" />
         )}
       </button>
 
@@ -57,7 +57,7 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
         <div className="p-6 border-b border-[rgb(var(--color-border-light))]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-              <Icon name="plane" className="w-5 h-5 text-white" strokeWidth={2} />
+              <EmojiIcon emoji="✈️" label="" className="text-lg" />
             </div>
             <div>
               <h1 className="text-lg font-semibold text-[rgb(var(--color-text-primary))] tracking-tight">
@@ -84,7 +84,7 @@ export default function Sidebar({ activeTripName, userName, userEmail }: Sidebar
                         : "text-[rgb(var(--color-text-secondary))] hover:bg-[rgb(var(--color-bg-tertiary))] hover:text-[rgb(var(--color-text-primary))]"
                     }`}
                   >
-                    <Icon name={item.icon} className="w-4 h-4" strokeWidth={2} />
+                    <EmojiIcon emoji={item.icon} label="" className="text-base" />
                     <span className="font-medium text-sm">{item.label}</span>
                   </Link>
                 </li>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormInput, FormTextarea } from "../components/ui/FormInput";
 import ErrorAlert from "../components/ui/ErrorAlert";
 import LoadingButton from "../components/ui/LoadingButton";
-import { Icon } from "../components/ui/Icon";
+import { EmojiIcon } from "../components/ui/EmojiIcon";
 
 type InitialTrip = {
   id: string;
@@ -158,7 +158,7 @@ export default function SetupForm({ initialTrip }: Props) {
           variant="primary"
           className="w-full"
         >
-          <Icon name="check" label="Guardar" className="w-4 h-4" strokeWidth={2} />
+          <EmojiIcon emoji="✓" label="" className="text-base" />
           {initialTrip ? "Actualizar viaje" : "Crear viaje"}
         </LoadingButton>
       </form>

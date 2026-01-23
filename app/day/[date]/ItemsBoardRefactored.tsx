@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../../components/ui/Card";
 import ItemCard from "../../components/items/ItemCard";
 import AddItemForm from "../../components/items/AddItemForm";
-import { Icon } from "../../components/ui/Icon";
+import { EmojiIcon } from "../../components/ui/EmojiIcon";
 
 type ItemView = {
   id: string;
@@ -53,7 +53,7 @@ export default function ItemsBoardRefactored({ date, items }: ItemsBoardProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                <Icon name="calendar-days" label="Itinerario del día" className="w-5 h-5 text-white" strokeWidth={2} />
+                <EmojiIcon emoji="📆" label="Itinerario del día" className="text-lg" />
               </div>
               <CardTitle>Itinerario del día</CardTitle>
             </div>
@@ -77,7 +77,7 @@ export default function ItemsBoardRefactored({ date, items }: ItemsBoardProps) {
 
               {group.items.length === 0 ? (
                 <div className="rounded-[var(--radius-lg)] border-2 border-dashed border-[rgb(var(--color-border-light))] bg-[rgb(var(--color-bg-tertiary))] p-6 text-center">
-                  <Icon name="folder-open" label="Sin actividades" className="w-6 h-6 text-[rgb(var(--color-text-tertiary))]" strokeWidth={2} />
+                  <EmojiIcon emoji="📂" label="Sin actividades" className="text-2xl opacity-60" />
                   <p className="text-sm text-[rgb(var(--color-text-secondary))]">Sin actividades en este bloque</p>
                 </div>
               ) : (

@@ -1,7 +1,7 @@
 "use client";
 
 import { BLOCKS, ITEM_TYPES } from "@/lib/constants";
-import { Icon } from "../ui/Icon";
+import { EmojiIcon } from "../ui/EmojiIcon";
 
 interface BlockTypeSelectProps {
   block: string;
@@ -39,11 +39,10 @@ export default function BlockTypeSelect({
               </option>
             ))}
           </select>
-          <Icon
-            name="chevron-down"
+          <EmojiIcon
+            emoji="▼"
             label="Abrir opciones de bloque"
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[rgb(var(--color-text-tertiary))] pointer-events-none"
-            strokeWidth={2}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm opacity-60 pointer-events-none"
           />
         </div>
       </div>
@@ -64,11 +63,10 @@ export default function BlockTypeSelect({
               </option>
             ))}
           </select>
-          <Icon
-            name="chevron-down"
+          <EmojiIcon
+            emoji="▼"
             label="Abrir categorías"
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[rgb(var(--color-text-tertiary))] pointer-events-none"
-            strokeWidth={2}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm opacity-60 pointer-events-none"
           />
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
-import { Icon } from "./Icon";
+import { EmojiIcon } from "./EmojiIcon";
 
 interface BaseInputProps {
   label?: string;
@@ -34,7 +34,7 @@ export function FormInput({ label, error, helper, className = "", ...props }: In
       )}
       {error && (
         <p className="mt-1.5 text-xs text-[rgb(var(--color-error))] flex items-center gap-1">
-          <Icon name="warning" className="text-[rgb(var(--color-error))] w-4 h-4" />
+          <EmojiIcon emoji="⚠️" label="" className="text-base" />
           {error}
         </p>
       )}
@@ -63,7 +63,7 @@ export function FormTextarea({ label, error, helper, className = "", ...props }:
       )}
       {error && (
         <p className="mt-1.5 text-xs text-[rgb(var(--color-error))] flex items-center gap-1">
-          <Icon name="warning" className="text-[rgb(var(--color-error))] w-4 h-4" />
+          <EmojiIcon emoji="⚠️" label="" className="text-base" />
           {error}
         </p>
       )}
@@ -106,7 +106,7 @@ export function FormSelect({ label, error, helper, className = "", options, ...p
       )}
       {error && (
         <p className="mt-1.5 text-xs text-[rgb(var(--color-error))] flex items-center gap-1">
-          <Icon name="warning" className="text-[rgb(var(--color-error))] w-4 h-4" />
+          <EmojiIcon emoji="⚠️" label="" className="text-base" />
           {error}
         </p>
       )}

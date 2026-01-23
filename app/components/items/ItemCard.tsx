@@ -6,7 +6,7 @@ import { getTypeLabel } from "@/lib/constants";
 import BlockTypeSelect from "./BlockTypeSelect";
 import { FormInput, FormTextarea } from "../ui/FormInput";
 import LoadingButton from "../ui/LoadingButton";
-import { Icon } from "../ui/Icon";
+import { EmojiIcon } from "../ui/EmojiIcon";
 
 type ItemView = {
   id: string;
@@ -152,7 +152,7 @@ export default function ItemCard({
               onClick={() => setIsEditing(true)}
               className="btn-secondary text-xs flex-1"
             >
-              <Icon name="edit" label="Editar" className="w-4 h-4" strokeWidth={2} />
+              <EmojiIcon emoji="✏️" label="Editar" className="text-base" />
               Editar
             </button>
             <button
@@ -160,7 +160,7 @@ export default function ItemCard({
               onClick={handleDelete}
               className="btn-secondary text-xs text-[rgb(var(--color-error))] hover:bg-[rgb(var(--color-error))]/5"
             >
-              <Icon name="trash" label="Eliminar" className="w-4 h-4" strokeWidth={2} />
+              <EmojiIcon emoji="🗑️" label="Eliminar" className="text-base" />
               Eliminar
             </button>
           </div>
