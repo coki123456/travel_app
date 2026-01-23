@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FormInput, FormTextarea } from "../../components/ui/FormInput";
 import ErrorAlert from "../../components/ui/ErrorAlert";
 import LoadingButton from "../../components/ui/LoadingButton";
-import { Icon } from "../../components/ui/Icon";
+import { EmojiIcon } from "../../components/ui/EmojiIcon";
 
 type DayFormProps = {
   date: string;
@@ -63,7 +63,7 @@ export default function DayForm({
     <div className="card p-6">
       <div className="mb-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-          <Icon name="file" label="Detalles del día" className="w-5 h-5 text-white" strokeWidth={2} />
+          <EmojiIcon emoji="📝" label="Detalles del día" className="text-lg" />
         </div>
         <div>
           <h3 className="text-base font-semibold text-[rgb(var(--color-text-primary))]">Detalles del día</h3>
@@ -109,7 +109,7 @@ export default function DayForm({
           variant="primary"
           className="w-full"
         >
-          <Icon name="check" label="Guardar día" className="w-4 h-4" strokeWidth={2} />
+          <EmojiIcon emoji="✓" label="" className="text-base" />
           Guardar día
         </LoadingButton>
       </form>

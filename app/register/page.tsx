@@ -7,7 +7,7 @@ import { useState } from "react";
 import { FormInput } from "../components/ui/FormInput";
 import ErrorAlert from "../components/ui/ErrorAlert";
 import LoadingButton from "../components/ui/LoadingButton";
-import { Icon } from "../components/ui/Icon";
+import { EmojiIcon } from "../components/ui/EmojiIcon";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -65,7 +65,7 @@ export default function RegisterPage() {
           <div className="hidden lg:flex lg:flex-col lg:gap-5 animate-fade-in">
             <div className="inline-flex items-center gap-2 w-fit">
               <div className="w-9 h-9 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-                <Icon name="plane" label="Travel Planner" className="w-5 h-5" strokeWidth={2} />
+                <EmojiIcon emoji="✈️" label="Travel Planner" className="text-xl" />
               </div>
               <span className="text-base font-semibold text-[rgb(var(--color-text-primary))]">
                 Travel Planner
@@ -82,7 +82,7 @@ export default function RegisterPage() {
             <div className="grid gap-4 sm:grid-cols-2 mt-4">
               <div className="card-flat p-4">
                 <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-success))]/10 flex items-center justify-center mb-3">
-                  <Icon name="check" label="Fácil de usar" className="w-4 h-4 text-[rgb(var(--color-success))]" strokeWidth={2} />
+                  <EmojiIcon emoji="✓" label="Fácil de usar" className="text-base" />
                 </div>
                 <h3 className="text-sm font-semibold text-[rgb(var(--color-text-primary))] mb-1">
                   Fácil de usar
@@ -94,7 +94,7 @@ export default function RegisterPage() {
 
               <div className="card-flat p-4">
                 <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-[rgb(var(--color-accent))]/10 flex items-center justify-center mb-3">
-                  <Icon name="share" label="Compartí con otros" className="w-4 h-4 text-[rgb(var(--color-accent))]" strokeWidth={2} />
+                  <EmojiIcon emoji="🔗" label="Compartí con otros" className="text-base" />
                 </div>
                 <h3 className="text-sm font-semibold text-[rgb(var(--color-text-primary))] mb-1">
                   Compartí con otros
@@ -111,7 +111,7 @@ export default function RegisterPage() {
             <div className="mb-5">
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-success))] to-[rgb(var(--color-accent))] flex items-center justify-center shadow-[var(--shadow-sm)] lg:hidden">
-                  <Icon name="plus" label="Crear cuenta" className="w-5 h-5" strokeWidth={2} />
+                  <EmojiIcon emoji="➕" label="Crear cuenta" className="text-xl" />
                 </div>
                 <h2 className="text-xl font-semibold text-[rgb(var(--color-text-primary))]">
                   Crear cuenta
@@ -164,7 +164,7 @@ export default function RegisterPage() {
                 variant="primary"
                 className="w-full mt-6"
               >
-                <Icon name="check" label="Crear cuenta" className="w-4 h-4" strokeWidth={2} />
+                <EmojiIcon emoji="✓" label="" className="text-base" />
                 Crear cuenta
               </LoadingButton>
             </form>

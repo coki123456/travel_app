@@ -14,7 +14,8 @@
       "Bash(docker-compose up:*)",
       "Bash(npm run dev:*)",
       "Bash(npm run build:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []
