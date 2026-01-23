@@ -21,7 +21,7 @@ export default function ErrorAlert({ error, className = "" }: ErrorAlertProps) {
       role="alert"
     >
       <div className="flex items-start gap-3 p-4">
-        <Icon name="warning" label="Error" className="text-[rgb(var(--color-error))] flex-shrink-0 mt-0.5" />
+        <Icon name="warning" label="Error" className="w-5 h-5 text-[rgb(var(--color-error))] flex-shrink-0 mt-0.5" />
         <div className="flex-1">
           {errors.length === 1 ? (
             <p className="text-sm text-[rgb(var(--color-error))] font-medium">{errors[0]}</p>

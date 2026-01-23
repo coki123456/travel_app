@@ -150,13 +150,19 @@ export function Icon({ name, className = "", label, strokeWidth = 1.75 }: IconPr
   const iconPaths = paths[name];
   const accessibilityProps = label ? { role: "img", "aria-label": label } : { role: "img", "aria-hidden": true as const };
 
+  // Ensure size classes are always applied if not provided in className
+  const hasWidthClass = className.includes('w-');
+  const hasHeightClass = className.includes('h-');
+  const defaultSizes = !hasWidthClass && !hasHeightClass ? 'w-5 h-5' : '';
+  const finalClassName = [defaultSizes, className].filter(Boolean).join(" ");
+
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       strokeWidth={strokeWidth}
-      className={["w-5 h-5", className].filter(Boolean).join(" ")}
+      className={finalClassName}
       {...accessibilityProps}
     >
       {iconPaths}

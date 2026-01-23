@@ -14,7 +14,7 @@ export default function Header() {
           <Icon
             name="search"
             label="Buscar"
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[rgb(var(--color-text-tertiary))]"
+            className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[rgb(var(--color-text-tertiary))]"
             strokeWidth={2}
           />
           <input
