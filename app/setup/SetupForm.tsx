@@ -81,11 +81,10 @@ export default function SetupForm({ initialTrip }: Props) {
     <div className="card p-6">
       <div className="mb-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
-          <Icon
-            name={initialTrip ? "edit" : "plus"}
+          <EmojiIcon
+            emoji={initialTrip ? "✏️" : "➕"}
             label={initialTrip ? "Editar viaje" : "Crear viaje"}
-            className="w-5 h-5 text-white"
-            strokeWidth={2}
+            className="text-lg"
           />
         </div>
         <div>
