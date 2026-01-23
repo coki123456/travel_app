@@ -71,44 +71,46 @@ export default function CalendarMonthCard({
   const matrix = buildMonthMatrix(monthDays);
 
   return (
-    <Card variant="default" padding="lg">
-      {/* Month Header */}
-      <CardHeader>
-        <div className="flex items-center justify-between">
+    <Card variant="default" padding="lg" className="overflow-hidden">
+      {/* Month Header with gradient accent */}
+      <CardHeader className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgb(var(--color-accent))]/5 via-transparent to-[rgb(var(--color-accent))]/5 pointer-events-none" />
+        <div className="flex items-center justify-between relative">
           <button
-            className="btn-ghost w-9 h-9 p-0"
+            className="btn-ghost w-10 h-10 p-0 hover:scale-110 transition-transform duration-200"
             aria-label="Mes anterior"
           >
-            <EmojiIcon emoji="←" label="Mes anterior" className="text-base" />
+            <EmojiIcon emoji="←" label="Mes anterior" className="text-lg" />
           </button>
 
-          <CardTitle as="h2" className="text-xl capitalize">
+          <CardTitle as="h2" className="text-xl capitalize bg-gradient-to-r from-[rgb(var(--color-text-primary))] to-[rgb(var(--color-accent))] bg-clip-text text-transparent font-bold">
             {monthLabel}
           </CardTitle>
 
           <button
-            className="btn-ghost w-9 h-9 p-0"
+            className="btn-ghost w-10 h-10 p-0 hover:scale-110 transition-transform duration-200"
             aria-label="Mes siguiente"
           >
-            <EmojiIcon emoji="→" label="Mes siguiente" className="text-base" />
+            <EmojiIcon emoji="→" label="Mes siguiente" className="text-lg" />
           </button>
         </div>
       </CardHeader>
 
-      {/* Day Headers */}
-      <div className="grid grid-cols-7 gap-2 mb-3">
-        {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((label) => (
+      {/* Day Headers with enhanced styling */}
+      <div className="grid grid-cols-7 gap-2 mb-4 px-1">
+        {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((label, idx) => (
           <div
             key={label}
-            className="text-center text-xs font-semibold text-[rgb(var(--color-text-tertiary))] uppercase tracking-wider py-2"
+            className="text-center text-xs font-bold text-[rgb(var(--color-text-tertiary))] uppercase tracking-wider py-2 rounded-lg bg-[rgb(var(--color-bg-tertiary))]/30"
+            style={{ animationDelay: `${idx * 50}ms` }}
           >
             {label}
           </div>
         ))}
       </div>
 
-      {/* Calendar Grid */}
-      <div className="grid grid-cols-7 gap-2">
+      {/* Calendar Grid with enhanced cells */}
+      <div className="grid grid-cols-7 gap-2.5">
         {matrix.flat().map((cell, cellIndex) => {
           if (!cell) {
             return (
@@ -130,7 +132,7 @@ export default function CalendarMonthCard({
             return (
               <div
                 key={key}
-                className="aspect-square rounded-[var(--radius-md)] flex items-center justify-center text-sm text-[rgb(var(--color-text-tertiary))]/40"
+                className="aspect-square rounded-xl flex items-center justify-center text-sm text-[rgb(var(--color-text-tertiary))]/30 bg-[rgb(var(--color-bg-tertiary))]/10"
               >
                 <span>{cell.getDate()}</span>
               </div>
@@ -141,34 +143,42 @@ export default function CalendarMonthCard({
             <Link
               key={key}
               href={`/day/${key}`}
-              className={`aspect-square rounded-[var(--radius-md)] flex flex-col items-center justify-center text-sm font-medium transition-all duration-[var(--transition-base)] relative hover-lift group ${
+              className={`aspect-square rounded-xl flex flex-col items-center justify-center text-sm font-semibold transition-all duration-300 relative group overflow-hidden ${
                 isToday
-                  ? "bg-[rgb(var(--color-accent))] text-white shadow-[var(--shadow-lg)] scale-[1.02]"
+                  ? "bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] text-white shadow-lg shadow-[rgb(var(--color-accent))]/30 scale-105 ring-2 ring-[rgb(var(--color-accent))]/50 ring-offset-2 ring-offset-[rgb(var(--color-bg-primary))]"
                   : isPast
-                  ? "bg-[rgb(var(--color-bg-tertiary))] text-[rgb(var(--color-text-tertiary))] hover:bg-[rgb(var(--color-border-medium))]"
+                  ? "bg-[rgb(var(--color-bg-tertiary))]/50 text-[rgb(var(--color-text-tertiary))] hover:bg-[rgb(var(--color-bg-tertiary))] hover:scale-105 hover:shadow-md"
                   : day?.summary
-                  ? "bg-[rgb(var(--color-accent-light))] text-[rgb(var(--color-accent))] border-2 border-[rgb(var(--color-accent))]/30"
-                  : "bg-[rgb(var(--color-bg-secondary))] border border-[rgb(var(--color-border-light))] text-[rgb(var(--color-text-primary))] hover:border-[rgb(var(--color-accent))]/50"
+                  ? "bg-gradient-to-br from-[rgb(var(--color-accent-light))] to-[rgb(var(--color-accent-light))]/70 text-[rgb(var(--color-accent))] border-2 border-[rgb(var(--color-accent))]/40 hover:border-[rgb(var(--color-accent))] hover:shadow-lg hover:shadow-[rgb(var(--color-accent))]/20 hover:scale-105"
+                  : "bg-[rgb(var(--color-bg-secondary))] border-2 border-[rgb(var(--color-border-light))] text-[rgb(var(--color-text-primary))] hover:border-[rgb(var(--color-accent))]/60 hover:bg-[rgb(var(--color-bg-tertiary))]/30 hover:scale-105 hover:shadow-md"
               }`}
             >
-              <span className={isToday ? "font-semibold" : ""}>{cell.getDate()}</span>
+              {/* Subtle shine effect on hover */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-              {/* Indicator dot for days with summary */}
+              <span className={`relative z-10 ${isToday ? "font-bold text-lg" : ""}`}>
+                {cell.getDate()}
+              </span>
+
+              {/* Enhanced indicator for days with summary */}
               {day?.summary && !isToday && (
-                <div className="mt-1 w-1 h-1 rounded-full bg-[rgb(var(--color-accent))]" />
+                <div className="mt-1.5 flex gap-0.5 relative z-10">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[rgb(var(--color-accent))] animate-pulse" />
+                </div>
               )}
 
-              {/* Today indicator */}
+              {/* Animated today indicator */}
               {isToday && (
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[rgb(var(--color-error))] rounded-full border-2 border-[rgb(var(--color-bg-secondary))]" />
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-[rgb(var(--color-error))] rounded-full border-2 border-white shadow-lg animate-pulse" />
               )}
 
-              {/* City tooltip on hover */}
+              {/* Enhanced city tooltip */}
               {day?.city && (
-                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                  <div className="badge badge-accent text-xs whitespace-nowrap">
-                    {day.city}
+                <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none scale-90 group-hover:scale-100">
+                  <div className="badge badge-accent text-xs whitespace-nowrap shadow-lg backdrop-blur-sm">
+                    📍 {day.city}
                   </div>
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-2 h-2 bg-[rgb(var(--color-accent))] rotate-45" />
                 </div>
               )}
             </Link>
