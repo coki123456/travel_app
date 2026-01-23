@@ -394,41 +394,6 @@
    ESTILOS ESPECÍFICOS DEL PROYECTO
    ============================================ */
 
-/* Layout principal */
-.app-layout {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-  background: rgb(var(--color-bg-primary));
-}
-
-.app-sidebar {
-  width: 16rem;
-  background: rgb(var(--color-bg-secondary));
-  border-right: 1px solid rgb(var(--color-border-light));
-  display: flex;
-  flex-direction: column;
-}
-
-.app-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.app-header {
-  background: rgb(var(--color-bg-secondary));
-  border-bottom: 1px solid rgb(var(--color-border-light));
-  padding: 1rem 1.5rem;
-}
-
-.app-content {
-  flex: 1;
-  overflow: auto;
-  padding: 1rem;
-}
-
 /* Estados de hover mejorados */
 .hover-lift {
   transition: all var(--transition-base);

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { parseDate, normalizeToDay } from "@/lib/date-utils";
 import { normalizeText } from "@/lib/validation";
@@ -11,13 +12,56 @@ const parseDateEndOfDay = (value: unknown) => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
 };
 
+/**
+ * Verifica que el usuario tenga acceso al viaje
+ */
+async function verifyTripAccess(tripId: string, userId: string) {
+  const trip = await prisma.trip.findUnique({
+    where: { id: tripId },
+    include: {
+      sharedWith: true,
+    },
+  });
+
+  if (!trip) {
+    return { error: "Viaje no encontrado", status: 404 };
+  }
+
+  const isOwner = trip.ownerId === userId;
+  const isSharedWith = trip.sharedWith.some(share => share.userId === userId);
+
+  if (!isOwner && !isSharedWith) {
+    return { error: "No tienes acceso a este viaje", status: 403 };
+  }
+
+  return { trip };
+}
+
 export async function GET(request: NextRequest) {
+  // Verificar autenticación
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json(
+      { error: "No autenticado" },
+      { status: 401 }
+    );
+  }
+
   const cookieStore = await cookies();
   const activeTripId = cookieStore.get("activeTripId")?.value;
   if (!activeTripId) {
     return NextResponse.json(
       { error: "Selecciona un viaje activo." },
       { status: 400 }
+    );
+  }
+
+  // Verificar permisos
+  const accessCheck = await verifyTripAccess(activeTripId, session.user.id);
+  if ("error" in accessCheck) {
+    return NextResponse.json(
+      { error: accessCheck.error },
+      { status: accessCheck.status }
     );
   }
 
@@ -52,12 +96,30 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // Verificar autenticación
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json(
+      { error: "No autenticado" },
+      { status: 401 }
+    );
+  }
+
   const cookieStore = await cookies();
   const activeTripId = cookieStore.get("activeTripId")?.value;
   if (!activeTripId) {
     return NextResponse.json(
       { error: "Selecciona un viaje activo." },
       { status: 400 }
+    );
+  }
+
+  // Verificar permisos
+  const accessCheck = await verifyTripAccess(activeTripId, session.user.id);
+  if ("error" in accessCheck) {
+    return NextResponse.json(
+      { error: accessCheck.error },
+      { status: accessCheck.status }
     );
   }
 

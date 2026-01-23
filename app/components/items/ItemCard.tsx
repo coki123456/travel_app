@@ -7,6 +7,7 @@ import BlockTypeSelect from "./BlockTypeSelect";
 import { FormInput, FormTextarea } from "../ui/FormInput";
 import LoadingButton from "../ui/LoadingButton";
 import { EmojiIcon } from "../ui/EmojiIcon";
+import { ConfirmModal, useConfirmModal } from "../ui/ConfirmModal";
 
 type ItemView = {
   id: string;
@@ -34,6 +35,8 @@ export default function ItemCard({
   const [editDescription, setEditDescription] = useState(item.description ?? "");
   const [editType, setEditType] = useState(item.type);
   const [editBlock, setEditBlock] = useState(item.block);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const { isOpen, openModal, closeModal, handleConfirm, config } = useConfirmModal();
 
   const handleSave = async () => {
     try {
@@ -65,10 +68,17 @@ export default function ItemCard({
     setEditBlock(item.block);
   };
 
-  const handleDelete = async () => {
-    const confirmed = window.confirm("Eliminar este elemento?");
-    if (!confirmed) return;
+  const handleDeleteClick = () => {
+    openModal({
+      title: "Eliminar elemento",
+      message: `¿Estás seguro de que quieres eliminar "${item.title}"? Esta acción no se puede deshacer.`,
+      onConfirm: confirmDelete,
+      isDangerous: true,
+    });
+  };
 
+  const confirmDelete = async () => {
+    setIsDeleting(true);
     try {
       const response = await fetch(`/api/items/${item.id}`, {
         method: "DELETE",
@@ -79,11 +89,23 @@ export default function ItemCard({
       }
     } catch (err) {
       console.error("Error al eliminar elemento:", err);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   return (
-    <Card variant="hover" padding="md" className="animate-fade-in">
+    <>
+      <ConfirmModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        onConfirm={handleConfirm}
+        title={config?.title ?? ""}
+        message={config?.message ?? ""}
+        isDangerous={config?.isDangerous}
+        isLoading={isDeleting}
+      />
+      <Card variant="hover" padding="md" className="animate-fade-in">
       {isEditing ? (
         <div className="space-y-4">
           <BlockTypeSelect
@@ -157,8 +179,9 @@ export default function ItemCard({
             </button>
             <button
               type="button"
-              onClick={handleDelete}
-              className="btn-secondary text-xs text-[rgb(var(--color-error))] hover:bg-[rgb(var(--color-error))]/5"
+              onClick={handleDeleteClick}
+              disabled={isDeleting}
+              className="btn-secondary text-xs text-[rgb(var(--color-error))] hover:bg-[rgb(var(--color-error))]/5 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <EmojiIcon emoji="🗑️" label="Eliminar" className="text-base" />
               Eliminar
@@ -167,5 +190,6 @@ export default function ItemCard({
         </>
       )}
     </Card>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Card } from "../ui/Card";
 import LoadingButton from "../ui/LoadingButton";
 import { EmojiIcon } from "../ui/EmojiIcon";
+import { ConfirmModal, useConfirmModal } from "../ui/ConfirmModal";
 
 export interface TripCardProps {
   trip: {
@@ -29,6 +30,7 @@ export default function TripCard({
   onDelete,
 }: TripCardProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { isOpen, openModal, closeModal, handleConfirm, config } = useConfirmModal();
 
   const handleSelect = async () => {
     setIsLoading(true);
@@ -39,12 +41,16 @@ export default function TripCard({
     }
   };
 
-  const handleDelete = async () => {
-    const confirmed = window.confirm(
-      "¿Eliminar este viaje? Se borrarán todos sus días y elementos."
-    );
-    if (!confirmed) return;
+  const handleDeleteClick = () => {
+    openModal({
+      title: "Eliminar viaje",
+      message: `¿Estás seguro de que quieres eliminar "${trip.name}"? Se borrarán todos sus días, elementos y adjuntos. Esta acción no se puede deshacer.`,
+      onConfirm: confirmDelete,
+      isDangerous: true,
+    });
+  };
 
+  const confirmDelete = async () => {
     setIsLoading(true);
     try {
       await onDelete(trip.id);
@@ -54,7 +60,17 @@ export default function TripCard({
   };
 
   return (
-    <Card variant="hover" padding="md" className="animate-fade-in">
+    <>
+      <ConfirmModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        onConfirm={handleConfirm}
+        title={config?.title ?? ""}
+        message={config?.message ?? ""}
+        isDangerous={config?.isDangerous}
+        isLoading={isLoading}
+      />
+      <Card variant="hover" padding="md" className="animate-fade-in">
       <div className="mb-4 flex items-start gap-3">
         <div className="w-12 h-12 rounded-[var(--radius-md)] bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-[var(--shadow-sm)]">
           <EmojiIcon emoji="✈️" label="Viaje" className="text-2xl" />
@@ -107,7 +123,7 @@ export default function TripCard({
 
         <button
           type="button"
-          onClick={handleDelete}
+          onClick={handleDeleteClick}
           disabled={isLoading}
           className="btn-secondary text-xs text-[rgb(var(--color-error))] hover:bg-[rgb(var(--color-error))]/5 disabled:opacity-50"
         >
@@ -115,5 +131,6 @@ export default function TripCard({
         </button>
       </div>
     </Card>
+    </>
   );
 }

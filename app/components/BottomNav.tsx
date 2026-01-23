@@ -18,7 +18,18 @@ export default function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[rgb(var(--color-bg-secondary))] border-t border-[rgb(var(--color-border-light))] shadow-lg backdrop-blur-lg bg-opacity-95">
       <div className="flex items-center justify-around max-w-2xl mx-auto">
         {navItems.map((item) => {
-          const isActive = pathname === item.href || (item.href === "/setup" && pathname.startsWith("/setup"));
+          // Lógica mejorada para detectar active state
+          let isActive = false;
+          if (item.href === "/dashboard") {
+            isActive = pathname === "/dashboard";
+          } else if (item.href === "/setup?create=true") {
+            isActive = false; // Nunca activo (es una acción)
+          } else if (item.href === "/setup") {
+            isActive = pathname.startsWith("/setup");
+          } else if (item.href === "/") {
+            isActive = pathname === "/" || pathname.startsWith("/day") || pathname === "/book";
+          }
+
           return (
             <Link
               key={item.href}

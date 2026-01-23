@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { formatDateKey, buildDaysInRange } from "@/lib/date-utils";
 import PrintButton from "./PrintButton";
+import BottomNav from "../components/BottomNav";
 
 export const dynamic = "force-dynamic";
 
@@ -24,30 +27,12 @@ const ITEM_TYPES: Record<string, string> = {
 
 const getTypeLabel = (value: string) => ITEM_TYPES[value] ?? value;
 
-const formatDateKey = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
-
-const normalizeToNoon = (value: Date) =>
-  new Date(value.getFullYear(), value.getMonth(), value.getDate(), 12, 0, 0);
-
-const buildDaysInRange = (start: Date, end: Date) => {
-  const result: Date[] = [];
-  const cursor = normalizeToNoon(start);
-  const limit = normalizeToNoon(end);
-
-  while (cursor <= limit) {
-    result.push(new Date(cursor));
-    cursor.setDate(cursor.getDate() + 1);
+export default async function BookPage() {
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/login");
   }
 
-  return result;
-};
-
-export default async function BookPage() {
   const cookieStore = await cookies();
   const activeTripId = cookieStore.get("activeTripId")?.value;
   const trip = activeTripId
@@ -80,7 +65,7 @@ export default async function BookPage() {
   const allDays = buildDaysInRange(trip.startDate, trip.endDate);
 
   return (
-    <div className="min-h-screen bg-transparent px-6 py-10 text-slate-100 print:bg-white print:px-0 print:py-0">
+    <div className="min-h-screen bg-transparent px-6 py-10 pb-24 text-slate-100 print:bg-white print:px-0 print:py-0 print:pb-0">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 print:max-w-none print:gap-6 print:px-0">
         <header className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30 print:border-none print:shadow-none">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
@@ -213,6 +198,11 @@ export default async function BookPage() {
             </section>
           );
         })}
+      </div>
+
+      {/* Bottom Navigation - Hidden on print */}
+      <div className="print:hidden">
+        <BottomNav />
       </div>
     </div>
   );
