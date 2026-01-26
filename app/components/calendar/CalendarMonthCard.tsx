@@ -139,9 +139,7 @@ export default function CalendarMonthCard({
             );
           }
 
-          if (!day && !isToday) {
-            return <div key={key} className="aspect-square" />;
-          }
+          const hasContent = Boolean(day?.summary || day?.city);
 
           return (
             <Link
@@ -150,9 +148,9 @@ export default function CalendarMonthCard({
               className={`aspect-square rounded-xl flex flex-col items-center justify-center text-sm font-semibold transition-all duration-300 relative group overflow-hidden ${
                 isToday
                   ? "bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] text-white shadow-lg shadow-[rgb(var(--color-accent))]/30 scale-105 ring-2 ring-[rgb(var(--color-accent))]/50 ring-offset-2 ring-offset-[rgb(var(--color-bg-primary))]"
-                  : isPast
-                  ? "bg-[rgb(var(--color-bg-tertiary))]/50 text-[rgb(var(--color-text-tertiary))] hover:bg-[rgb(var(--color-bg-tertiary))] hover:scale-105 hover:shadow-md"
-                  : day?.summary
+                : isPast
+                  ? "bg-[rgb(var(--color-bg-tertiary))]/60 text-[rgb(var(--color-text-tertiary))] hover:bg-[rgb(var(--color-bg-tertiary))] hover:scale-105 hover:shadow-md"
+                  : hasContent
                   ? "bg-gradient-to-br from-[rgb(var(--color-accent-light))] to-[rgb(var(--color-accent-light))]/70 text-[rgb(var(--color-accent))] border-2 border-[rgb(var(--color-accent))]/40 hover:border-[rgb(var(--color-accent))] hover:shadow-lg hover:shadow-[rgb(var(--color-accent))]/20 hover:scale-105"
                   : "bg-[rgb(var(--color-bg-secondary))] border-2 border-[rgb(var(--color-border-light))] text-[rgb(var(--color-text-primary))] hover:border-[rgb(var(--color-accent))]/60 hover:bg-[rgb(var(--color-bg-tertiary))]/30 hover:scale-105 hover:shadow-md"
               }`}
@@ -165,7 +163,7 @@ export default function CalendarMonthCard({
               </span>
 
               {/* Enhanced indicator for days with summary */}
-              {day?.summary && !isToday && (
+              {hasContent && !isToday && (
                 <div className="mt-1.5 flex gap-0.5 relative z-10">
                   <div className="w-1.5 h-1.5 rounded-full bg-[rgb(var(--color-accent))] animate-pulse" />
                 </div>

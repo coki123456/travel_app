@@ -92,6 +92,16 @@ export default async function HomePage({
   );
 
   const allDays = buildDaysInRange(trip.startDate, trip.endDate);
+  const months = Array.from(
+    allDays.reduce((acc, day) => {
+      const key = `${day.getFullYear()}-${day.getMonth()}`;
+      const bucket = acc.get(key) ?? [];
+      bucket.push(day);
+      acc.set(key, bucket);
+      return acc;
+    }, new Map<string, Date[]>())
+  ).map(([, value]) => value);
+
   const today = normalizeToDay(new Date());
   const todayKey = formatDateKey(today);
   const activeDate =
@@ -124,22 +134,6 @@ export default async function HomePage({
         )
       : 1;
   const progressPercent = Math.round(progress * 100);
-
-  const hasContent = (day?: DaySummary) => Boolean(day?.summary || day?.city);
-  const daysWithContent = allDays.filter((day) => {
-    const key = formatDateKey(day);
-    if (key === todayKey) return true; // mantener hoy visible
-    return hasContent(dayMap.get(key));
-  });
-  const monthsWithContent = Array.from(
-    daysWithContent.reduce((acc, day) => {
-      const key = `${day.getFullYear()}-${day.getMonth()}`;
-      const bucket = acc.get(key) ?? [];
-      bucket.push(day);
-      acc.set(key, bucket);
-      return acc;
-    }, new Map<string, Date[]>())
-  ).map(([, value]) => value);
 
   const resolvedSearchParams = await searchParams;
   const compact = resolvedSearchParams?.compact === "true";
@@ -185,8 +179,8 @@ export default async function HomePage({
               <TripSelector trips={trips} currentTripId={trip.id} />
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div className="card p-4 reveal">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="card p-4 reveal h-full">
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
                   Estado
                 </p>
@@ -207,7 +201,7 @@ export default async function HomePage({
                 </div>
               </div>
 
-              <div className="card p-4 reveal reveal-2">
+              <div className="card p-4 reveal reveal-2 h-full">
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
                   Próximo día
                 </p>
@@ -225,20 +219,6 @@ export default async function HomePage({
                 </div>
               </div>
 
-              <div className="card p-4 reveal reveal-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
-                  Libro
-                </p>
-                <div className="mt-2 flex flex-col gap-3">
-                  <p className="text-sm text-[rgb(var(--color-text-secondary))]">
-                    Guarda tus páginas favoritas y compartilas.
-                  </p>
-                  <Link href="/book" className="btn-secondary justify-center">
-                    <EmojiIcon emoji="📖" label="Libro" className="text-base" />
-                    Abrir libro
-                  </Link>
-                </div>
-              </div>
             </div>
 
             <div className="flex flex-wrap gap-3 reveal reveal-2">
@@ -279,29 +259,23 @@ export default async function HomePage({
           </div>
 
           <div className={calendarSpacing}>
-            {monthsWithContent.length === 0 ? (
-              <div className="text-sm text-[rgb(var(--color-text-secondary))]">
-                Solo se muestran días con actividades. Aún no hay días planificados.
-              </div>
-            ) : (
-              monthsWithContent.map((monthDays, index) => {
-                const reference = monthDays[0];
-                return (
-                  <CalendarMonthCard
-                    key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
-                    monthDays={monthDays}
-                    dayMap={dayMap}
-                    tripStartDate={trip.startDate}
-                    tripEndDate={trip.endDate}
-                    today={today}
-                  />
-                );
-              })
-            )}
+            {months.map((monthDays, index) => {
+              const reference = monthDays[0];
+              return (
+                <CalendarMonthCard
+                  key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
+                  monthDays={monthDays}
+                  dayMap={dayMap}
+                  tripStartDate={trip.startDate}
+                  tripEndDate={trip.endDate}
+                  today={today}
+                />
+              );
+            })}
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1.6fr,1fr] items-start">
+        <div className="grid gap-6 lg:grid-cols-[1.5fr,1fr] items-start">
           <div className="reveal">
             <DailyItineraryCard
               day={activeDay}
@@ -310,70 +284,93 @@ export default async function HomePage({
             />
           </div>
 
-          <div className="card p-6 space-y-5 reveal reveal-2">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
-                  Ritmo del viaje
+          <div className="space-y-4">
+            <div className="card p-6 space-y-5 reveal reveal-2">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
+                    Estado & proximidad
+                  </p>
+                  <h3 className="text-xl font-semibold">Progreso y próximos días</h3>
+                </div>
+                <div className="badge-accent">
+                  <EmojiIcon emoji="🌊" label="Flujo" className="text-sm" />
+                  {progressPercent}%
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="h-3 w-full rounded-full bg-[rgb(var(--color-bg-tertiary))] overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[rgb(var(--color-accent))] via-[rgb(var(--color-contrast))] to-[rgb(var(--color-contrast-hover))]"
+                    style={{ width: `${Math.min(100, Math.max(0, progressPercent))}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-xs text-[rgb(var(--color-text-secondary))]">
+                  <span>{formatShortDate(trip.startDate)}</span>
+                  <span>{formatShortDate(trip.endDate)}</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-sm font-semibold text-[rgb(var(--color-text-primary))]">
+                  Próximos días
                 </p>
-                <h3 className="text-xl font-semibold">Progreso y próximos días</h3>
-              </div>
-              <div className="badge-accent">
-                <EmojiIcon emoji="🌊" label="Flujo" className="text-sm" />
-                {progressPercent}%
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="h-3 w-full rounded-full bg-[rgb(var(--color-bg-tertiary))] overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[rgb(var(--color-accent))] via-[rgb(var(--color-contrast))] to-[rgb(var(--color-contrast-hover))]"
-                  style={{ width: `${Math.min(100, Math.max(0, progressPercent))}%` }}
-                />
-              </div>
-              <div className="flex justify-between text-xs text-[rgb(var(--color-text-secondary))]">
-                <span>{formatShortDate(trip.startDate)}</span>
-                <span>{formatShortDate(trip.endDate)}</span>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <p className="text-sm font-semibold text-[rgb(var(--color-text-primary))]">
-                Próximos días
-              </p>
-              <div className="space-y-2">
-                {previewDays.map((day) => {
-                  const key = formatDateKey(day);
-                  const info = dayMap.get(key);
-                  return (
-                    <div
-                      key={key}
-                      className="flex items-center justify-between gap-3 rounded-[var(--radius-lg)] border border-[rgb(var(--color-border-light))] bg-white/70 px-3 py-2"
-                      style={{ boxShadow: "var(--shadow-sm)" }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-[var(--radius-md)] bg-[rgb(var(--color-accent-light))] flex items-center justify-center text-[rgb(var(--color-accent))] font-semibold">
-                          {day.getDate()}
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold capitalize">
-                            {formatWeekdayDate(day)}
-                          </p>
-                          <p className="text-xs text-[rgb(var(--color-text-secondary))]">
-                            {info?.city ?? "Sin ciudad"} · {info?.summary ?? "Aún sin resumen"}
-                          </p>
-                        </div>
-                      </div>
-                      <Link
-                        href={`/day/${key}`}
-                        className="text-sm font-semibold text-[rgb(var(--color-contrast-hover))] hover:text-[rgb(var(--color-contrast))] transition-colors"
+                <div className="space-y-2">
+                  {previewDays.map((day) => {
+                    const key = formatDateKey(day);
+                    const info = dayMap.get(key);
+                    return (
+                      <div
+                        key={key}
+                        className="flex items-center justify-between gap-3 rounded-[var(--radius-lg)] border border-[rgb(var(--color-border-light))] bg-white/70 px-3 py-2"
+                        style={{ boxShadow: "var(--shadow-sm)" }}
                       >
-                        Abrir
-                      </Link>
-                    </div>
-                  );
-                })}
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-[var(--radius-md)] bg-[rgb(var(--color-accent-light))] flex items-center justify-center text-[rgb(var(--color-accent))] font-semibold">
+                            {day.getDate()}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold capitalize">
+                              {formatWeekdayDate(day)}
+                            </p>
+                            <p className="text-xs text-[rgb(var(--color-text-secondary))]">
+                              {info?.city ?? "Sin ciudad"} · {info?.summary ?? "Aún sin resumen"}
+                            </p>
+                          </div>
+                        </div>
+                        <Link
+                          href={`/day/${key}`}
+                          className="text-sm font-semibold text-[rgb(var(--color-contrast-hover))] hover:text-[rgb(var(--color-contrast))] transition-colors"
+                        >
+                          Abrir
+                        </Link>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
+            </div>
+
+            <div className="card p-5 reveal reveal-3">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
+                    Libro
+                  </p>
+                  <h3 className="text-lg font-semibold text-[rgb(var(--color-text-primary))]">
+                    Ver libro del viaje
+                  </h3>
+                  <p className="text-sm text-[rgb(var(--color-text-secondary))] mt-1">
+                    Guarda y comparte tus páginas favoritas.
+                  </p>
+                </div>
+                <EmojiIcon emoji="📖" label="Libro" className="text-xl" />
+              </div>
+              <Link href="/book" className="btn-primary justify-center mt-4">
+                <EmojiIcon emoji="➡️" label="Ir" className="text-base" />
+                Abrir libro
+              </Link>
             </div>
           </div>
         </div>
