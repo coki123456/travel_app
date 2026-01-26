@@ -139,6 +139,10 @@ export default function CalendarMonthCard({
             );
           }
 
+          if (!day && !isToday) {
+            return <div key={key} className="aspect-square" />;
+          }
+
           return (
             <Link
               key={key}

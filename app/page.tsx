@@ -85,16 +85,6 @@ export default async function HomePage() {
 
   const allDays = buildDaysInRange(trip.startDate, trip.endDate);
   const today = normalizeToDay(new Date());
-  const months = Array.from(
-    allDays.reduce((acc, day) => {
-      const key = `${day.getFullYear()}-${day.getMonth()}`;
-      const bucket = acc.get(key) ?? [];
-      bucket.push(day);
-      acc.set(key, bucket);
-      return acc;
-    }, new Map<string, Date[]>())
-  ).map(([, value]) => value);
-
   const todayKey = formatDateKey(today);
   const activeDate =
     allDays.find((day) => formatDateKey(day) === todayKey) ?? allDays[0];
@@ -126,6 +116,22 @@ export default async function HomePage() {
         )
       : 1;
   const progressPercent = Math.round(progress * 100);
+
+  const hasContent = (day?: DaySummary) => Boolean(day?.summary || day?.city);
+  const daysWithContent = allDays.filter((day) => {
+    const key = formatDateKey(day);
+    if (key === todayKey) return true; // mantener hoy visible
+    return hasContent(dayMap.get(key));
+  });
+  const monthsWithContent = Array.from(
+    daysWithContent.reduce((acc, day) => {
+      const key = `${day.getFullYear()}-${day.getMonth()}`;
+      const bucket = acc.get(key) ?? [];
+      bucket.push(day);
+      acc.set(key, bucket);
+      return acc;
+    }, new Map<string, Date[]>())
+  ).map(([, value]) => value);
 
   return (
     <div className="min-h-screen pb-24 text-[rgb(var(--color-text-primary))]">
@@ -234,6 +240,43 @@ export default async function HomePage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 -mt-8 space-y-10 pb-12">
+        <div className="card p-6 space-y-6 reveal">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
+                Calendario completo
+              </p>
+              <h3 className="text-xl font-semibold">Mapa del viaje</h3>
+            </div>
+            <div className="badge">
+              <EmojiIcon emoji="📆" label="Hoy" className="text-sm" />
+              Hoy: {formatShortDate(today)}
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            {monthsWithContent.length === 0 ? (
+              <div className="text-sm text-[rgb(var(--color-text-secondary))]">
+                Solo se muestran días con actividades. Aún no hay días planificados.
+              </div>
+            ) : (
+              monthsWithContent.map((monthDays, index) => {
+                const reference = monthDays[0];
+                return (
+                  <CalendarMonthCard
+                    key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
+                    monthDays={monthDays}
+                    dayMap={dayMap}
+                    tripStartDate={trip.startDate}
+                    tripEndDate={trip.endDate}
+                    today={today}
+                  />
+                );
+              })
+            )}
+          </div>
+        </div>
+
         <div className="grid gap-6 lg:grid-cols-[1.6fr,1fr] items-start">
           <div className="reveal">
             <DailyItineraryCard
@@ -308,37 +351,6 @@ export default async function HomePage() {
                 })}
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="card p-6 space-y-6 reveal">
-          <div className="flex items-center justify-between gap-3 flex-wrap">
-            <div>
-              <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
-                Calendario completo
-              </p>
-              <h3 className="text-xl font-semibold">Mapa del viaje</h3>
-            </div>
-            <div className="badge">
-              <EmojiIcon emoji="📆" label="Hoy" className="text-sm" />
-              Hoy: {formatShortDate(today)}
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            {months.map((monthDays, index) => {
-              const reference = monthDays[0];
-              return (
-                <CalendarMonthCard
-                  key={`${reference.getFullYear()}-${reference.getMonth()}-${index}`}
-                  monthDays={monthDays}
-                  dayMap={dayMap}
-                  tripStartDate={trip.startDate}
-                  tripEndDate={trip.endDate}
-                  today={today}
-                />
-              );
-            })}
           </div>
         </div>
 
