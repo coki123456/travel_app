@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import { formatDateKey, buildDaysInRange } from "@/lib/date-utils";
 import PrintButton from "./PrintButton";
 import BottomNav from "../components/BottomNav";
+import TopNav from "../components/TopNav";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +67,9 @@ export default async function BookPage() {
 
   return (
     <div className="min-h-screen bg-transparent px-6 py-10 pb-24 text-slate-100 print:bg-white print:px-0 print:py-0 print:pb-0">
+      <div className="print:hidden">
+        <TopNav />
+      </div>
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 print:max-w-none print:gap-6 print:px-0">
         <header className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-lg shadow-black/30 print:border-none print:shadow-none">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">

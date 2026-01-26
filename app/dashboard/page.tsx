@@ -6,6 +6,7 @@ import Link from "next/link";
 import { EmojiIcon } from "../components/ui/EmojiIcon";
 import { Card, CardContent } from "../components/ui/Card";
 import LogoutButton from "../LogoutButton";
+import TopNav from "../components/TopNav";
 
 export const dynamic = "force-dynamic";
 
@@ -48,6 +49,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[rgb(var(--color-bg-primary))] pb-24">
+      <TopNav />
       {/* Header con perfil */}
       <div className="bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] text-white px-3 py-3">
         <div className="max-w-xl mx-auto">

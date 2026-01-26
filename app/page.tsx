@@ -9,6 +9,7 @@ import BottomNav from "./components/BottomNav";
 import { EmojiIcon } from "./components/ui/EmojiIcon";
 import Link from "next/link";
 import TripSelector from "./TripSelector";
+import TopNav from "./components/TopNav";
 
 export const dynamic = "force-dynamic";
 
@@ -128,6 +129,7 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen pb-24 text-[rgb(var(--color-text-primary))]">
+      <TopNav />
       <div className="relative isolate overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[rgba(20,136,158,0.12)] via-[rgba(255,124,74,0.08)] to-transparent" />
         <div className="absolute inset-0 -z-10 blur-3xl opacity-60 bg-[radial-gradient(circle_at_12%_18%,rgba(20,136,158,0.35),transparent_35%),radial-gradient(circle_at_85%_12%,rgba(255,124,74,0.28),transparent_32%),radial-gradient(circle_at_70%_75%,rgba(20,136,158,0.18),transparent_30%)]" />
@@ -196,7 +198,7 @@ export default async function HomePage() {
                   </p>
                   <div className="badge mt-2">
                     <EmojiIcon emoji="✨" label="Spotlight" className="text-sm" />
-                    {activeDay?.summary ? activeDay.summary : "Sugerí tu primera actividad"}
+                    {activeDay?.summary ? activeDay.summary : "Agrega tu primera actividad"}
                   </div>
                 </div>
               </div>

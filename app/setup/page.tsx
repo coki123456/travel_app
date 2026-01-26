@@ -5,6 +5,7 @@ import SetupForm from "./SetupForm";
 import TripList from "./TripList";
 import { EmojiIcon } from "../components/ui/EmojiIcon";
 import BottomNav from "../components/BottomNav";
+import TopNav from "../components/TopNav";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +43,7 @@ export default async function SetupPage({
 
   return (
     <div className="min-h-screen bg-[rgb(var(--color-bg-primary))] pb-20">
+      <TopNav />
       {/* Header compacto */}
       <div className="sticky top-0 z-40 bg-[rgb(var(--color-bg-secondary))] border-b border-[rgb(var(--color-border-light))] shadow-sm">
         <div className="max-w-2xl mx-auto px-4 py-3">
