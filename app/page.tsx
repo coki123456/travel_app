@@ -33,7 +33,15 @@ const formatWeekdayDate = (date: Date) =>
     month: "short",
   });
 
-export default async function HomePage() {
+type SearchParams = {
+  compact?: string;
+};
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: Promise<SearchParams>;
+}) {
   const session = await auth();
   if (!session?.user) {
     redirect("/login");
@@ -133,13 +141,21 @@ export default async function HomePage() {
     }, new Map<string, Date[]>())
   ).map(([, value]) => value);
 
+  const resolvedSearchParams = await searchParams;
+  const compact = resolvedSearchParams?.compact === "true";
+  const toggleCompactHref = compact ? "/" : "/?compact=true";
+  const containerWidth = compact ? "max-w-4xl" : "max-w-5xl";
+  const sectionSpacing = compact ? "space-y-8" : "space-y-10";
+  const calendarPadding = compact ? "p-4" : "p-6";
+  const calendarSpacing = compact ? "space-y-4" : "space-y-6";
+
   return (
     <div className="min-h-screen pb-24 text-[rgb(var(--color-text-primary))]">
       <TopNav />
       <div className="relative isolate overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[rgba(20,136,158,0.12)] via-[rgba(255,124,74,0.08)] to-transparent" />
         <div className="absolute inset-0 -z-10 blur-3xl opacity-60 bg-[radial-gradient(circle_at_12%_18%,rgba(20,136,158,0.35),transparent_35%),radial-gradient(circle_at_85%_12%,rgba(255,124,74,0.28),transparent_32%),radial-gradient(circle_at_70%_75%,rgba(20,136,158,0.18),transparent_30%)]" />
-        <div className="max-w-5xl mx-auto px-4 pt-10 pb-14">
+        <div className={`${containerWidth} mx-auto px-4 pt-10 pb-14`}>
           <div className="flex flex-col gap-6">
             <div className="flex items-start justify-between gap-4 flex-wrap reveal">
               <div className="space-y-3 min-w-0">
@@ -239,8 +255,8 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 -mt-8 space-y-10 pb-12">
-        <div className="card p-6 space-y-6 reveal">
+      <div className={`${containerWidth} mx-auto px-4 -mt-8 ${sectionSpacing} pb-12`}>
+        <div className={`card ${calendarPadding} ${calendarSpacing} reveal`}>
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div>
               <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
@@ -248,13 +264,21 @@ export default async function HomePage() {
               </p>
               <h3 className="text-xl font-semibold">Mapa del viaje</h3>
             </div>
-            <div className="badge">
-              <EmojiIcon emoji="📆" label="Hoy" className="text-sm" />
-              Hoy: {formatShortDate(today)}
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="badge">
+                <EmojiIcon emoji="📆" label="Hoy" className="text-sm" />
+                Hoy: {formatShortDate(today)}
+              </div>
+              <Link
+                href={toggleCompactHref}
+                className="text-xs font-semibold text-[rgb(var(--color-text-secondary))] hover:text-[rgb(var(--color-accent))] border border-[rgb(var(--color-border-light))] rounded-full px-3 py-1.5 transition-colors"
+              >
+                {compact ? "Vista amplia" : "Modo compacto"}
+              </Link>
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className={calendarSpacing}>
             {monthsWithContent.length === 0 ? (
               <div className="text-sm text-[rgb(var(--color-text-secondary))]">
                 Solo se muestran días con actividades. Aún no hay días planificados.

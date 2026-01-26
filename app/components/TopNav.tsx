@@ -12,7 +12,7 @@ export default function TopNav() {
   const pathname = usePathname();
 
   return (
-    <div className="w-full border-b border-[rgb(var(--color-border-light))] bg-[rgb(var(--color-bg-secondary))]/95 backdrop-blur-md">
+    <div className="w-full sticky top-0 z-50 border-b border-[rgb(var(--color-border-light))] bg-[rgb(var(--color-bg-secondary))]/92 backdrop-blur-md shadow-sm">
       <nav className="mx-auto flex max-w-5xl items-center gap-3 sm:gap-4 px-4 py-2.5">
         {navItems.map((item, idx) => {
           const isActive =
@@ -25,9 +25,9 @@ export default function TopNav() {
               {idx > 0 && <span className="h-2 w-px bg-[rgb(var(--color-border-medium))] rounded-full" />}
               <Link
                 href={item.href}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors border ${
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all border ${
                   isActive
-                    ? "bg-[rgb(var(--color-accent-light))] text-[rgb(var(--color-accent))] border-[rgb(var(--color-accent))/25]"
+                    ? "bg-[rgb(var(--color-accent-light))] text-[rgb(var(--color-accent))] border-[rgb(var(--color-accent))/30] shadow-sm"
                     : "text-[rgb(var(--color-text-secondary))] border-transparent hover:text-[rgb(var(--color-text-primary))] hover:border-[rgb(var(--color-border-light))]"
                 }`}
               >

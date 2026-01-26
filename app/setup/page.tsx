@@ -4,7 +4,6 @@ import prisma from "@/lib/prisma";
 import SetupForm from "./SetupForm";
 import TripList from "./TripList";
 import { EmojiIcon } from "../components/ui/EmojiIcon";
-import BottomNav from "../components/BottomNav";
 import TopNav from "../components/TopNav";
 
 export const dynamic = "force-dynamic";
@@ -95,7 +94,6 @@ export default async function SetupPage({
       </div>
 
       {/* Bottom Navigation */}
-      <BottomNav />
     </div>
   );
 }

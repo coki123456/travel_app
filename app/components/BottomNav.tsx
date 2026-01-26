@@ -15,8 +15,8 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[rgb(var(--color-bg-secondary))] border-t border-[rgb(var(--color-border-light))] shadow-lg backdrop-blur-lg bg-opacity-97">
-      <div className="flex items-center justify-around max-w-2xl mx-auto px-1">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[rgb(var(--color-bg-secondary))] border-t border-[rgb(var(--color-border-light))] shadow-lg backdrop-blur-lg bg-opacity-98">
+      <div className="flex items-center justify-around max-w-2xl mx-auto px-2 py-1">
         {navItems.map((item) => {
           // Lógica mejorada para detectar active state
           let isActive = false;
@@ -34,10 +34,10 @@ export default function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center gap-1.5 py-3.5 px-4 flex-1 transition-all duration-200 ${
+              className={`flex flex-col items-center justify-center gap-2 py-3.5 px-4 flex-1 transition-all duration-200 rounded-2xl ${
                 isActive
-                  ? "text-[rgb(var(--color-accent))]"
-                  : "text-[rgb(var(--color-text-tertiary))] active:scale-95"
+                  ? "text-[rgb(var(--color-accent-hover))] bg-[rgb(var(--color-accent))]/12 border border-[rgb(var(--color-accent))/35] shadow-[0_10px_24px_rgba(20,136,158,0.18)]"
+                  : "text-[rgb(var(--color-text-tertiary))] hover:text-[rgb(var(--color-text-primary))] active:scale-95"
               }`}
             >
               <div className={`relative ${isActive ? "scale-110" : ""} transition-transform duration-200`}>
@@ -46,7 +46,7 @@ export default function BottomNav() {
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[rgb(var(--color-accent))] animate-pulse" />
                 )}
               </div>
-              <span className={`text-xs font-medium sm:text-sm ${isActive ? "font-semibold" : ""}`}>
+              <span className={`text-[13px] font-semibold sm:text-sm ${isActive ? "text-[rgb(var(--color-text-primary))]" : ""}`}>
                 {item.label}
               </span>
             </Link>
