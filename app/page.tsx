@@ -179,7 +179,7 @@ export default async function HomePage({
               <TripSelector trips={trips} currentTripId={trip.id} />
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="card p-4 reveal h-full">
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
                   Estado
@@ -284,7 +284,7 @@ export default async function HomePage({
             />
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="card p-6 space-y-5 reveal reveal-2 h-full">
               <div className="flex items-start justify-between gap-3">
                 <div>
