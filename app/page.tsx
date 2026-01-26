@@ -284,8 +284,8 @@ export default async function HomePage({
             />
           </div>
 
-          <div className="space-y-4">
-            <div className="card p-6 space-y-5 reveal reveal-2">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="card p-6 space-y-5 reveal reveal-2 h-full">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
@@ -352,7 +352,7 @@ export default async function HomePage({
               </div>
             </div>
 
-            <div className="card p-5 reveal reveal-3">
+            <div className="card p-5 reveal reveal-3 h-full flex flex-col justify-between">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
@@ -367,7 +367,7 @@ export default async function HomePage({
                 </div>
                 <EmojiIcon emoji="📖" label="Libro" className="text-xl" />
               </div>
-              <Link href="/book" className="btn-primary justify-center mt-4">
+              <Link href="/book" className="btn-primary justify-center mt-4 w-full">
                 <EmojiIcon emoji="➡️" label="Ir" className="text-base" />
                 Abrir libro
               </Link>
