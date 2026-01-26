@@ -133,7 +133,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 -z-10 blur-3xl opacity-60 bg-[radial-gradient(circle_at_12%_18%,rgba(20,136,158,0.35),transparent_35%),radial-gradient(circle_at_85%_12%,rgba(255,124,74,0.28),transparent_32%),radial-gradient(circle_at_70%_75%,rgba(20,136,158,0.18),transparent_30%)]" />
         <div className="max-w-5xl mx-auto px-4 pt-10 pb-14">
           <div className="flex flex-col gap-6">
-            <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div className="flex items-start justify-between gap-4 flex-wrap reveal">
               <div className="space-y-3 min-w-0">
                 <div className="inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-contrast-light))] border border-[rgb(var(--color-contrast))/18] px-3 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-[rgb(var(--color-contrast-hover))]">
                   <span>Viaje activo</span>
@@ -162,7 +162,7 @@ export default async function HomePage() {
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="card p-4">
+              <div className="card p-4 reveal">
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
                   Estado
                 </p>
@@ -183,7 +183,7 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="card p-4">
+              <div className="card p-4 reveal reveal-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
                   Próximo día
                 </p>
@@ -201,7 +201,7 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="card p-4">
+              <div className="card p-4 reveal reveal-3">
                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
                   Libro
                 </p>
@@ -217,7 +217,7 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 reveal reveal-2">
               <Link href="/book" className="btn-primary">
                 <EmojiIcon emoji="🚀" label="Explorar" className="text-base" />
                 Ver libro completo
@@ -233,13 +233,15 @@ export default async function HomePage() {
 
       <div className="max-w-5xl mx-auto px-4 -mt-8 space-y-10 pb-12">
         <div className="grid gap-6 lg:grid-cols-[1.6fr,1fr] items-start">
-          <DailyItineraryCard
-            day={activeDay}
-            date={activeDate}
-            dateKey={activeDayKey}
-          />
+          <div className="reveal">
+            <DailyItineraryCard
+              day={activeDay}
+              date={activeDate}
+              dateKey={activeDayKey}
+            />
+          </div>
 
-          <div className="card p-6 space-y-5">
+          <div className="card p-6 space-y-5 reveal reveal-2">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
@@ -307,7 +309,7 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <div className="card p-6 space-y-6">
+        <div className="card p-6 space-y-6 reveal">
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div>
               <p className="text-xs uppercase tracking-[0.08em] text-[rgb(var(--color-text-tertiary))]">
@@ -338,7 +340,7 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <Link href="/book" className="block">
+        <Link href="/book" className="block reveal reveal-2">
           <div
             className="card-hover p-5 bg-gradient-to-r from-[rgb(var(--color-accent))] via-[rgb(var(--color-contrast))] to-[rgb(var(--color-contrast-hover))] text-white"
             style={{ boxShadow: "var(--shadow-lg)" }}

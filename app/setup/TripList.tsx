@@ -20,13 +20,11 @@ type TripListProps = {
 export default function TripList({ trips }: TripListProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [loadingId, setLoadingId] = useState<string | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
 
   const selectTrip = async (id: string) => {
     setError(null);
-    setLoadingId(id);
     try {
       const response = await fetch("/api/trip/active", {
         method: "POST",
@@ -45,8 +43,6 @@ export default function TripList({ trips }: TripListProps) {
     } catch (err) {
       console.error("Error al seleccionar viaje:", err);
       setError("No se pudo conectar con el servidor.");
-    } finally {
-      setLoadingId(null);
     }
   };
 
@@ -57,7 +53,6 @@ export default function TripList({ trips }: TripListProps) {
     if (!confirmed) return;
 
     setError(null);
-    setLoadingId(id);
     try {
       const response = await fetch(`/api/trip/${id}`, {
         method: "DELETE",
@@ -73,8 +68,6 @@ export default function TripList({ trips }: TripListProps) {
     } catch (err) {
       console.error("Error al eliminar viaje:", err);
       setError("No se pudo conectar con el servidor.");
-    } finally {
-      setLoadingId(null);
     }
   };
 

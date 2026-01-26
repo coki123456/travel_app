@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Card } from "../ui/Card";
 import { EmojiIcon } from "../ui/EmojiIcon";
 
 interface ActiveTripCardProps {

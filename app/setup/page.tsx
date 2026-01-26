@@ -3,7 +3,6 @@ import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import SetupForm from "./SetupForm";
 import TripList from "./TripList";
-import { cookies } from "next/headers";
 import { EmojiIcon } from "../components/ui/EmojiIcon";
 import BottomNav from "../components/BottomNav";
 
@@ -19,31 +18,15 @@ export default async function SetupPage({
     redirect("/login");
   }
 
-  const cookieStore = await cookies();
-  const activeTripId = cookieStore.get("activeTripId")?.value;
-
-  const [trips, activeTrip] = await Promise.all([
-    prisma.trip.findMany({
-      where: {
-        OR: [
-          { ownerId: session.user.id },
-          { sharedWith: { some: { userId: session.user.id } } },
-        ],
-      },
-      orderBy: { createdAt: "desc" },
-    }),
-    activeTripId
-      ? prisma.trip.findFirst({
-          where: {
-            id: activeTripId,
-            OR: [
-              { ownerId: session.user.id },
-              { sharedWith: { some: { userId: session.user.id } } },
-            ],
-          },
-        })
-      : null,
-  ]);
+  const trips = await prisma.trip.findMany({
+    where: {
+      OR: [
+        { ownerId: session.user.id },
+        { sharedWith: { some: { userId: session.user.id } } },
+      ],
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
   const resolvedSearchParams = await searchParams;
   const editId = resolvedSearchParams?.edit;
@@ -61,16 +44,16 @@ export default async function SetupPage({
     <div className="min-h-screen bg-[rgb(var(--color-bg-primary))] pb-20">
       {/* Header compacto */}
       <div className="sticky top-0 z-40 bg-[rgb(var(--color-bg-secondary))] border-b border-[rgb(var(--color-border-light))] shadow-sm">
-        <div className="max-w-2xl mx-auto px-4 py-4">
+        <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-sm">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] flex items-center justify-center shadow-sm">
               <EmojiIcon emoji="🗺️" label="Mis viajes" className="text-lg" />
             </div>
             <div className="flex-1">
-              <h1 className="text-lg font-bold text-[rgb(var(--color-text-primary))]">
+              <h1 className="text-base sm:text-lg font-semibold text-[rgb(var(--color-text-primary))]">
                 {isCreating ? "Crear Viaje" : editingTrip ? "Editar Viaje" : "Mis Viajes"}
               </h1>
-              <p className="text-xs text-[rgb(var(--color-text-secondary))]">
+              <p className="text-[11px] sm:text-xs text-[rgb(var(--color-text-secondary))]">
                 {tripList.length} {tripList.length === 1 ? "viaje" : "viajes"}
               </p>
             </div>

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { parseDate, normalizeToDay } from "@/lib/date-utils";
+import { parseDate } from "@/lib/date-utils";
 import { normalizeText } from "@/lib/validation";
 
 // Helper para parseDate con fin de día (23:59:59)

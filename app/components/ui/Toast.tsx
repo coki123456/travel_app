@@ -114,7 +114,7 @@ export function useToast() {
 export function ToastContainer({ toasts, onRemove }: { toasts: Array<{ id: string; message: string; type: ToastType }>; onRemove: (id: string) => void }) {
   return (
     <div className="fixed top-0 right-0 z-[100] p-4 space-y-2 pointer-events-none">
-      {toasts.map((toast, index) => (
+      {toasts.map((toast) => (
         <div key={toast.id} style={{ pointerEvents: "auto" }}>
           <Toast
             message={toast.message}

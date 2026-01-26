@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { EmojiIcon } from "../components/ui/EmojiIcon";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
+import { Card, CardContent } from "../components/ui/Card";
 import LogoutButton from "../LogoutButton";
 
 export const dynamic = "force-dynamic";
@@ -49,16 +49,16 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-[rgb(var(--color-bg-primary))] pb-24">
       {/* Header con perfil */}
-      <div className="bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] text-white p-6 pb-8">
+      <div className="bg-gradient-to-br from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-hover))] text-white px-4 py-4">
         <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white font-bold text-lg border-2 border-white/30">
+              <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white font-bold text-base border-2 border-white/30">
                 {session.user.name?.charAt(0).toUpperCase() || "U"}
               </div>
               <div>
-                <h1 className="text-xl font-bold">Hola, {session.user.name?.split(" ")[0] || "Viajero"}!</h1>
-                <p className="text-sm text-white/80">{session.user.email}</p>
+                <h1 className="text-lg sm:text-xl font-semibold leading-tight">Hola, {session.user.name?.split(" ")[0] || "Viajero"}!</h1>
+                <p className="text-xs sm:text-sm text-white/85">{session.user.email}</p>
               </div>
             </div>
             <LogoutButton variant="icon" />
@@ -68,16 +68,16 @@ export default async function DashboardPage() {
           {activeTrip && (
             <Link href="/" className="block">
               <Card variant="default" className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all">
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <p className="text-xs text-white/70 uppercase tracking-wider mb-1">Viaje Activo</p>
-                      <h3 className="text-lg font-semibold text-white mb-1">{activeTrip.name}</h3>
-                      <div className="flex items-center gap-2 text-sm text-white/80">
+                      <p className="text-[11px] text-white/75 uppercase tracking-wider mb-1">Viaje activo</p>
+                      <h3 className="text-base font-semibold text-white mb-1">{activeTrip.name}</h3>
+                      <div className="flex items-center gap-2 text-xs sm:text-sm text-white/85">
                         <EmojiIcon emoji="📍" label="Destino" className="text-xs" />
                         <span>{activeTrip.destinations || "Sin destino"}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-white/80 mt-1">
+                      <div className="flex items-center gap-2 text-xs sm:text-sm text-white/85 mt-1">
                         <EmojiIcon emoji="📅" label="Fechas" className="text-xs" />
                         <span>
                           {activeTrip.startDate.toLocaleDateString("es-AR")} - {activeTrip.endDate.toLocaleDateString("es-AR")}
